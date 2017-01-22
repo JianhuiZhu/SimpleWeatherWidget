@@ -1,55 +1,93 @@
 package com.jianhui_zhu.simpleweatherwidget;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
+import android.widget.RemoteViews;
+import android.zetterstrom.com.forecast.ForecastClient;
+import android.zetterstrom.com.forecast.models.DataPoint;
+import android.zetterstrom.com.forecast.models.Forecast;
+import android.zetterstrom.com.forecast.models.Icon;
 
-import com.jianhui_zhu.simpleweatherwidget.model.Response.CurrentWeatherBriefResponse;
-import com.jianhui_zhu.simpleweatherwidget.model.WeatherManager;
+import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by jianhuizhu on 2017-01-20.
  */
 
 public class ViewModelSimpleWeather {
-    public void refreshCurrentLocationWeather(WeatherManager weatherManager, Context context) {
+    private void updateViewByLocation(Location location, final RemoteViews remoteViews, final AppWidgetManager manager, final int[]appWidgetIds){
+        Log.d(getClass().getSimpleName(), location.toString());
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        ForecastClient.getInstance().getForecast(latitude, longitude, new Callback<Forecast>() {
+            @Override
+            public void onResponse(Call<Forecast> call, Response<Forecast> response) {
+                Forecast forecast = response.body();
+                if (forecast != null) {
+                    DataPoint dataPoint = forecast.getCurrently();
+                    if (dataPoint != null) {
+                        remoteViews.setTextViewText(R.id.temperature_text_view, dataPoint.getApparentTemperature() + " F");
+                        remoteViews.setTextViewText(R.id.humidity_text_view, dataPoint.getHumidity() + " %");
+                        manager.updateAppWidget(appWidgetIds, remoteViews);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Forecast> call, Throwable t) {
+                Log.d(getClass().getSimpleName(), "query weather error", t);
+            }
+        });
+    }
+
+
+    public void refreshCurrentLocationWeather(Context context, final RemoteViews remoteViews, final AppWidgetManager manager, final int[] appWidgetIds) {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-        Criteria criteria = new Criteria();
-        criteria.setSpeedRequired(false);
-        criteria.setSpeedRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setAltitudeRequired(false);
-        criteria.setAccuracy(Criteria.NO_REQUIREMENT);
-        criteria.setAccuracy(Criteria.NO_REQUIREMENT);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        criteria.setVerticalAccuracy(Criteria.NO_REQUIREMENT);
-
-        String provider = locationManager.getBestProvider(criteria, true);
-        if (provider == null) {
-            //show alert message or use old data
-
-
+        List<String> providers = locationManager.getAllProviders();
+        Location location = null;
+        for (String provider : providers) {
+            location = locationManager.getLastKnownLocation(provider);
+            if (location != null) {
+                break;
+            }
+        }
+        if (location != null) {
+            updateViewByLocation(location,remoteViews,manager,appWidgetIds);
         } else {
-            Location location = locationManager.getLastKnownLocation(provider);
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
+            Log.d(getClass().getSimpleName(), "All location is null");
+            locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    updateViewByLocation(location,remoteViews,manager,appWidgetIds);
+                }
 
-            weatherManager
-                    .getCurrentWeatherBriefByGeo(context,latitude,longitude)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<CurrentWeatherBriefResponse>() {
-                        @Override
-                        public void call(CurrentWeatherBriefResponse currentWeatherBriefResponse) {
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
 
-                        }
-                    });
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            }, Looper.getMainLooper());
+
         }
 
     }

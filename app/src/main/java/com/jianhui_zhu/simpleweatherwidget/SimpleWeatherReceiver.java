@@ -4,32 +4,35 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.RemoteViews;
+import android.zetterstrom.com.forecast.ForecastClient;
+import android.zetterstrom.com.forecast.ForecastConfiguration;
 
-import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
-import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
-import com.jianhui_zhu.simpleweatherwidget.model.WeatherManager;
-
-import javax.inject.Inject;
+import retrofit2.Call;
 
 /**
  * Created by jianhuizhu on 2017-01-17.
  */
 
 public class SimpleWeatherReceiver extends AppWidgetProvider {
-    @Inject
-    WeatherManager manager;
-    @Inject
-    ViewModelSimpleWeather viewModel;
+    ViewModelSimpleWeather viewModel = new ViewModelSimpleWeather();
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        ForecastConfiguration configuration =
+                new ForecastConfiguration.Builder(context.getString(R.string.apikey))
+                        .setCacheDirectory(context.getCacheDir())
+                        .build();
+        ForecastClient.create(configuration);
+
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        viewModel.refreshCurrentLocationWeather(manager,context);
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.widget_basic);
+        viewModel.refreshCurrentLocationWeather(context,remoteViews,appWidgetManager,appWidgetIds);
+
     }
 
     @Override

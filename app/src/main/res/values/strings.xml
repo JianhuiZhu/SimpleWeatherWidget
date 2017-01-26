@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SimpleWeatherWidget</string>
+    <string name="ads_unit">ca-app-pub-4661993230678675/2719216945</string>
 </resources>

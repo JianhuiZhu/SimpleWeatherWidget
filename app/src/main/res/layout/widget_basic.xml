@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:id="@+id/widget"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -12,7 +13,6 @@
 
         <ImageView
             android:id="@+id/weather_icon_image_view"
-            android:src="@drawable/ic_snowflake"
             android:layout_width="@dimen/weather_icon_large"
             android:layout_height="@dimen/weather_icon_large" />
 

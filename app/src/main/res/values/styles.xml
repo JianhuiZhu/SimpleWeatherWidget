@@ -1,11 +1,41 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/md_blue_500</item>
+        <item name="colorPrimaryDark">@color/md_blue_700</item>
+        <item name="colorAccent">@color/md_pink_A200</item>
     </style>
-
+    
+    <style name="TextViewDetailTheme" parent="android:Widget.TextView">
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/material_default_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/material_default_spacing</item>
+        <item name="android:textSize">@dimen/material_english_text_caption</item>
+        <item name="android:textColor">@color/md_grey_600</item>
+    </style>
+    <style name="TextViewHeadlineTheme" parent="android:Widget.TextView">
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/material_default_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/material_default_spacing</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textSize">@dimen/material_english_text_headline</item>
+    </style>
+    <style name="TextViewTitleTheme" parent="android:Widget.TextView">
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/material_default_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/material_default_spacing</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:textSize">@dimen/material_english_text_title</item>
+    </style>
+    <style name="ViewTheme">
+        <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/material_default_spacing</item>
+        <item name="android:layout_marginBottom">@dimen/material_default_spacing</item> 
+    </style>
 </resources>

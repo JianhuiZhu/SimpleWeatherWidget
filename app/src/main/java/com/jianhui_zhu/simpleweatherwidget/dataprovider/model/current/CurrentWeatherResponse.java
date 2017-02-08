@@ -20,7 +20,6 @@ public class CurrentWeatherResponse {
     private Coord coord;
     @SerializedName("weather")
     @Expose
-
     private List<Weather> weather = new ArrayList<Weather>();
     @SerializedName("base")
     @Expose

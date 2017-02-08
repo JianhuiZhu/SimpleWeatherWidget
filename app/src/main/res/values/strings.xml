@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">SimpleWeatherWidget</string>
     <string name="ads_unit">ca-app-pub-4661993230678675/2719216945</string>
+
+    //Common button
+    <string name="confirm">OK, sure</string>
+    <string name="decline">No</string>
+
+    //Permission Request Alert Dialog
+    <string name="permission_request_title">Permission Request</string>
+    <string name="permission_request_content">For acquiring weather forecasts precisely,
+        we need to know your location.
+        Your location data will be used for getting weather forecast ONLY. </string>
+    <string name="make_decision">Go and make decision</string>
+
+    <string name="location_preference">location preference</string>
+    <string name="allow_getting_location_preference">allow getting location</string>
+
+    <string name="query_weather">query weather</string>
+    <string name="remote_view_ids">remote_view_ids</string>
 </resources>

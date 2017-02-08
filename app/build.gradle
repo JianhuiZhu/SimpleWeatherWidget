@@ -6,11 +6,11 @@ android {
     defaultConfig {
         applicationId "com.jianhui_zhu.simpleweatherwidget"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'BASE_URL', '\"http://dataservice.accuweather.com\"'
+        buildConfigField 'String', 'BASE_URL', '\"http://api.openweathermap.org\"'
     }
     buildTypes {
         release {
@@ -45,13 +45,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
-    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
-    compile 'io.reactivex:rxandroid:1.2.1'
     compile "com.squareup.retrofit2:adapter-rxjava:2.1.0"
     compile "com.squareup.retrofit2:converter-gson:2.1.0"
     compile 'com.google.firebase:firebase-ads:10.0.1'
     compile "com.android.support:recyclerview-v7:23.2.0"
-    compile "com.android.support:appcompat-v7:23.2.0"
     compile "com.squareup.okhttp3:logging-interceptor:3.5.0"
     compile 'android.zetterstrom.com.forecast:forecast:1.2.0'
     compile 'com.jakewharton:butterknife:8.5.0'

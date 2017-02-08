@@ -5,8 +5,10 @@ package com.jianhui_zhu.simpleweatherwidget.dagger;
  */
 import android.util.Log;
 import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
-import com.jianhui_zhu.simpleweatherwidget.ViewModelSimpleWeather;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherAPI;
+import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelSimpleWeather;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherAPI;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManagerImpl;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,12 +30,12 @@ import rx.schedulers.Schedulers;
 public class APIModule {
     @Provides
     @Inject
-    WeatherAPI provideWeatherAPI(Retrofit retrofit) {
+    public WeatherAPI provideWeatherAPI(Retrofit retrofit) {
         return retrofit.create(WeatherAPI.class);
     }
 
     @Provides
-    Retrofit providesRetrofit() {
+    public Retrofit providesRetrofit() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(
                 new HttpLoggingInterceptor.Logger() {
                     @Override
@@ -56,9 +58,13 @@ public class APIModule {
                 .build();
     }
 
-    @Provides
-    ViewModelSimpleWeather providesViewModelSimpleWeather() {
-        return new ViewModelSimpleWeather();
+    @Provides @Inject
+    public ViewModelSimpleWeather providesViewModelSimpleWeather(WeatherManager weatherManager) {
+        return new ViewModelSimpleWeather(weatherManager);
     }
+
+    @Provides   @Inject
+    public WeatherManager providesWeatherManager(WeatherAPI api){return new WeatherManagerImpl(api);}
+
 }
 

@@ -1,17 +1,37 @@
 package com.jianhui_zhu.simpleweatherwidget;
 
+import android.*;
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.zetterstrom.com.forecast.models.DataPoint;
 import android.zetterstrom.com.forecast.models.Icon;
+
+import rx.Observable;
 
 /**
  * Created by jianhuizhu on 2017-01-19.
  */
 
 public final class Util {
+    public static final String MAX_TEMPERATURE = "MAX_TEMPERATURE";
+    public static final String MIN_TEMPERATURE = "MIN_TEMPERATURE";
+    public static final String HUMIDITY = "HUMIDITY";
+    public static final String TEMPERATURE = "TEMPERATURE";
+    //The equator radius
+    private static final double EARTH_RADIUS = 6378.137;
     private Util(){}
     public static double fahrenheitToCelsius(double fahrenheit){
         return (fahrenheit - 32) / 1.8;
@@ -28,80 +48,38 @@ public final class Util {
         return celsius * 1.8 + 32;
     }
 
-    public static void weatherIconSetter(RemoteViews remoteViews, int id, ImageView imageView, @NonNull DataPoint dataPoint){
-        Icon icon = dataPoint.getIcon();
-        if(icon == Icon.CLEAR_DAY){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_clear_day);
-            }else{
-                imageView.setImageResource(R.drawable.ic_clear_day);
-            }
-        }else if(icon == Icon.CLEAR_NIGHT){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_clear_night);
-            }else{
-                imageView.setImageResource(R.drawable.ic_clear_night);
-            }
-        }else if(icon == Icon.CLOUDY){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_cloudy);
-            }else{
-                imageView.setImageResource(R.drawable.ic_cloudy);
-            }
-        }else if(icon == Icon.FOG){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_foggy);
-            }else{
-                imageView.setImageResource(R.drawable.ic_foggy);
-            }
-        }else if(icon == Icon.RAIN){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_light_rain);
-            }else{
-                imageView.setImageResource(R.drawable.ic_light_rain);
-            }
-        }else if(icon == Icon.PARTLY_CLOUDY_DAY){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_partly_cloudy_day);
-            }else{
-                imageView.setImageResource(R.drawable.ic_partly_cloudy_day);
-            }
-        }else if(icon == Icon.PARTLY_CLOUDY_NIGHT){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_partly_cloudy_night);
-            }else{
-                imageView.setImageResource(R.drawable.ic_partly_cloudy_night);
-            }
-        }else if(icon == Icon.HAIL){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_hail);
-            }else {
-                imageView.setImageResource(R.drawable.ic_hail);
-            }
-        }else if(icon == Icon.SLEET){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_hail);
-            }else {
-                imageView.setImageResource(R.drawable.ic_hail);
-            }
-        }else if(icon == Icon.SNOW){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_snow);
-            }else{
-                imageView.setImageResource(R.drawable.ic_snow);
-            }
-        }else if(icon == Icon.THUNDERSTORM){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_thunder);
-            }else{
-                imageView.setImageResource(R.drawable.ic_thunder);
-            }
-        }else if(icon == Icon.WIND){
-            if(imageView == null) {
-                remoteViews.setImageViewResource(id, R.drawable.ic_wind);
-            }else{
-                imageView.setImageResource(R.drawable.ic_wind);
+
+    private static double rad(double d)
+    {
+        return d * Math.PI / 180.0;
+    }
+
+    public static double GetDistance(double latStart, double lngStart, double latEnd, double lngEnd)
+    {
+        double radLat1 = rad(latStart);
+        double radLat2 = rad(latStart);
+        double a = radLat1 - radLat2;
+        double b = rad(lngStart) - rad(lngEnd);
+
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+                Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+        s = s * EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000;
+        return s;
+    }
+
+
+    public static PendingIntent startActivity(@NonNull Context context, @Nullable String action){
+        Intent intent = new Intent(context, DetailActivity.class);
+        if(action != null){
+            switch (action){
+                case PermissionUtil.REQUEST_PERMISSION:
+                    intent.putExtra(PermissionUtil.ACTION_TAG,PermissionUtil.REQUEST_PERMISSION);
             }
         }
+        return PendingIntent.getActivity(context, 0, intent, 0);
+
     }
+
+
 }

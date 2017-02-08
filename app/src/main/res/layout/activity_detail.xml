@@ -6,6 +6,7 @@
     android:id="@+id/activity_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
     tools:context="com.jianhui_zhu.simpleweatherwidget.DetailActivity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

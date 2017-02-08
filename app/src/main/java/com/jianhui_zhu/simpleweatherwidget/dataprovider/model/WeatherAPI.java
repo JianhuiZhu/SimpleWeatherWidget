@@ -1,4 +1,6 @@
-package com.jianhui_zhu.simpleweatherwidget.dataprovider;
+package com.jianhui_zhu.simpleweatherwidget.dataprovider.model;
+
+import android.content.Context;
 
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.FiveDayWeatherForecastResponse;
@@ -14,8 +16,8 @@ import rx.Observable;
 public interface WeatherAPI {
 
     @GET("/data/2.5/weather")
-    Observable<CurrentWeatherResponse> getCurrentWeatherForecast(@Query("lat")String latitude, @Query("lon")String longitude, @Query("appid")String appId);
+    Observable<CurrentWeatherResponse> getCurrentWeatherForecast(@Query("lat")double latitude, @Query("lon")double longitude, @Query("appid")String appId);
 
     @GET("/data/2.5/forecast")
-    Observable<FiveDayWeatherForecastResponse> get5DayWeatherForecast(@Query("lat")String latitude, @Query("lon")String longitude, @Query("appid")String appId);
+    Observable<FiveDayWeatherForecastResponse> get5DayWeatherForecast(@Query("lat")double latitude, @Query("lon")double longitude, @Query("appid")String appId);
 }

@@ -1,54 +1,72 @@
 package com.jianhui_zhu.simpleweatherwidget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.RemoteViews;
-import android.zetterstrom.com.forecast.ForecastClient;
-import android.zetterstrom.com.forecast.ForecastConfiguration;
+import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
+import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
+import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelSimpleWeather;
 
-import retrofit2.Call;
+import javax.inject.Inject;
+
+import static com.jianhui_zhu.simpleweatherwidget.PermissionUtil.*;
+import static com.jianhui_zhu.simpleweatherwidget.Util.startActivity;
 
 /**
  * Created by jianhuizhu on 2017-01-17.
  */
 
-public class SimpleWeatherReceiver extends AppWidgetProvider {
 
-    ViewModelSimpleWeather viewModel = new ViewModelSimpleWeather();
+public class SimpleWeatherReceiver extends AppWidgetProvider {
+    @Inject
+    ViewModelSimpleWeather viewModel;
     @Override
     public void onEnabled(Context context) {
         super.onEnabled(context);
-        List<String> excludeList = new ArrayList<>();
-        excludeList.add("hourly");
-        excludeList.add("minutely");
-        ForecastConfiguration configuration =
-                new ForecastConfiguration.Builder(context.getString(R.string.apikey))
-                        .setDefaultExcludeList(excludeList)
-                        .setCacheDirectory(context.getCacheDir())
-                        .build();
-        ForecastClient.create(configuration);
+        if(!isLocationPermissionGranted(context)){
+            startActivity(context,PermissionUtil.REQUEST_PERMISSION);
+        }
 
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.widget_basic);
-        Intent intent = new Intent(context, DetailActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        remoteViews.setOnClickPendingIntent(R.id.widget,pendingIntent);
-        viewModel.refreshCurrentLocationWeather(context,null,remoteViews,appWidgetManager,appWidgetIds);
+        DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        if(viewModel == null){
+            Log.d(getClass().getSimpleName(),"viewmodel is null");
+        }
+        viewModel.initSetting(context,appWidgetManager,appWidgetIds);
+        Intent intent = new Intent(context,WeatherService.class);
+        intent.setPackage(context.getPackageName());
+        intent.setAction(Constant.ACTION_QUERY_CURRENT);
+        context.startService(intent);
 
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        if(intent.getAction().equals(Constant.ACTION_UPDATE)){
+            Log.d(getClass().getSimpleName(),"receive query weather feedback");
+            viewModel.refreshCurrentLocationWeather(context,intent);
+        }
+
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        Log.d(getClass().getSimpleName(),"On disabled");
+    }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        Log.d(getClass().getSimpleName(),"On deleted");
     }
 }

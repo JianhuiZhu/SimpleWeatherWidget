@@ -35,7 +35,6 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         DataPoint dataPoint = dailyForecastList.get(position);
-        Util.weatherIconSetter(null,0,holder.weatherImage,dataPoint);
         if(dataPoint.getTemperature()!=null) {
             holder.temperatureTextView.setText(Util.fahrenheitToCelsiusString(dataPoint.getTemperature()));
         }else if(dataPoint.getApparentTemperature()!=null){

@@ -64,9 +64,9 @@ public class APIModule {
         return new ViewModelSimpleWeather(weatherManager);
     }
 
-    @Provides @Inject
-    public ViewModelDetailActivity providesViewModelDetailActivity(WeatherManager weatherManager){
-        return new ViewModelDetailActivity(weatherManager);
+    @Provides
+    public ViewModelDetailActivity providesViewModelDetailActivity(){
+        return new ViewModelDetailActivity();
     }
 
     @Provides   @Inject

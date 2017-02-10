@@ -4,31 +4,20 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.jianhui_zhu.simpleweatherwidget.PermissionUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.SimpleWeatherReceiver;
+import com.jianhui_zhu.simpleweatherwidget.view.SimpleWeatherReceiver;
 import com.jianhui_zhu.simpleweatherwidget.Util;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManager;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
 
 
 import javax.inject.Inject;
 
-import rx.functions.Action1;
-
-import static com.jianhui_zhu.simpleweatherwidget.Util.HUMIDITY;
-import static com.jianhui_zhu.simpleweatherwidget.Util.TEMPERATURE;
+import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
+import static com.jianhui_zhu.simpleweatherwidget.Util.getTemperatureDisplayString;
 
 /**
  * Created by jianhuizhu on 2017-01-20.
@@ -50,11 +39,8 @@ public class ViewModelSimpleWeather {
 
 
         //update each view with given content
-        String temperature = intent.getStringExtra(TEMPERATURE);
-        remoteViews.setTextViewText(R.id.temperature_text_view,temperature);
-
-        String humidity = intent.getStringExtra(HUMIDITY);
-        remoteViews.setTextViewText(R.id.humidity_text_view,humidity);
+        double temperature = intent.getDoubleExtra(TEMPERATURE,0.0);
+        remoteViews.setTextViewText(R.id.temperature_text_view,getTemperatureDisplayString(context,temperature));
 
         appWidgetManager.updateAppWidget(componentName,remoteViews);
 
@@ -62,7 +48,7 @@ public class ViewModelSimpleWeather {
     public void initSetting(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds){
         Log.d(getClass().getSimpleName(),"start initSetting");
         final RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.widget_basic);
-        remoteViews.setOnClickPendingIntent(R.id.widget, Util.startActivity(context, PermissionUtil.REQUEST_PERMISSION));
+        remoteViews.setOnClickPendingIntent(R.id.widget, Util.startActivityWithPendingIntent(context, PermissionUtil.REQUEST_PERMISSION));
         appWidgetManager.updateAppWidget(appWidgetIds,remoteViews);
 
     }

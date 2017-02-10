@@ -1,9 +1,7 @@
 package com.jianhui_zhu.simpleweatherwidget.dagger;
-import com.jianhui_zhu.simpleweatherwidget.SimpleWeatherReceiver;
-import com.jianhui_zhu.simpleweatherwidget.WeatherService;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManagerImpl;
-
-import javax.inject.Singleton;
+import com.jianhui_zhu.simpleweatherwidget.WeatherBackgroundService;
+import com.jianhui_zhu.simpleweatherwidget.view.DetailActivity;
+import com.jianhui_zhu.simpleweatherwidget.view.SimpleWeatherReceiver;
 
 import dagger.Component;
 
@@ -13,6 +11,6 @@ import dagger.Component;
 @Component(modules = APIModule.class)
 public interface APIComponent {
     void inject(SimpleWeatherReceiver receiver);
-    void inject(WeatherService service);
-
+    void inject(WeatherBackgroundService service);
+    void inject(DetailActivity activity);
 }

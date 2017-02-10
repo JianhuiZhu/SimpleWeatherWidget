@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget;
+package com.jianhui_zhu.simpleweatherwidget.view;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -6,14 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.jianhui_zhu.simpleweatherwidget.PermissionUtil;
+import com.jianhui_zhu.simpleweatherwidget.WeatherBackgroundService;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
 import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelSimpleWeather;
 
 import javax.inject.Inject;
 
+
 import static com.jianhui_zhu.simpleweatherwidget.PermissionUtil.*;
-import static com.jianhui_zhu.simpleweatherwidget.Util.startActivity;
+import static com.jianhui_zhu.simpleweatherwidget.Util.startActivityWithPendingIntent;
+import static com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler.*;
 
 /**
  * Created by jianhuizhu on 2017-01-17.
@@ -27,8 +31,10 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         if(!isLocationPermissionGranted(context)){
-            startActivity(context,PermissionUtil.REQUEST_PERMISSION);
+            startActivityWithPendingIntent(context, PermissionUtil.REQUEST_PERMISSION);
         }
+        Intent intent = new Intent(context,WeatherBackgroundService.class);
+        context.startService(intent);
 
     }
 
@@ -40,10 +46,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
             Log.d(getClass().getSimpleName(),"viewmodel is null");
         }
         viewModel.initSetting(context,appWidgetManager,appWidgetIds);
-        Intent intent = new Intent(context,WeatherService.class);
-        intent.setPackage(context.getPackageName());
-        intent.setAction(Constant.ACTION_QUERY_CURRENT);
-        context.startService(intent);
+        broadcastBriefWeatherUpdateRequest(context);
 
     }
 
@@ -51,8 +54,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
-        if(intent.getAction().equals(Constant.ACTION_UPDATE)){
-            Log.d(getClass().getSimpleName(),"receive query weather feedback");
+        if(isWeatherUpdateForWidget(intent)){
             viewModel.refreshCurrentLocationWeather(context,intent);
         }
 
@@ -68,5 +70,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         Log.d(getClass().getSimpleName(),"On deleted");
+        Intent intent = new Intent(context,WeatherBackgroundService.class);
+        context.stopService(intent);
     }
 }

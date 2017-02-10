@@ -4,7 +4,7 @@ package com.jianhui_zhu.simpleweatherwidget.dataprovider.model;
 import android.content.Context;
 
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.FiveDayWeatherForecastResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;
 
 import rx.Observable;
 
@@ -16,5 +16,5 @@ public interface WeatherManager {
 
     Observable<CurrentWeatherResponse> getCurrentWeatherByGeo(double lat, double lon, Context context);
 
-    Observable<FiveDayWeatherForecastResponse> getFiveDayWeatherForecastByGeo(double lat, double lon, Context context);
+    Observable<DetailWeatherForecastResponse> getFiveDayWeatherForecastByGeo(double lat, double lon, Context context);
 }

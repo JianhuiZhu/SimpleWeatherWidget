@@ -6,12 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.zetterstrom.com.forecast.models.DataBlock;
-import android.zetterstrom.com.forecast.models.DataPoint;
-import android.zetterstrom.com.forecast.models.Forecast;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,11 +16,11 @@ import butterknife.ButterKnife;
  */
 
 public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecastAdapter.ViewHolder> {
-    private List<DataPoint> dailyForecastList = new ArrayList<>();
-    WeatherForecastAdapter(List<DataPoint> dailyForecastList){
-        if(dailyForecastList!=null) {
-            this.dailyForecastList.addAll(dailyForecastList);
-        }
+//    private List<DataPoint> dailyForecastList = new ArrayList<>();
+    WeatherForecastAdapter(){
+//        if(dailyForecastList!=null) {
+//            this.dailyForecastList.addAll(dailyForecastList);
+//        }
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -34,18 +29,13 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        DataPoint dataPoint = dailyForecastList.get(position);
-        if(dataPoint.getTemperature()!=null) {
-            holder.temperatureTextView.setText(Util.fahrenheitToCelsiusString(dataPoint.getTemperature()));
-        }else if(dataPoint.getApparentTemperature()!=null){
-            holder.temperatureTextView.setText(Util.fahrenheitToCelsiusString(dataPoint.getApparentTemperature()));
-        }
+
     }
 
 
     @Override
     public int getItemCount() {
-        return dailyForecastList.size();
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

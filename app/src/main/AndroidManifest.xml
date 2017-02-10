@@ -10,22 +10,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailActivity">
+        <activity android:name=".view.DetailActivity">
         </activity>
-        <receiver android:name=".SimpleWeatherReceiver" >
+        <receiver android:name=".view.SimpleWeatherReceiver" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-</intent-filter>
-            <intent-filter>
-                <action android:name="action_update"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="action_query_current"/>
+                <action android:name="action_widget_update"/>
+                <action android:name="action_activity_update"/>
+                <action android:name="action_query_detail"/>
+                <action android:name="action_query_brief"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_provider_info" />
         </receiver>
-        <service android:name=".WeatherService"/>
+
+        <service android:name=".WeatherBackgroundService"/>
     </application>
 
 </manifest>

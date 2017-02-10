@@ -5,6 +5,7 @@ package com.jianhui_zhu.simpleweatherwidget.dagger;
  */
 import android.util.Log;
 import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
+import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelDetailActivity;
 import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelSimpleWeather;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherAPI;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManager;
@@ -61,6 +62,11 @@ public class APIModule {
     @Provides @Inject
     public ViewModelSimpleWeather providesViewModelSimpleWeather(WeatherManager weatherManager) {
         return new ViewModelSimpleWeather(weatherManager);
+    }
+
+    @Provides @Inject
+    public ViewModelDetailActivity providesViewModelDetailActivity(WeatherManager weatherManager){
+        return new ViewModelDetailActivity(weatherManager);
     }
 
     @Provides   @Inject

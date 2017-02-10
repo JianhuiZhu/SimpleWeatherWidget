@@ -1,9 +1,7 @@
 package com.jianhui_zhu.simpleweatherwidget.dataprovider.model;
 
-import android.content.Context;
-
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.FiveDayWeatherForecastResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -19,5 +17,7 @@ public interface WeatherAPI {
     Observable<CurrentWeatherResponse> getCurrentWeatherForecast(@Query("lat")double latitude, @Query("lon")double longitude, @Query("appid")String appId);
 
     @GET("/data/2.5/forecast")
-    Observable<FiveDayWeatherForecastResponse> get5DayWeatherForecast(@Query("lat")double latitude, @Query("lon")double longitude, @Query("appid")String appId);
+    Observable<DetailWeatherForecastResponse> get5DayWeatherForecast(@Query("lat")double latitude, @Query("lon")double longitude, @Query("appid")String appId);
+
+
 }

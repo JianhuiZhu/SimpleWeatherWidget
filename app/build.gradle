@@ -11,6 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'BASE_URL', '\"http://api.openweathermap.org\"'
+        buildConfigField 'String', 'WEATHER_ICON_BASE_URL', '\"http://openweathermap.org/img/w/\"'
     }
     buildTypes {
         release {
@@ -50,10 +51,10 @@ dependencies {
     compile 'com.google.firebase:firebase-ads:10.0.1'
     compile "com.android.support:recyclerview-v7:23.2.0"
     compile "com.squareup.okhttp3:logging-interceptor:3.5.0"
-    compile 'android.zetterstrom.com.forecast:forecast:1.2.0'
     compile 'com.jakewharton:butterknife:8.5.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.0'
     testCompile 'junit:junit:4.12'
     compile 'javax.annotation:javax.annotation-api:1.2'
+    compile 'com.github.zellius:rxlocationmanager:0.1.1'
 }
 apply plugin: 'com.google.gms.google-services'

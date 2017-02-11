@@ -1,12 +1,15 @@
 
 package com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Wind {
+public class Wind implements Parcelable {
 
     @SerializedName("speed")
     @Expose
@@ -14,6 +17,34 @@ public class Wind {
     @SerializedName("deg")
     @Expose
     private double deg;
+
+    protected Wind(Parcel in) {
+        speed = in.readDouble();
+        deg = in.readDouble();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(speed);
+        dest.writeDouble(deg);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Wind> CREATOR = new Creator<Wind>() {
+        @Override
+        public Wind createFromParcel(Parcel in) {
+            return new Wind(in);
+        }
+
+        @Override
+        public Wind[] newArray(int size) {
+            return new Wind[size];
+        }
+    };
 
     /**
      * 

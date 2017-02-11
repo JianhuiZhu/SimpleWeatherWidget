@@ -1,6 +1,9 @@
 
 package com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,7 +13,7 @@ import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common.Weather;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common.Wind;
 
 
-public class List {
+public class List implements Parcelable {
 
     @SerializedName("dt")
     @Expose
@@ -42,6 +45,29 @@ public class List {
     @SerializedName("dt_txt")
     @Expose
     private String dtTxt;
+
+    protected List(Parcel in) {
+        dt = in.readInt();
+        main = in.readParcelable(Main.class.getClassLoader());
+        weather = in.createTypedArrayList(Weather.CREATOR);
+        clouds = in.readParcelable(Clouds.class.getClassLoader());
+        wind = in.readParcelable(Wind.class.getClassLoader());
+        rain = in.readParcelable(Rain.class.getClassLoader());
+        sys = in.readParcelable(Sys_.class.getClassLoader());
+        dtTxt = in.readString();
+    }
+
+    public static final Creator<List> CREATOR = new Creator<List>() {
+        @Override
+        public List createFromParcel(Parcel in) {
+            return new List(in);
+        }
+
+        @Override
+        public List[] newArray(int size) {
+            return new List[size];
+        }
+    };
 
     /**
      * 
@@ -187,4 +213,20 @@ public class List {
         this.dtTxt = dtTxt;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(dt);
+        dest.writeParcelable(main, flags);
+        dest.writeTypedList(weather);
+        dest.writeParcelable(clouds, flags);
+        dest.writeParcelable(wind, flags);
+        dest.writeParcelable(rain, flags);
+        dest.writeParcelable(sys, flags);
+        dest.writeString(dtTxt);
+    }
 }

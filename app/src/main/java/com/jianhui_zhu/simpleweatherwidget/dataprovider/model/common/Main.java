@@ -1,12 +1,15 @@
 
 package com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Main {
+public class Main implements Parcelable {
 
     @SerializedName("temp")
     @Expose
@@ -29,6 +32,44 @@ public class Main {
     @SerializedName("grnd_level")
     @Expose
     private double grndLevel;
+
+    protected Main(Parcel in) {
+        temp = in.readDouble();
+        pressure = in.readDouble();
+        humidity = in.readInt();
+        tempMin = in.readDouble();
+        tempMax = in.readDouble();
+        seaLevel = in.readDouble();
+        grndLevel = in.readDouble();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(temp);
+        dest.writeDouble(pressure);
+        dest.writeInt(humidity);
+        dest.writeDouble(tempMin);
+        dest.writeDouble(tempMax);
+        dest.writeDouble(seaLevel);
+        dest.writeDouble(grndLevel);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Main> CREATOR = new Creator<Main>() {
+        @Override
+        public Main createFromParcel(Parcel in) {
+            return new Main(in);
+        }
+
+        @Override
+        public Main[] newArray(int size) {
+            return new Main[size];
+        }
+    };
 
     /**
      * 

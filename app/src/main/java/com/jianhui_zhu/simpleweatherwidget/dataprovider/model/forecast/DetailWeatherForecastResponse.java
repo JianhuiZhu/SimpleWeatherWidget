@@ -10,7 +10,6 @@ public class DetailWeatherForecastResponse {
 
     @SerializedName("city")
     @Expose
-
     private City city;
     @SerializedName("cod")
     @Expose
@@ -24,7 +23,7 @@ public class DetailWeatherForecastResponse {
     @SerializedName("list")
     @Expose
 
-    private java.util.List<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> list = new ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List>();
+    private java.util.ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> list = new ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List>();
 
     /**
      * 
@@ -103,7 +102,7 @@ public class DetailWeatherForecastResponse {
      * @return
      *     The list
      */
-    public java.util.List<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> getList() {
+    public java.util.ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> getList() {
         return list;
     }
 
@@ -112,7 +111,7 @@ public class DetailWeatherForecastResponse {
      * @param list
      *     The list
      */
-    public void setList(java.util.List<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> list) {
+    public void setList(java.util.ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> list) {
         this.list = list;
     }
 

@@ -24,4 +24,5 @@ public final class WeatherConstant {
     public static final String SNOW_LAST_3_HOUR = "SNOW_LAST_3_HOUR";
     public static final String UTC_DATE_TIME = "UTC_DATE_TIME";
     public static final String LANGUAGE_CODE = "LANGUAGE_CODE";
+    public static final String WEATHER_LIST = "WEATHER_LIST";
 }

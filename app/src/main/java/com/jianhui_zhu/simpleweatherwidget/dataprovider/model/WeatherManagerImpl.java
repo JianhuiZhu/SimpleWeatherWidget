@@ -21,6 +21,8 @@ public class WeatherManagerImpl implements WeatherManager {
     private boolean hasCacheCurrentWeather(){
         return currentWeather != null;
     }
+
+    private boolean hasCacheForecastWeather(){return fiveDayWeather != null; }
     private boolean isCurrentWeatherCacheExpired(long currentTime){
         return currentTime - lastCurrentWeatherUpdate > UPDATE_EXPIRE_TIME;
     }
@@ -31,8 +33,12 @@ public class WeatherManagerImpl implements WeatherManager {
     private boolean isUserTravelLongDistance(double lat, double lon){
         return Util.getDistance(previousLatitude, previousLongitude,lat,lon) > MAX_EXPIRE_DISTANCE;
     }
-    private boolean isCacheValid(long currentTime, double lat, double lon){
+    private boolean isCurrentCacheValid(long currentTime, double lat, double lon){
         return hasCacheCurrentWeather() && (!isCurrentWeatherCacheExpired(currentTime) || !isUserTravelLongDistance(lat,lon));
+    }
+
+    private boolean isForecastCacheValid(long currentTime, double lat, double lon){
+        return hasCacheForecastWeather() && (!isDetailWeatherCacheExpired(currentTime) || !isUserTravelLongDistance(lat,lon));
     }
 
 
@@ -59,7 +65,7 @@ public class WeatherManagerImpl implements WeatherManager {
     @Override
     public Observable<CurrentWeatherResponse> getCurrentWeatherByGeo(double lat, double lon, Context context) {
         long currentTime = System.currentTimeMillis();
-        if(isCacheValid(currentTime,lat,lon)){
+        if(isCurrentCacheValid(currentTime,lat,lon)){
             return Observable.just(this.currentWeather);
         }else{
             lastCurrentWeatherUpdate = currentTime;
@@ -76,7 +82,7 @@ public class WeatherManagerImpl implements WeatherManager {
     @Override
     public Observable<DetailWeatherForecastResponse> getFiveDayWeatherForecastByGeo(double lat, double lon, Context context) {
         final long currentTime = System.currentTimeMillis();
-        if(isCacheValid(currentTime,lat,lon)){
+        if(isForecastCacheValid(currentTime,lat,lon)){
             previousLatitude = lat;
             previousLongitude = lon;
             return Observable.just(this.fiveDayWeather);

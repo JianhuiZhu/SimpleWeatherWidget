@@ -18,4 +18,7 @@
 
     <string name="query_weather">query weather</string>
     <string name="remote_view_ids">remote_view_ids</string>
+
+    <string name="max">max</string>
+    <string name="min">min</string>
 </resources>

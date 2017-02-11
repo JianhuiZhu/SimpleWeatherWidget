@@ -14,7 +14,7 @@ import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
  * Created by jianhuizhu on 2017-02-07.
  */
 
-public  final class BroadcastIntentHandler {
+public final class BroadcastIntentHandler {
     public static final String ACTION_WIDGET_UPDATE = "action_widget_update";
     public static final String ACTION_ACTIVITY_UPDATE = "action_activity_update";
     public static final String ACTION_QUERY_BRIEF = "action_query_brief";
@@ -51,6 +51,8 @@ public  final class BroadcastIntentHandler {
 
     public static void broadcastDetailWeatherUpdateForActivity(Context context,DetailWeatherForecastResponse response){
         Intent intent = new Intent(ACTION_ACTIVITY_UPDATE);
+        intent.putExtra(CITY_NAME,response.getCity());
+        intent.putParcelableArrayListExtra(WEATHER_LIST,response.getList());
 
         context.sendBroadcast(intent);
     }

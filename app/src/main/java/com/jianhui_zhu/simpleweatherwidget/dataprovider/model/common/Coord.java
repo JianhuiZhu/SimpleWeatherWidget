@@ -1,12 +1,15 @@
 
 package com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class Coord {
+public class Coord implements Parcelable {
 
     @SerializedName("lon")
     @Expose
@@ -14,6 +17,23 @@ public class Coord {
     @SerializedName("lat")
     @Expose
     private double lat;
+
+    protected Coord(Parcel in) {
+        lon = in.readDouble();
+        lat = in.readDouble();
+    }
+
+    public static final Creator<Coord> CREATOR = new Creator<Coord>() {
+        @Override
+        public Coord createFromParcel(Parcel in) {
+            return new Coord(in);
+        }
+
+        @Override
+        public Coord[] newArray(int size) {
+            return new Coord[size];
+        }
+    };
 
     /**
      * 
@@ -51,4 +71,14 @@ public class Coord {
         this.lat = lat;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(lon);
+        dest.writeDouble(lat);
+    }
 }

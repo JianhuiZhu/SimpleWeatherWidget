@@ -11,6 +11,16 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:layout_marginLeft="16dp"
+        android:id="@+id/detail_weather_image"
+        android:layout_width="@dimen/weather_icon_xlarge"
+        android:layout_height="@dimen/weather_icon_xlarge"
+        fresco:placeholderImage="@drawable/ic_place_holder"
+        android:scaleType="fitXY"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp" />
 
     <RelativeLayout
         android:id="@+id/temperature_area"
@@ -63,16 +73,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/material_default_spacing"
+        android:id="@+id/detail_info_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/humidity_label"
+            style="@style/TextViewDetailTheme"
+            android:text="@string/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_marginLeft="16dp"
-        android:id="@+id/detail_weather_image"
-        android:layout_width="@dimen/weather_icon_xlarge"
-        android:layout_height="@dimen/weather_icon_xlarge"
-        fresco:placeholderImage="@drawable/ic_place_holder"
-        android:scaleType="fitXY"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="16dp" />
+        <TextView
+            android:id="@+id/humidity_value_text_view"
+            android:layout_toRightOf="@+id/humidity_label"
+            style="@style/TextViewDetailTheme"
+            tools:text = "68%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_below="@+id/humidity_label"
+            android:id="@+id/wind_speed_label"
+            style="@style/TextViewDetailTheme"
+            android:text="@string/wind_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/wind_speed_value_text_view"
+            style="@style/TextViewDetailTheme"
+            android:layout_toRightOf="@+id/wind_speed_label"
+            android:layout_below="@+id/humidity_value_text_view"
+            tools:text = "34 m/s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/wind_direction_label"
+            style="@style/TextViewDetailTheme"
+            android:text="@string/wind_direction"
+            android:layout_below="@+id/wind_speed_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/wind_direction_text_view"
+            style="@style/TextViewDetailTheme"
+            android:layout_below="@+id/wind_speed_value_text_view"
+            android:layout_toRightOf="@+id/wind_direction_label"
+            tools:text = "NE 23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
 </RelativeLayout>
     </android.support.v7.widget.CardView>

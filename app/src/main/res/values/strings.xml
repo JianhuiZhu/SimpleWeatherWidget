@@ -21,4 +21,39 @@
 
     <string name="max">max</string>
     <string name="min">min</string>
+
+    //Weather detail card
+    <string name="uv">UV</string>
+    <string name="humidity">Humidity</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="wind_direction">Wind direction</string>
+    <string name="snow_in_3_hour">Snow</string>
+    <string name="rain_in_3_hour">Rain</string>
+
+    <string name="percentage_sign"> %</string>
+
+    <string name="meter_per_second">m/s</string>
+    <string name="mile_per_hour">mile/h</string>
+
+    <string name="east">East</string>
+    <string name="north">North</string>
+    <string name="south">South</string>
+    <string name="west">West</string>
+    <string name="date_format">"dd , MMM , YYYY z"</string>
+
+    //Week day titles
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+
+    //Menu
+    <string name="setting">Setting</string>
 </resources>

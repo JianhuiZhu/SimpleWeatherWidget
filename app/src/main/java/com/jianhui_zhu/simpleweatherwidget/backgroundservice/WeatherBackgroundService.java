@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget;
+package com.jianhui_zhu.simpleweatherwidget.backgroundservice;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -9,9 +9,10 @@ import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;
 
@@ -33,33 +34,33 @@ public class WeatherBackgroundService extends Service {
     @Inject
     WeatherManager manager;
     WrappedLocationManager locationManager;
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (isWeatherUpdateRequestByWidget(intent)) {
+
+                getBriefWeatherForecastForWidget();
+
+            } else if (isWeatherUpdateRequestByActivity(intent)) {
+
+                getDetailWeatherInfoForActivity();
+
+            }
+        }
+    };
 
     @Override
     public void onCreate() {
         super.onCreate();
         DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        Fresco.initialize(this);
         locationManager = new WrappedLocationManager(this);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_QUERY_BRIEF);
         intentFilter.addAction(ACTION_QUERY_DETAIL);
-        registerReceiver(receiver,intentFilter);
+        registerReceiver(receiver, intentFilter);
     }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(isWeatherUpdateRequestByWidget(intent)){
-
-                getBriefWeatherForecastForWidget();
-                return;
-            }else if(isWeatherUpdateRequestByActivity(intent)){
-                getDetailWeatherInfoForActivity();
-                return;
-            }
-        }
-    };
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -72,12 +73,12 @@ public class WeatherBackgroundService extends Service {
         return null;
     }
 
-    private void getBriefWeatherForecastForWidget(){
-        if(isLocationPermissionGranted(this) == false){
+    private void getBriefWeatherForecastForWidget() {
+        if (!isLocationPermissionGranted(this)) {
 
             broadcastLocationPermissionNeededForCaller(this);
 
-        }else{
+        } else {
             locationManager.getLocation().doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {
@@ -105,10 +106,10 @@ public class WeatherBackgroundService extends Service {
         }
     }
 
-    private void getDetailWeatherInfoForActivity(){
-        if(isLocationPermissionGranted(this) == false){
+    private void getDetailWeatherInfoForActivity() {
+        if (!isLocationPermissionGranted(this)) {
             broadcastLocationPermissionNeededForCaller(this);
-        }else{
+        } else {
             locationManager.getLocation().doOnError(new Action1<Throwable>() {
                 @Override
                 public void call(Throwable throwable) {

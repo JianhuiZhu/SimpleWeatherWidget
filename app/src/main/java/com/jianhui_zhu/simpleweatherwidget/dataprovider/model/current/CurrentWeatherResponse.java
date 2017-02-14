@@ -1,6 +1,9 @@
 
 package com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
@@ -12,7 +15,7 @@ import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common.Weather;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common.Wind;
 
 
-public class CurrentWeatherResponse {
+public class CurrentWeatherResponse implements Parcelable{
 
     @SerializedName("coord")
     @Expose
@@ -38,7 +41,7 @@ public class CurrentWeatherResponse {
     private Clouds clouds;
     @SerializedName("dt")
     @Expose
-    private int dt;
+    private long dt;
     @SerializedName("sys")
     @Expose
 
@@ -52,6 +55,32 @@ public class CurrentWeatherResponse {
     @SerializedName("cod")
     @Expose
     private int cod;
+
+    protected CurrentWeatherResponse(Parcel in) {
+        coord = in.readParcelable(Coord.class.getClassLoader());
+        weather = in.createTypedArrayList(Weather.CREATOR);
+        base = in.readString();
+        main = in.readParcelable(Main.class.getClassLoader());
+        wind = in.readParcelable(Wind.class.getClassLoader());
+        clouds = in.readParcelable(Clouds.class.getClassLoader());
+        dt = in.readLong();
+        sys = in.readParcelable(Sys.class.getClassLoader());
+        id = in.readInt();
+        name = in.readString();
+        cod = in.readInt();
+    }
+
+    public static final Creator<CurrentWeatherResponse> CREATOR = new Creator<CurrentWeatherResponse>() {
+        @Override
+        public CurrentWeatherResponse createFromParcel(Parcel in) {
+            return new CurrentWeatherResponse(in);
+        }
+
+        @Override
+        public CurrentWeatherResponse[] newArray(int size) {
+            return new CurrentWeatherResponse[size];
+        }
+    };
 
     /**
      * 
@@ -166,7 +195,7 @@ public class CurrentWeatherResponse {
      * @return
      *     The dt
      */
-    public int getDt() {
+    public long getDt() {
         return dt;
     }
 
@@ -175,7 +204,7 @@ public class CurrentWeatherResponse {
      * @param dt
      *     The dt
      */
-    public void setDt(int dt) {
+    public void setDt(long dt) {
         this.dt = dt;
     }
 
@@ -251,4 +280,23 @@ public class CurrentWeatherResponse {
         this.cod = cod;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(coord, flags);
+        dest.writeTypedList(weather);
+        dest.writeString(base);
+        dest.writeParcelable(main, flags);
+        dest.writeParcelable(wind, flags);
+        dest.writeParcelable(clouds, flags);
+        dest.writeLong(dt);
+        dest.writeParcelable(sys, flags);
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeInt(cod);
+    }
 }

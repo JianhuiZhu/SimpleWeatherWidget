@@ -5,11 +5,12 @@ package com.jianhui_zhu.simpleweatherwidget.dagger;
  */
 import android.util.Log;
 import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
-import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelDetailActivity;
-import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelSimpleWeather;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherAPI;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManager;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManagerImpl;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.UVAPI;
+import com.jianhui_zhu.simpleweatherwidget.detailweather.ViewModelDetailActivity;
+import com.jianhui_zhu.simpleweatherwidget.widget.ViewModelSimpleWeather;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherAPI;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManagerImpl;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +34,12 @@ public class APIModule {
     @Inject
     public WeatherAPI provideWeatherAPI(Retrofit retrofit) {
         return retrofit.create(WeatherAPI.class);
+    }
+
+    @Provides
+    @Inject
+    public UVAPI provideUVAPI(Retrofit retrofit){
+        return retrofit.create(UVAPI.class);
     }
 
     @Provides

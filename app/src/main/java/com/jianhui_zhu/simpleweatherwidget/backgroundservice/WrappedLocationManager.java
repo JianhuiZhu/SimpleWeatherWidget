@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget;
+package com.jianhui_zhu.simpleweatherwidget.backgroundservice;
 
 import android.content.Context;
 import android.location.Location;

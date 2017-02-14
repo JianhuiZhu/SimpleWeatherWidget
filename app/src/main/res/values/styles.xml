@@ -9,6 +9,7 @@
     </style>
     
     <style name="TextViewDetailTheme" parent="android:Widget.TextView">
+        <item name="android:layout_marginRight">@dimen/material_default_spacing</item>
         <item name="android:layout_marginTop">@dimen/material_default_spacing</item>
         <item name="android:textSize">@dimen/material_english_text_caption</item>
         <item name="android:textColor">@color/md_grey_600</item>
@@ -37,5 +38,19 @@
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginTop">@dimen/material_default_spacing</item>
         <item name="android:layout_marginBottom">@dimen/material_default_spacing</item> 
+    </style>
+
+    <style name="TextViewToolbarTitleTheme">
+        <item name="android:layout_marginLeft">0dp</item>
+        <item name="android:layout_marginRight">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textSize">@dimen/material_english_text_headline</item>
+    </style>
+
+    <style name="TextViewToolbarSubTitleTheme">
+        <item name="android:textSize">@dimen/material_english_text_caption</item>
+        <item name="android:textColor">@color/md_grey_600</item>
     </style>
 </resources>

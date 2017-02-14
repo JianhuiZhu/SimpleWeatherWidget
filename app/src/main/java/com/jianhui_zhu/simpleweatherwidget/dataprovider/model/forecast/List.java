@@ -17,7 +17,7 @@ public class List implements Parcelable {
 
     @SerializedName("dt")
     @Expose
-    private int dt;
+    private long dt;
     @SerializedName("main")
     @Expose
 
@@ -46,8 +46,9 @@ public class List implements Parcelable {
     @Expose
     private String dtTxt;
 
+
     protected List(Parcel in) {
-        dt = in.readInt();
+        dt = in.readLong();
         main = in.readParcelable(Main.class.getClassLoader());
         weather = in.createTypedArrayList(Weather.CREATOR);
         clouds = in.readParcelable(Clouds.class.getClassLoader());
@@ -74,7 +75,7 @@ public class List implements Parcelable {
      * @return
      *     The dt
      */
-    public int getDt() {
+    public long getDt() {
         return dt;
     }
 
@@ -83,7 +84,7 @@ public class List implements Parcelable {
      * @param dt
      *     The dt
      */
-    public void setDt(int dt) {
+    public void setDt(long dt) {
         this.dt = dt;
     }
 
@@ -213,6 +214,7 @@ public class List implements Parcelable {
         this.dtTxt = dtTxt;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -220,7 +222,7 @@ public class List implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(dt);
+        dest.writeLong(dt);
         dest.writeParcelable(main, flags);
         dest.writeTypedList(weather);
         dest.writeParcelable(clouds, flags);

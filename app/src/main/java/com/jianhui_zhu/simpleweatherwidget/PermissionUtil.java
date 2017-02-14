@@ -25,9 +25,16 @@ public final class PermissionUtil {
 
 
     public static boolean isLocationPermissionGranted(Context context){
-        int coarseLocationPermissionResult = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION);
-        int fineLocationPermissionResult = ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION);
-        return coarseLocationPermissionResult == PackageManager.PERMISSION_GRANTED && fineLocationPermissionResult == PackageManager.PERMISSION_GRANTED;
+        int coarseLocationPermissionResult = ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        int fineLocationPermissionResult = ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        return coarseLocationPermissionResult == PackageManager.PERMISSION_GRANTED
+                && fineLocationPermissionResult == PackageManager.PERMISSION_GRANTED;
     }
 
     public static AlertDialog getPermissionRequestDialog(final Activity activity){
@@ -53,7 +60,9 @@ public final class PermissionUtil {
     }
     public static void requestPermission(Activity activity){
         ActivityCompat.requestPermissions(activity,
-                new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
+                new String[]{
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_CODE);
     }
 }

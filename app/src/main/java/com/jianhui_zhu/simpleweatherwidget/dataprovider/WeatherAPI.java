@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget.dataprovider.model;
+package com.jianhui_zhu.simpleweatherwidget.dataprovider;
 
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;

@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget.dataprovider.model;
+package com.jianhui_zhu.simpleweatherwidget.dataprovider;
 
 import android.content.Context;
 
@@ -43,7 +43,7 @@ public class WeatherManagerImpl implements WeatherManager {
 
 
     private final static String CURRENT_WEATHER_QUERY_ERROR = "CURRENT_WEATHER_ERROR";
-    private final static String FIVE_DAY_WEATHER_QUERY_ERROR = "FIVE_DAY_WEATHER_ERROR";
+    private final static String FIVE_DAYd_WEATHER_QUERY_ERROR = "FIVE_DAY_WEATHER_ERROR";
     //Default expire time 2 hour
     private final static long UPDATE_EXPIRE_TIME = 7200000;
     //Default expire distance 50km

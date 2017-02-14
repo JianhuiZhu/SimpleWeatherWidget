@@ -22,8 +22,7 @@ public class DetailWeatherForecastResponse {
     private int cnt;
     @SerializedName("list")
     @Expose
-
-    private java.util.ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> list = new ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List>();
+    private java.util.ArrayList<com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List> list = new ArrayList<>();
 
     /**
      * 

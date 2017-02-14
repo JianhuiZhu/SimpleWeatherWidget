@@ -10,9 +10,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.DetailActivity">
+        <activity android:name=".detailweather.DetailActivity">
         </activity>
-        <receiver android:name=".view.SimpleWeatherReceiver" >
+        <receiver android:name=".widget.SimpleWeatherReceiver" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="action_widget_update"/>
@@ -24,7 +24,7 @@
                 android:resource="@xml/app_widget_provider_info" />
         </receiver>
 
-        <service android:name=".WeatherBackgroundService"/>
+        <service android:name=".backgroundservice.WeatherBackgroundService"/>
     </application>
 
 </manifest>

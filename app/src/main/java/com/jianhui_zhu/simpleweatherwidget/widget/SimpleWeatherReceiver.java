@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget.view;
+package com.jianhui_zhu.simpleweatherwidget.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -7,10 +7,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.jianhui_zhu.simpleweatherwidget.PermissionUtil;
-import com.jianhui_zhu.simpleweatherwidget.WeatherBackgroundService;
+import com.jianhui_zhu.simpleweatherwidget.backgroundservice.WeatherBackgroundService;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
-import com.jianhui_zhu.simpleweatherwidget.viewmodel.ViewModelSimpleWeather;
 
 import javax.inject.Inject;
 

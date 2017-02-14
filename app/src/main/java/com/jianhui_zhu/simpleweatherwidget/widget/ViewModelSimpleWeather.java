@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget.viewmodel;
+package com.jianhui_zhu.simpleweatherwidget.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -9,15 +9,14 @@ import android.widget.RemoteViews;
 
 import com.jianhui_zhu.simpleweatherwidget.PermissionUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.view.SimpleWeatherReceiver;
 import com.jianhui_zhu.simpleweatherwidget.Util;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
 
 
 import javax.inject.Inject;
 
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
-import static com.jianhui_zhu.simpleweatherwidget.Util.getTemperatureDisplayString;
+import static com.jianhui_zhu.simpleweatherwidget.Util.getTemperatureString;
 
 /**
  * Created by jianhuizhu on 2017-01-20.
@@ -40,7 +39,7 @@ public class ViewModelSimpleWeather {
 
         //update each view with given content
         double temperature = intent.getDoubleExtra(TEMPERATURE,0.0);
-        remoteViews.setTextViewText(R.id.temperature_text_view,getTemperatureDisplayString(context,temperature));
+        remoteViews.setTextViewText(R.id.temperature_text_view, getTemperatureString(context,temperature));
 
         appWidgetManager.updateAppWidget(componentName,remoteViews);
 

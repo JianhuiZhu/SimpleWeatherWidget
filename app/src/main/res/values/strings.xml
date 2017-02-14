@@ -56,4 +56,24 @@
 
     //Menu
     <string name="setting">Setting</string>
+    
+    //setting
+    <string name="unit_setting">Unit Setting</string>
+
+    <string name="temperature_unit_setting">temperature_unit_setting</string>
+    <string name="celsius">celsius</string>
+    <string name="fahrenheit">fahrenheit</string>
+    
+    <string name="wind_speed_unit_setting">wind speed unit setting</string>
+    <string name="mile_hour">mile / hour</string>
+    <string name="meter_second">meter / second</string>
+
+    <array name="temperature_units">
+        <item name="celsius">celsius</item>
+        <item name="fahrenheit">fahrenheit</item>
+    </array>
+    <array name="wind_speed_units">
+        <item name="mile_hour">mile / hour</item>
+        <item name="meter_second">meter / second</item>
+    </array>
 </resources>

@@ -31,8 +31,6 @@ public final class Util {
     private static final String SETTING = "SETTING";
     private static final String CELSIUS_SIGN = " °C";
     private static final String FAHRENHEIT_SIGN = " F";
-    private static final String DEFAULT_TEMPERATURE_UNIT_CELSIUS = "DEFAULT_TEMPERATURE_UNIT_CELSIUS";
-    private static final String DEFAULT_WIND_UNIT_METER_PER_SECOND = "DEFAULT_WIND_UNIT_METER_PER_SECOND";
     //The equator radius
     private static final double EARTH_RADIUS = 6378.137;
     private static final int NORTH = 0;
@@ -45,7 +43,6 @@ public final class Util {
     public static final int THURSDAY = 4;
     public static final int FRIDAY = 5;
     public static final int SATURDAY = 6;
-    public static final int SUNDAY = 7;
     private Util() {
     }
 
@@ -59,12 +56,18 @@ public final class Util {
 
     private static boolean isTemperatureDisplayCelsiusByDefault(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(DEFAULT_TEMPERATURE_UNIT_CELSIUS, true);
+        return sharedPreferences.getString(
+                context.getString(R.string.temperature_unit_setting),
+                context.getString(R.string.celsius))
+                .equals(context.getString(R.string.celsius));
     }
 
     private static boolean isWindSpeedDisplayMperSByDefault(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(SETTING,Context.MODE_PRIVATE);
-        return sharedPreferences.getBoolean(DEFAULT_WIND_UNIT_METER_PER_SECOND,true);
+        return sharedPreferences.getString(
+                context.getString(R.string.wind_speed_unit_setting),
+                context.getString(R.string.meter_second))
+                .equals(context.getString(R.string.meter_second));
     }
 
     private static String kelvinToCelsiusString(double kelvinValue) {

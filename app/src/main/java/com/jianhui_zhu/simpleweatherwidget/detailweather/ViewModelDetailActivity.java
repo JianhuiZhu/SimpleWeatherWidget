@@ -42,8 +42,10 @@ public class ViewModelDetailActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.setting_option){
-                    Intent intent = new Intent(activity, WeatherPreferenceActivity.class);
-                    activity.startActivity(intent);
+                    activity.getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.activity_detail,new WeatherPreferenceFragment())
+                            .commit();
                     return true;
                 }
                 return false;

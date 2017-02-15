@@ -112,4 +112,13 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
         toolbar.setTitle(Util.getWeekDay(this,date));
         toolbar.setSubtitle(Util.getDateWithProperFormat(this,date));
     }
+
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }

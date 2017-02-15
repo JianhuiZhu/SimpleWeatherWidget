@@ -3,7 +3,6 @@ package com.jianhui_zhu.simpleweatherwidget.detailweather;
 import android.content.Intent;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +30,9 @@ public class ViewModelDetailActivity {
         recyclerView.setAdapter(new WeatherForecastAdapter(activity, weatherList));
         recyclerView.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHorizontalFadingEdgeEnabled(true);
+        recyclerView.setFadingEdgeLength(50);
+
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -46,6 +48,7 @@ public class ViewModelDetailActivity {
                 if(item.getItemId() == R.id.setting_option){
                     activity.getFragmentManager()
                             .beginTransaction()
+                            .addToBackStack(WeatherPreferenceFragment.class.getSimpleName())
                             .replace(R.id.activity_detail,new WeatherPreferenceFragment())
                             .commit();
                     return true;

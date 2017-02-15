@@ -4,13 +4,19 @@
         android:title="@string/unit_setting"
         android:key="@string/setting">
         <ListPreference
+            android:title="@string/temperature_unit_setting"
             android:key="@string/temperature_unit_setting"
             android:entries="@array/temperature_units"
+            android:defaultValue="@string/celsius"
+            android:summary="%s"
             android:entryValues="@array/temperature_units"
             />
         <ListPreference
+            android:title="@string/wind_speed_unit_setting"
             android:key="@string/wind_speed_unit_setting"
             android:entries="@array/wind_speed_units"
+            android:defaultValue="@string/meter_per_second"
+            android:summary="%s"
             android:entryValues="@array/wind_speed_units"/>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler;
 import com.jianhui_zhu.simpleweatherwidget.PermissionUtil;
 import com.jianhui_zhu.simpleweatherwidget.backgroundservice.WeatherBackgroundService;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
@@ -30,7 +31,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         if(!isLocationPermissionGranted(context)){
-            //startActivityWithPendingIntent(context, PermissionUtil.REQUEST_PERMISSION);
+            startActivityWithPendingIntent(context);
         }
         Intent intent = new Intent(context,WeatherBackgroundService.class);
         context.startService(intent);
@@ -41,9 +42,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
         DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
-        if(viewModel == null){
-            Log.d(getClass().getSimpleName(),"viewmodel is null");
-        }
+
         viewModel.initSetting(context,appWidgetManager,appWidgetIds);
         broadcastBriefWeatherUpdateRequest(context);
 

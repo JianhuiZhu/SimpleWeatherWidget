@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common.Wind;
 import com.jianhui_zhu.simpleweatherwidget.detailweather.DetailActivity;
 
@@ -21,6 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+
+import static com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler.ACTION_REQUEST_PERMISSION;
 
 /**
  * Created by jianhuizhu on 2017-01-19.
@@ -112,14 +116,13 @@ public final class Util {
         return d * Math.PI / 180.0;
     }
 
-    public static PendingIntent startActivityWithPendingIntent(@NonNull Context context, @Nullable String action) {
+    public static PendingIntent startActivityWithPendingIntent(@NonNull Context context) {
         Intent intent = new Intent(context, DetailActivity.class);
-        if (action != null) {
-            switch (action) {
-                case PermissionUtil.REQUEST_PERMISSION:
-                    intent.putExtra(PermissionUtil.ACTION_TAG, PermissionUtil.REQUEST_PERMISSION);
-            }
+
+        if(!PermissionUtil.isLocationPermissionGranted(context)){
+            intent.setAction(ACTION_REQUEST_PERMISSION);
         }
+
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
@@ -173,38 +176,56 @@ public final class Util {
                 .append("°").toString();
     }
 
+    private static boolean isToday(DateTime date){
+        DateTime today = DateTime.now().withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).withTimeAtStartOfDay();
+        return today.equals(date.withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).withTimeAtStartOfDay());
+    }
+
+    private static boolean isTomorrow(DateTime date){
+        DateTime tomorrow = DateTime.now().withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).plusDays(1).withTimeAtStartOfDay();
+        return tomorrow.equals(date.withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).withTimeAtStartOfDay());
+    }
+
     public static String getWeekDay(Context context, DateTime date){
-        if(date.isEqualNow()){
+        StringBuilder sb = new StringBuilder(20);
+        boolean isTodayOrTomorrow = false;
+        if(isToday(date)){
+            isTodayOrTomorrow = true;
+            sb.append(context.getString(R.string.today));
 
-            return context.getString(R.string.today);
+        }else if(isTomorrow(date)){
+            isTodayOrTomorrow = true;
+            sb.append(context.getString(R.string.tomorrow));
 
-        }else if(new Duration(DateTime.now(),date).toStandardDays().getDays() == 1){
-
-            return context.getString(R.string.tomorrow);
-
-        }else{
-            int weekday = date.getDayOfWeek();
+        }
+            int weekday = date.withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).getDayOfWeek();
             switch (weekday){
                 case MONDAY:
-                    return context.getString(R.string.monday);
+                    return formatWeekday(isTodayOrTomorrow,context.getString(R.string.monday),sb);
                 case TUESDAY:
-                    return context.getString(R.string.tuesday);
+                    return formatWeekday(isTodayOrTomorrow,context.getString(R.string.tuesday),sb);
                 case WEDNESDAY:
-                    return context.getString(R.string.wednesday);
+                    return formatWeekday(isTodayOrTomorrow,context.getString(R.string.wednesday),sb);
                 case THURSDAY:
-                    return context.getString(R.string.thursday);
+                    return formatWeekday(isTodayOrTomorrow,context.getString(R.string.thursday),sb);
                 case FRIDAY:
-                    return context.getString(R.string.friday);
+                    return formatWeekday(isTodayOrTomorrow,context.getString(R.string.friday),sb);
                 case SATURDAY:
-                    return context.getString(R.string.saturday);
+                    return formatWeekday(isTodayOrTomorrow,context.getString(R.string.saturday),sb);
                 default:
-                    return context.getString(R.string.sunday);
-            }
+                    return formatWeekday(isTodayOrTomorrow,context.getString(R.string.sunday),sb);
         }
+    }
+
+    private static String formatWeekday(boolean isTodayOrTomorrow, String weekday, StringBuilder sb){
+        if(isTodayOrTomorrow){
+            return sb.append("(").append(weekday).append(")").toString();
+        }
+        return sb.append(weekday).toString();
     }
 
     public static String getDateWithProperFormat(Context context, DateTime date){
         DateTimeFormatter fmt = DateTimeFormat.forPattern(context.getString(R.string.date_format));
-        return fmt.print(date.toDateTime());
+        return fmt.print(date.withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).toDateTime());
     }
 }

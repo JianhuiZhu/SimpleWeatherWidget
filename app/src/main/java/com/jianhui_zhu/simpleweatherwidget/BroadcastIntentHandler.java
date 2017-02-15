@@ -19,6 +19,7 @@ public final class BroadcastIntentHandler {
     public static final String ACTION_ACTIVITY_UPDATE = "action_activity_update";
     public static final String ACTION_QUERY_BRIEF = "action_query_brief";
     public static final String ACTION_QUERY_DETAIL = "action_query_detail";
+    public static final String ACTION_REQUEST_PERMISSION = "action_request_permission";
     public static final String LOCATION_PERMISSION_NEEDED = "location_permission_needed";
 
     private BroadcastIntentHandler(){

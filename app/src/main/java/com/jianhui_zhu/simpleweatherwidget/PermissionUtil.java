@@ -16,7 +16,7 @@ import android.support.v7.app.AlertDialog;
 
 public final class PermissionUtil {
     public static final String ACTION_TAG = "ACTION";
-    public static final String REQUEST_PERMISSION = "REQUEST_PERMISSION";
+
     public static final int REQUEST_CODE = 1;
     public static final String PRESET_AUTHORIZATION_PREFERENCE = "PERMISSION_PREFERENCE";
     public static final String DISALLOW = "DISALLOW";
@@ -54,9 +54,8 @@ public final class PermissionUtil {
     }
 
     public static boolean isAcquiringPermission(Intent intent){
-
-        String action = intent.getStringExtra(ACTION_TAG);
-        return action != null && action.equals(REQUEST_PERMISSION);
+        String action = intent.getAction();
+        return action != null && action.equals(BroadcastIntentHandler.ACTION_REQUEST_PERMISSION);
     }
     public static void requestPermission(Activity activity){
         ActivityCompat.requestPermissions(activity,

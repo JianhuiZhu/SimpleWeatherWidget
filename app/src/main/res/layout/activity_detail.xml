@@ -9,9 +9,12 @@
     android:theme="@style/AppTheme"
     tools:context="com.jianhui_zhu.simpleweatherwidget.detailweather.DetailActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
         android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/ads_adview"
+        android:layout_margin="@dimen/activity_horizontal_margin"
         android:id="@+id/weather_forecast_recycler_view"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <com.google.android.gms.ads.AdView

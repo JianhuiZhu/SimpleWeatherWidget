@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class ViewModelDetailActivity {
 
     }
 
-    public void init(final DetailActivity activity, Toolbar toolbar, RecyclerView recyclerView, Intent intent){
+    public void init(final DetailActivity activity, Toolbar toolbar, com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager recyclerView, AdView adView, Intent intent){
         ArrayList<List> weatherList = intent.getParcelableArrayListExtra(WEATHER_LIST);
         recyclerView.setAdapter(new WeatherForecastAdapter(activity, weatherList));
         recyclerView.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
@@ -51,9 +53,12 @@ public class ViewModelDetailActivity {
                 return false;
             }
         });
+
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("5D8F2A9F0436C8AB8B996771EFDA3ECA").build();
+        adView.loadAd(adRequest);
     }
 
-    public void refreshWeatherForecast(RecyclerView recyclerView, Intent intent){
+    public void refreshWeatherForecast(com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager recyclerView, Intent intent){
         ArrayList<List> weatherList = intent.getParcelableArrayListExtra(WEATHER_LIST);
         ((WeatherForecastAdapter)recyclerView.getAdapter()).updateWeatherData(weatherList);
     }

@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.Util;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
@@ -39,8 +41,10 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
     private long lastUpdate = 0;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.ads_adview)
+    AdView adView;
     @BindView(R.id.weather_forecast_recycler_view)
-    RecyclerView weatherForecastRecyclerView;
+    com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager weatherForecastRecyclerView;
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -57,11 +61,12 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
         JodaTimeAndroid.init(this);
+        MobileAds.initialize(getApplicationContext(),getString(R.string.ads_unit));
         DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
         if(isAcquiringPermission(getIntent())) {
             getPermissionRequestDialog(this).show();
         }
-        viewModel.init(this,toolbar,weatherForecastRecyclerView,getIntent());
+        viewModel.init(this,toolbar,weatherForecastRecyclerView,adView,getIntent());
     }
 
     @Override

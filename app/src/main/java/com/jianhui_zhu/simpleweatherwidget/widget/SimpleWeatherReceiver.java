@@ -30,7 +30,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         if(!isLocationPermissionGranted(context)){
-            startActivityWithPendingIntent(context, PermissionUtil.REQUEST_PERMISSION);
+            //startActivityWithPendingIntent(context, PermissionUtil.REQUEST_PERMISSION);
         }
         Intent intent = new Intent(context,WeatherBackgroundService.class);
         context.startService(intent);

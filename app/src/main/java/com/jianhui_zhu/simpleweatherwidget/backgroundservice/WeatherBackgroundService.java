@@ -11,10 +11,11 @@ import android.support.annotation.Nullable;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
-import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
+import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
+import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyCurrentWeatherResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyDailyWeatherResponse;
 
 import javax.inject.Inject;
 
@@ -52,7 +53,10 @@ public class WeatherBackgroundService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        DaggerServiceManagerComponent.builder()
+                .aPIModule(new APIModule())
+                .managerModule(new ManagerModule())
+                .build().inject(this);
         Fresco.initialize(this);
         locationManager = new WrappedLocationManager(this);
 
@@ -84,23 +88,23 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).flatMap(new Func1<Location, Observable<CurrentWeatherResponse>>() {
+            }).flatMap(new Func1<Location, Observable<DarkSkyCurrentWeatherResponse>>() {
                 @Override
-                public Observable<CurrentWeatherResponse> call(Location location) {
-
-                    return manager.getCurrentWeatherByGeo(
-                            location.getLatitude(),
-                            location.getLongitude(),
-                            getApplicationContext());
+                public Observable<DarkSkyCurrentWeatherResponse> call(Location location) {
+                    return manager.getCurrentWeatherByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
                 }
-            }).subscribe(new Action1<CurrentWeatherResponse>() {
+            }).doOnError(new Action1<Throwable>() {
                 @Override
-                public void call(CurrentWeatherResponse currentWeatherResponse) {
-
+                public void call(Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }).subscribe(new Action1<DarkSkyCurrentWeatherResponse>() {
+                @Override
+                public void call(DarkSkyCurrentWeatherResponse darkSkyCurrentWeatherResponse) {
                     broadcastBriefWeatherUpdateForWidget(
 
                             getApplicationContext(),
-                            currentWeatherResponse);
+                            darkSkyCurrentWeatherResponse);
                 }
             });
         }
@@ -115,24 +119,23 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).flatMap(new Func1<Location, Observable<DetailWeatherForecastResponse>>() {
+            }).flatMap(new Func1<Location, Observable<DarkSkyDailyWeatherResponse>>() {
                 @Override
-                public Observable<DetailWeatherForecastResponse> call(Location location) {
-                    return manager.getFiveDayWeatherForecastByGeo(
-
-                            location.getLatitude(),
-                            location.getLongitude(),
-                            getApplicationContext());
-
+                public Observable<DarkSkyDailyWeatherResponse> call(Location location) {
+                    return manager.getDailyWeatherForecastByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
                 }
-            }).subscribe(new Action1<DetailWeatherForecastResponse>() {
+            }).doOnError(new Action1<Throwable>() {
                 @Override
-                public void call(DetailWeatherForecastResponse detailWeatherForecastResponse) {
-
+                public void call(Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }).subscribe(new Action1<DarkSkyDailyWeatherResponse>() {
+                @Override
+                public void call(DarkSkyDailyWeatherResponse darkSkyDailyWeatherResponse) {
                     broadcastDetailWeatherUpdateForActivity(
 
                             getApplicationContext(),
-                            detailWeatherForecastResponse);
+                            darkSkyDailyWeatherResponse);
                 }
             });
         }

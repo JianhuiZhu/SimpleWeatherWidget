@@ -32,18 +32,25 @@ import rx.schedulers.Schedulers;
 public class APIModule {
     @Provides
     @Inject
-    public WeatherAPI provideWeatherAPI(Retrofit retrofit) {
-        return retrofit.create(WeatherAPI.class);
+    public WeatherAPI provideWeatherAPI(Retrofit.Builder retrofitBuilder) {
+
+        return retrofitBuilder
+                .baseUrl(BuildConfig.DARK_SKY_URL)
+                .build()
+                .create(WeatherAPI.class);
     }
 
     @Provides
     @Inject
-    public UVAPI provideUVAPI(Retrofit retrofit){
-        return retrofit.create(UVAPI.class);
+    public UVAPI provideUVAPI(Retrofit.Builder retrofitBuilder){
+        return retrofitBuilder
+                .baseUrl(BuildConfig.OPEN_WEATHER_MAP_URL)
+                .build()
+                .create(UVAPI.class);
     }
 
     @Provides
-    public Retrofit providesRetrofit() {
+    public Retrofit.Builder providesRetrofit() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(
                 new HttpLoggingInterceptor.Logger() {
                     @Override
@@ -59,25 +66,11 @@ public class APIModule {
                 .build();
         return new Retrofit
                 .Builder()
-                .baseUrl(BuildConfig.BASE_URL)
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                .build();
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()));
     }
 
-    @Provides @Inject
-    public ViewModelSimpleWeather providesViewModelSimpleWeather(WeatherManager weatherManager) {
-        return new ViewModelSimpleWeather(weatherManager);
-    }
-
-    @Provides
-    public ViewModelDetailActivity providesViewModelDetailActivity(){
-        return new ViewModelDetailActivity();
-    }
-
-    @Provides   @Inject
-    public WeatherManager providesWeatherManager(WeatherAPI api){return new WeatherManagerImpl(api);}
 
 }
 

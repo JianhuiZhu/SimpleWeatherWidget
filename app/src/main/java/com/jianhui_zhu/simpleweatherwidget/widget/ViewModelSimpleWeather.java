@@ -26,11 +26,6 @@ import static com.jianhui_zhu.simpleweatherwidget.Util.getTemperatureString;
 
 public class ViewModelSimpleWeather {
 
-    @Inject
-    WeatherManager manager;
-    public ViewModelSimpleWeather(WeatherManager manager){
-        this.manager = manager;
-    }
 
     public void refreshCurrentLocationWeather(Context context,Intent intent) {
 
@@ -42,7 +37,7 @@ public class ViewModelSimpleWeather {
         //update each view with given content
         double temperature = intent.getDoubleExtra(TEMPERATURE,0.0);
         String icon = intent.getStringExtra(WEATHER_ICON_SERIAL_NUMBER);
-        remoteViews.setImageViewUri(R.id.weather_icon_image_view, Uri.parse(BuildConfig.WEATHER_ICON_BASE_URL+icon+".png"));
+//        remoteViews.setImageViewUri(R.id.weather_icon_image_view, Uri.parse(BuildConfig.WEATHER_ICON_BASE_URL+icon+".png"));
         remoteViews.setTextViewText(R.id.temperature_text_view, getTemperatureString(context,temperature));
 
         appWidgetManager.updateAppWidget(componentName,remoteViews);

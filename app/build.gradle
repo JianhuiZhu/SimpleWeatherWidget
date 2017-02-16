@@ -10,8 +10,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'BASE_URL', '\"http://api.openweathermap.org\"'
-        buildConfigField 'String', 'WEATHER_ICON_BASE_URL', '\"http://openweathermap.org/img/w/\"'
+        buildConfigField 'String', 'OPEN_WEATHER_MAP_URL', '\"http://api.openweathermap.org\"'
+        buildConfigField 'String', 'DARK_SKY_URL', '\"https://api.darksky.net\"'
     }
     buildTypes {
         release {
@@ -30,7 +30,8 @@ allprojects {
             if(apiKeyFile.exists()){
                 def apiKeys = new Properties()
                 apiKeys.load(new FileInputStream(apiKeyFile))
-                android.defaultConfig.resValue "string", "apikey", apiKeys['apikey']
+                android.defaultConfig.resValue "string", "openweathermapapikey", apiKeys['openweathermap']
+                android.defaultConfig.resValue "string", "darkskyapikey", apiKeys['darksky']
                 android.defaultConfig.resValue "string", "adsunit", apiKeys['adsunit']
             }
     }

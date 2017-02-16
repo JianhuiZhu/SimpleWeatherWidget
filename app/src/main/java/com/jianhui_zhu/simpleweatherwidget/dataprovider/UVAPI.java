@@ -1,6 +1,6 @@
 package com.jianhui_zhu.simpleweatherwidget.dataprovider;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.uv.UVResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.UVResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

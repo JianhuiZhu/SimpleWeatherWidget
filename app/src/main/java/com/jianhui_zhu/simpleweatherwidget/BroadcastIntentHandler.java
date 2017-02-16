@@ -3,9 +3,8 @@ package com.jianhui_zhu.simpleweatherwidget;
 import android.content.Context;
 import android.content.Intent;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common.Main;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyCurrentWeatherResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyDailyWeatherResponse;
 
 
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
@@ -39,21 +38,19 @@ public final class BroadcastIntentHandler {
         return intent.getAction() != null && intent.getAction().equals(ACTION_ACTIVITY_UPDATE);
     }
 
-    public static void broadcastBriefWeatherUpdateForWidget(Context context,CurrentWeatherResponse response){
+    public static void broadcastBriefWeatherUpdateForWidget(Context context,DarkSkyCurrentWeatherResponse response){
         Intent intent = new Intent(BroadcastIntentHandler.ACTION_WIDGET_UPDATE);
-        Main main = response.getMain();
 
-        intent.putExtra(WEATHER_ICON_SERIAL_NUMBER,response.getWeather().get(0).getIcon());
-        intent.putExtra(TEMPERATURE, main.getTemp());
-        intent.putExtra(WEATHER_DESCRIPTION,response.getWeather().get(0).getDescription());
+        intent.putExtra(WEATHER_ICON_SERIAL_NUMBER,response.getCurrently().getIcon());
+        intent.putExtra(TEMPERATURE, response.getCurrently().getTemperature());
+        intent.putExtra(WEATHER_DESCRIPTION,response.getCurrently().getSummary());
 
         context.sendBroadcast(intent);
     }
 
-    public static void broadcastDetailWeatherUpdateForActivity(Context context,DetailWeatherForecastResponse response){
+    public static void broadcastDetailWeatherUpdateForActivity(Context context,DarkSkyDailyWeatherResponse response){
         Intent intent = new Intent(ACTION_ACTIVITY_UPDATE);
-        intent.putExtra(CITY_NAME,response.getCity());
-        intent.putParcelableArrayListExtra(WEATHER_LIST,response.getList());
+        intent.putExtra(WEATHER_LIST,response.getDaily());
 
         context.sendBroadcast(intent);
     }

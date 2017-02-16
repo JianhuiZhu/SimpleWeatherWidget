@@ -8,20 +8,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.common.Wind;
 import com.jianhui_zhu.simpleweatherwidget.detailweather.DetailActivity;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Days;
-import org.joda.time.Duration;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 import static com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler.ACTION_REQUEST_PERMISSION;
@@ -95,8 +89,10 @@ public final class Util {
     }
 
 
-    public static String getHumidityString(Context context, int humidity){
-        return String.valueOf(humidity) + context.getString(R.string.percentage_sign);
+    public static String getHumidityString(Context context, double humidity){
+        BigDecimal bd = new BigDecimal(humidity * 100);
+        double humidityValue = bd.setScale(1,BigDecimal.ROUND_HALF_UP).doubleValue();
+        return String.valueOf(humidityValue) + context.getString(R.string.percentage_sign);
     }
 
     public static double getDistance(double latStart, double lngStart, double latEnd, double lngEnd) {
@@ -126,25 +122,23 @@ public final class Util {
         return PendingIntent.getActivity(context, 0, intent, 0);
     }
 
-    public static String getWindSpeedString(Context context, Wind wind){
+    public static String getWindSpeedString(Context context, double windSpeed){
         if(isWindSpeedDisplayMperSByDefault(context)){
-            BigDecimal windSpeed = new BigDecimal(wind.getSpeed());
+            BigDecimal windSpeedValue = new BigDecimal(windSpeed);
             return String.valueOf(
-                    windSpeed.setScale(2,BigDecimal.ROUND_HALF_UP))
+                    windSpeedValue.setScale(2,BigDecimal.ROUND_HALF_UP))
                     +" "+
                     context.getString(R.string.meter_per_second);
         }else{
-            BigDecimal windSpeed = new BigDecimal(wind.getSpeed() * 2.23694);
-            return String.valueOf(windSpeed.setScale(2,BigDecimal.ROUND_HALF_UP))
+            BigDecimal windSpeedValue = new BigDecimal(windSpeed * 2.23694);
+            return String.valueOf(windSpeedValue.setScale(2,BigDecimal.ROUND_HALF_UP))
                     +" "+
                     context.getString(R.string.mile_per_hour);
         }
     }
 
-    public static String getWindDirectionString(Context context, Wind wind){
+    public static String getWindDirectionString(Context context, int degree){
         StringBuilder sb = new StringBuilder();
-        BigDecimal bd = new BigDecimal(wind.getDeg());
-        int degree = bd.setScale(0,BigDecimal.ROUND_HALF_UP).intValue();
         if(degree == NORTH){
             sb.append(context.getString(R.string.north));
         }else if(degree == EAST){

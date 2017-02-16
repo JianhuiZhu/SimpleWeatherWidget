@@ -27,7 +27,8 @@
 
     <RelativeLayout
         android:id="@+id/temperature_area"
-        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/detail_weather_image"
+        android:layout_marginLeft="@dimen/card_temperature_horizontal_margin"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -73,9 +74,11 @@
             tools:text = "-58 C"/>
     </RelativeLayout>
     <RelativeLayout
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_below="@+id/temperature_area"
+        android:layout_toRightOf="@+id/detail_weather_image"
+        android:layout_marginTop="@dimen/card_temperature_vertical_margin"
         android:padding="@dimen/material_default_spacing"
+        android:gravity="right"
         android:id="@+id/detail_info_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

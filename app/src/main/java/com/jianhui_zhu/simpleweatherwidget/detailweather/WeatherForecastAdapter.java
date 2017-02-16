@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.DailyDataPoint;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,11 +29,11 @@ import static com.jianhui_zhu.simpleweatherwidget.Util.*;
 
 public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecastAdapter.ViewHolder> {
     private AdapterPositionChangeListener listener;
-    private java.util.List<List> weatherForecastList = new ArrayList<>();
+    private List<DailyDataPoint> dailyWeatherInfo = new ArrayList<>();
 
-    WeatherForecastAdapter(@NonNull AdapterPositionChangeListener listener, java.util.List<List> weatherForecastList){
-        if(weatherForecastList != null && !weatherForecastList.isEmpty()){
-            this.weatherForecastList.addAll(weatherForecastList);
+    WeatherForecastAdapter(@NonNull AdapterPositionChangeListener listener, List<DailyDataPoint> dailyWeatherInfo){
+        if(dailyWeatherInfo != null && !dailyWeatherInfo.isEmpty()){
+            this.dailyWeatherInfo.addAll(dailyWeatherInfo);
         }
         this.listener = listener;
     }
@@ -45,49 +45,50 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        List weatherInfo = weatherForecastList.get(position);
+        DailyDataPoint weatherInfo = dailyWeatherInfo.get(position);
 
-        listener.changeToolbarTitle(new DateTime(weatherInfo.getDt() * 1000L));
+        listener.changeToolbarTitle(new DateTime(weatherInfo.getTime() * 1000L));
         final Context context = holder.temperatureTextView.getContext();
 
-        holder.weatherImage.setImageURI(
-                BuildConfig.WEATHER_ICON_BASE_URL+weatherInfo.getWeather().get(0).getIcon()+".png");
+//        holder.weatherImage.setImageURI(
+//                BuildConfig.WEATHER_ICON_BASE_URL+weatherInfo.getWeather().get(0).getIcon()+".png");
 
         holder.temperatureTextView.setText(
                 getTemperatureString(
                         context,
-                        weatherInfo.getMain().getTemp()));
+                        weatherInfo.getTemperature()));
 
         holder.temperatureMaxTextView.setText(
                 getTemperatureString(
                         context,
-                        weatherInfo.getMain().getTempMax()
+                        weatherInfo.getTemperatureMax()
                 )
         );
 
         holder.temperatureMinTextView.setText(
                 getTemperatureString(
                         context,
-                        weatherInfo.getMain().getTempMin())
+                        weatherInfo.getTemperatureMin())
         );
 
         holder.humidityTextView.setText(
-                getHumidityString(context,weatherInfo.getMain().getHumidity())
+                getHumidityString(context,weatherInfo.getHumidity()
+                )
         );
 
         holder.windSpeedTextView.setText(
-                getWindSpeedString(context,weatherInfo.getWind())
+                getWindSpeedString(context,weatherInfo.getWindSpeed())
         );
 
         holder.windDirectionTextView.setText(
-                getWindDirectionString(context,weatherInfo.getWind())
+                getWindDirectionString(context,weatherInfo.getWindBearing())
         );
     }
 
 
     @Override
     public int getItemCount() {
-        return weatherForecastList.size();
+        return dailyWeatherInfo.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -111,9 +112,9 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
         }
     }
 
-    public void updateWeatherData(ArrayList<List> weatherForecastList){
+    public void updateWeatherData(List<DailyDataPoint> weatherForecastList){
         if(weatherForecastList != null){
-            this.weatherForecastList.addAll(weatherForecastList);
+            this.dailyWeatherInfo.addAll(weatherForecastList);
             notifyDataSetChanged();
         }
     }

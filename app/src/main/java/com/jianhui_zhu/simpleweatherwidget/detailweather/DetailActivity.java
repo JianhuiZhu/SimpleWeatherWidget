@@ -1,4 +1,5 @@
 package com.jianhui_zhu.simpleweatherwidget.detailweather;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +20,9 @@ import com.google.android.gms.ads.MobileAds;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.Util;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
-import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
+import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerViewModelComponent;
+import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
+import com.jianhui_zhu.simpleweatherwidget.dagger.ViewModelModule;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -51,9 +55,11 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
             if(isWeatherUpdateForActivity(intent)){
                 lastUpdate = System.currentTimeMillis();
                 viewModel.refreshWeatherForecast(weatherForecastRecyclerView,intent);
+                progressDialog.dismiss();
             }
         }
     };
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +68,11 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
         ButterKnife.bind(this);
         JodaTimeAndroid.init(this);
         MobileAds.initialize(getApplicationContext(),getString(R.string.ads_unit));
-        DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        DaggerViewModelComponent.builder().viewModelModule(
+                new ViewModelModule())
+                .build()
+                .inject(this);
+
         if(isAcquiringPermission(getIntent())) {
             getPermissionRequestDialog(this).show();
         }
@@ -75,12 +85,19 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_ACTIVITY_UPDATE);
         registerReceiver(receiver,intentFilter);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.refreshing_data));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
         requestUpdateWhenExpired();
     }
 
     private void requestUpdateWhenExpired(){
         if((System.currentTimeMillis() - lastUpdate) > VALID_PERIOD){
             broadcastDetailWeatherUpdateRequest(this);
+        }else{
+            progressDialog.dismiss();
         }
     }
 

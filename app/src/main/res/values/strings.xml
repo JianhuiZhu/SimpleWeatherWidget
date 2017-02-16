@@ -76,4 +76,7 @@
         <item name="mile_hour">mile/hour</item>
         <item name="meter_second">meter/second</item>
     </array>
+
+    //progress dialog message
+    <string name="refreshing_data">Checking newest weather info…</string>
 </resources>

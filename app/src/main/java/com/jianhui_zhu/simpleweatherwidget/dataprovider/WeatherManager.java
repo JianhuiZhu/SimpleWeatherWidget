@@ -3,8 +3,8 @@ package com.jianhui_zhu.simpleweatherwidget.dataprovider;
 
 import android.content.Context;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyCurrentWeatherResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyDailyWeatherResponse;
 
 import rx.Observable;
 
@@ -14,9 +14,9 @@ import rx.Observable;
 
 public interface WeatherManager {
 
-    Observable<CurrentWeatherResponse> getCurrentWeatherByGeo(double lat, double lon, Context context);
+    Observable<DarkSkyCurrentWeatherResponse> getCurrentWeatherByGeo(double lat, double lon, Context context);
 
-    Observable<DetailWeatherForecastResponse> getFiveDayWeatherForecastByGeo(double lat, double lon, Context context);
+    Observable<DarkSkyDailyWeatherResponse> getDailyWeatherForecastByGeo(double lat, double lon, Context context);
 
 
 }

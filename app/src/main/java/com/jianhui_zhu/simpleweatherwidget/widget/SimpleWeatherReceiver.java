@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler;
-import com.jianhui_zhu.simpleweatherwidget.PermissionUtil;
 import com.jianhui_zhu.simpleweatherwidget.backgroundservice.WeatherBackgroundService;
-import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
-import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerAPIComponent;
+import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerViewModelComponent;
+import com.jianhui_zhu.simpleweatherwidget.dagger.ViewModelModule;
 
 import javax.inject.Inject;
 
@@ -41,7 +39,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-        DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        DaggerViewModelComponent.builder().viewModelModule(new ViewModelModule()).build().inject(this);
 
         viewModel.initSetting(context,appWidgetManager,appWidgetIds);
         broadcastBriefWeatherUpdateRequest(context);
@@ -51,7 +49,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        DaggerAPIComponent.builder().aPIModule(new APIModule()).build().inject(this);
+        DaggerViewModelComponent.builder().viewModelModule(new ViewModelModule()).build().inject(this);
         if(isWeatherUpdateForWidget(intent)){
             viewModel.refreshCurrentLocationWeather(context,intent);
         }

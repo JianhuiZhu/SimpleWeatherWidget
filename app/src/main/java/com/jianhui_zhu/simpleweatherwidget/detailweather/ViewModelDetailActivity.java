@@ -11,8 +11,10 @@ import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.List;
-import java.util.ArrayList;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.DailyDataPoint;
+
+import java.util.List;
 
 /**
  * Created by jianhuizhu on 2017-02-07.
@@ -26,7 +28,7 @@ public class ViewModelDetailActivity {
     }
 
     public void init(final DetailActivity activity, Toolbar toolbar, com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager recyclerView, AdView adView, Intent intent){
-        ArrayList<List> weatherList = intent.getParcelableArrayListExtra(WEATHER_LIST);
+        List<DailyDataPoint> weatherList = ((Daily)intent.getParcelableExtra(WEATHER_LIST)).getData();
         recyclerView.setAdapter(new WeatherForecastAdapter(activity, weatherList));
         recyclerView.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -62,7 +64,7 @@ public class ViewModelDetailActivity {
     }
 
     public void refreshWeatherForecast(com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager recyclerView, Intent intent){
-        ArrayList<List> weatherList = intent.getParcelableArrayListExtra(WEATHER_LIST);
+        List<DailyDataPoint> weatherList = ((Daily)intent.getParcelableExtra(WEATHER_LIST)).getData();
         ((WeatherForecastAdapter)recyclerView.getAdapter()).updateWeatherData(weatherList);
     }
 

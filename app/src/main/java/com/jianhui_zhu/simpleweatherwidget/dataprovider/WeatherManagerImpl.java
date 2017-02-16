@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.Util;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.current.CurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.forecast.DetailWeatherForecastResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyCurrentWeatherResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyDailyWeatherResponse;
 
 import javax.inject.Inject;
 
@@ -17,6 +17,9 @@ import rx.functions.Action1;
  */
 
 public class WeatherManagerImpl implements WeatherManager {
+    private String locationStringBuilder(double lat, double lon){
+        return lat+","+lon;
+    }
     WeatherAPI api;
     private boolean hasCacheCurrentWeather(){
         return currentWeather != null;
@@ -54,33 +57,34 @@ public class WeatherManagerImpl implements WeatherManager {
     private double previousLongitude;
     private long lastCurrentWeatherUpdate = Long.MAX_VALUE;
     private long lastFiveDayWeatherUpdate = Long.MAX_VALUE;
-    private CurrentWeatherResponse currentWeather;
+    private DarkSkyCurrentWeatherResponse currentWeather;
 
-    private DetailWeatherForecastResponse fiveDayWeather;
+    private DarkSkyDailyWeatherResponse fiveDayWeather;
     @Inject
     public WeatherManagerImpl(WeatherAPI api){
         this.api = api;
     }
 
     @Override
-    public Observable<CurrentWeatherResponse> getCurrentWeatherByGeo(double lat, double lon, Context context) {
-        long currentTime = System.currentTimeMillis();
+    public Observable<DarkSkyCurrentWeatherResponse> getCurrentWeatherByGeo(double lat, double lon, Context context) {
+        final long currentTime = System.currentTimeMillis();
         if(isCurrentCacheValid(currentTime,lat,lon)){
             return Observable.just(this.currentWeather);
         }else{
             lastCurrentWeatherUpdate = currentTime;
-            return api.getCurrentWeatherForecast(lat,lon,context.getString(R.string.apikey))
-                    .doOnNext(new Action1<CurrentWeatherResponse>() {
+            return api.getCurrentWeatherForecast(context.getString(R.string.darkskyapikey),locationStringBuilder(lat,lon))
+                    .doOnNext(new Action1<DarkSkyCurrentWeatherResponse>() {
                         @Override
-                        public void call(CurrentWeatherResponse currentWeatherResponse) {
-                            currentWeather = currentWeatherResponse;
+                        public void call(DarkSkyCurrentWeatherResponse darkSkyCurrentWeatherResponse) {
+                            currentWeather = darkSkyCurrentWeatherResponse;
+                            lastCurrentWeatherUpdate = currentTime;
                         }
                     });
         }
     }
 
     @Override
-    public Observable<DetailWeatherForecastResponse> getFiveDayWeatherForecastByGeo(double lat, double lon, Context context) {
+    public Observable<DarkSkyDailyWeatherResponse> getDailyWeatherForecastByGeo(double lat, double lon, Context context) {
         final long currentTime = System.currentTimeMillis();
         if(isForecastCacheValid(currentTime,lat,lon)){
             previousLatitude = lat;
@@ -89,13 +93,12 @@ public class WeatherManagerImpl implements WeatherManager {
         }else{
             previousLatitude = lat;
             previousLongitude = lon;
-            lastFiveDayWeatherUpdate = currentTime;
-            return api.get5DayWeatherForecast(lat,lon,context.getString(R.string.apikey))
-                    .doOnNext(new Action1<DetailWeatherForecastResponse>() {
+            return api.getDailyWeatherForecast(context.getString(R.string.darkskyapikey),locationStringBuilder(lat,lon))
+                    .doOnNext(new Action1<DarkSkyDailyWeatherResponse>() {
                         @Override
-                        public void call(DetailWeatherForecastResponse detailWeatherForecastResponse) {
+                        public void call(DarkSkyDailyWeatherResponse detailWeatherForecastResponse) {
+                            fiveDayWeather =detailWeatherForecastResponse;
                             lastFiveDayWeatherUpdate = currentTime;
-                            fiveDayWeather = detailWeatherForecastResponse;
                         }
                     });
         }

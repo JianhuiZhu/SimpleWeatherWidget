@@ -16,6 +16,7 @@ import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Currently;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.CurrentDataWrapper;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyWeatherForecastResponse;
 
 import javax.inject.Inject;
@@ -89,9 +90,9 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).flatMap(new Func1<Location, Observable<Currently>>() {
+            }).flatMap(new Func1<Location, Observable<CurrentDataWrapper>>() {
                 @Override
-                public Observable<Currently> call(Location location) {
+                public Observable<CurrentDataWrapper> call(Location location) {
                     return manager.getCurrentWeatherByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
                 }
             }).doOnError(new Action1<Throwable>() {
@@ -99,11 +100,10 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).subscribe(new Action1<Currently>() {
+            }).subscribe(new Action1<CurrentDataWrapper>() {
                 @Override
-                public void call(Currently currently) {
+                public void call(CurrentDataWrapper currently) {
                     broadcastBriefWeatherUpdateForWidget(
-
                             getApplicationContext(),
                             currently);
                 }

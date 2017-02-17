@@ -1,5 +1,6 @@
 package com.jianhui_zhu.simpleweatherwidget.dagger;
 
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.AirQualityAPI;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherAPI;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManagerImpl;
@@ -16,5 +17,6 @@ import dagger.Provides;
 public class ManagerModule {
     @Provides
     @Inject
-    public WeatherManager providesWeatherManager(WeatherAPI api){return new WeatherManagerImpl(api);}
+    public WeatherManager providesWeatherManager(WeatherAPI weatherAPI, AirQualityAPI airQualityAPI)
+    {return new WeatherManagerImpl(weatherAPI,airQualityAPI);}
 }

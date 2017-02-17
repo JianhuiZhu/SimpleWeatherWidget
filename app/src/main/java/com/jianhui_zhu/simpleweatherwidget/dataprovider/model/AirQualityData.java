@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Data implements Parcelable
+public class AirQualityData implements Parcelable
 {
 
     @SerializedName("aqi")
@@ -33,14 +32,14 @@ public class Data implements Parcelable
     @SerializedName("time")
     @Expose
     private Time time;
-    public final static Parcelable.Creator<Data> CREATOR = new Creator<Data>() {
+    public final static Parcelable.Creator<AirQualityData> CREATOR = new Creator<AirQualityData>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public Data createFromParcel(Parcel in) {
-            Data instance = new Data();
+        public AirQualityData createFromParcel(Parcel in) {
+            AirQualityData instance = new AirQualityData();
             instance.aqi = ((int) in.readValue((int.class.getClassLoader())));
             instance.idx = ((int) in.readValue((int.class.getClassLoader())));
             in.readList(instance.attributions, (com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Attribution.class.getClassLoader()));
@@ -51,8 +50,8 @@ public class Data implements Parcelable
             return instance;
         }
 
-        public Data[] newArray(int size) {
-            return (new Data[size]);
+        public AirQualityData[] newArray(int size) {
+            return (new AirQualityData[size]);
         }
 
     }

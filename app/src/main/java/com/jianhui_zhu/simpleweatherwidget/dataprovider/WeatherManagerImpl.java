@@ -4,8 +4,9 @@ import android.content.Context;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.Util;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Currently;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.AirQualityResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.CurrentDataWrapper;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyWeatherForecastResponse;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.ResponseWrapper;
 
@@ -14,18 +15,20 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 /**
  * Created by jianhuizhu on 2017-01-26.
  */
 
 public class WeatherManagerImpl implements WeatherManager {
-    private String locationStringBuilder(double lat, double lon){
+    private String weatherLocationStringBuilder(double lat, double lon){
         return lat+","+lon;
     }
-    WeatherAPI api;
-
-    private boolean hasCacheForecastWeather(){return !wrapper.isWeatherForecastEmpty(); }
+    private String airQualityLocationStringBuilder(double lat, double lon){return lat+";"+lon;}
+    WeatherAPI weatherAPI;
+    AirQualityAPI airQualityAPI;
+    private boolean hasCacheForecastWeather(){return wrapper.hasWeatherForecast(); }
 
     private boolean isDetailWeatherCacheExpired(){
         return System.currentTimeMillis() - lastUpdateTime > UPDATE_EXPIRE_TIME;
@@ -51,22 +54,29 @@ public class WeatherManagerImpl implements WeatherManager {
     private long lastUpdateTime = Long.MAX_VALUE;
     private ResponseWrapper wrapper = new ResponseWrapper();
     @Inject
-    public WeatherManagerImpl(WeatherAPI api){
-        this.api = api;
+    public WeatherManagerImpl(WeatherAPI weatherAPI, AirQualityAPI airQualityAPI){
+        this.weatherAPI = weatherAPI;
+        this.airQualityAPI = airQualityAPI;
     }
 
     @Override
-    public Observable<Currently> getCurrentWeatherByGeo(double lat, double lon, Context context) {
+    public Observable<CurrentDataWrapper> getCurrentWeatherByGeo(double lat, double lon, Context context) {
         if(isForecastCacheValid(lat,lon)){
-            return Observable.just(wrapper.getCurrentWeatherForecast());
+            CurrentDataWrapper currentDataWrapper = new CurrentDataWrapper()
+                    .withCurrently(wrapper.getCurrentWeatherForecast())
+                    .withAirQualityData(wrapper.getAirQualityData());
+
+            return Observable.just(currentDataWrapper);
         }else{
-            return getWeatherForecastUpdate(context.getString(R.string.darkskyapikey),lat,lon)
-                    .flatMap(new Func1<DarkSkyWeatherForecastResponse, Observable<Currently>>() {
-                        @Override
-                        public Observable<Currently> call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse) {
-                            return Observable.just(wrapper.getCurrentWeatherForecast());
-                        }
-                    });
+            return Observable.zip(getWeatherForecastUpdate(context, lat, lon), getAirQualityUpdate(context, lat, lon), new Func2<DarkSkyWeatherForecastResponse, AirQualityResponse, CurrentDataWrapper>() {
+                @Override
+                public CurrentDataWrapper call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
+                    wrapper.withAirQualityResponse(airQualityResponse).withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
+                    return new CurrentDataWrapper()
+                            .withCurrently(wrapper.getCurrentWeatherForecast())
+                            .withAirQualityData(wrapper.getAirQualityData());
+                }
+            });
         }
     }
 
@@ -75,20 +85,34 @@ public class WeatherManagerImpl implements WeatherManager {
         if(isForecastCacheValid(lat,lon)){
             return Observable.just(wrapper.getDailyWeatherForecast());
         }else{
-            return getWeatherForecastUpdate(context.getString(R.string.darkskyapikey),lat,lon)
-                    .flatMap(new Func1<DarkSkyWeatherForecastResponse, Observable<Daily>>() {
-                        @Override
-                        public Observable<Daily> call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse) {
-                            return Observable.just(wrapper.getDailyWeatherForecast());
-                        }
-                    });
+            return Observable.zip(getWeatherForecastUpdate(context, lat, lon), getAirQualityUpdate(context, lat, lon), new Func2<DarkSkyWeatherForecastResponse, AirQualityResponse, Daily>() {
+                @Override
+                public Daily call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
+                    wrapper.withAirQualityResponse(airQualityResponse).withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
+                    return wrapper.getDailyWeatherForecast();
+                }
+            });
         }
     }
-    private Observable<DarkSkyWeatherForecastResponse> getWeatherForecastUpdate(String apiKey,double lat, double lon){
+
+    private Observable<AirQualityResponse> getAirQualityUpdate(Context context, double lat, double lon){
+        String airQualityApiKey = context.getString(R.string.aqicnapikey);
+        return airQualityAPI.getAirQualityByGeo(airQualityLocationStringBuilder(lat,lon), airQualityApiKey)
+                .doOnNext(new Action1<AirQualityResponse>() {
+                    @Override
+                    public void call(AirQualityResponse airQualityResponse) {
+                        wrapper.withAirQualityResponse(airQualityResponse);
+                    }
+                });
+    }
+
+    private Observable<DarkSkyWeatherForecastResponse> getWeatherForecastUpdate(Context context,double lat, double lon){
         previousLatitude = lat;
         previousLongitude = lon;
-        String location = locationStringBuilder(lat,lon);
-        return api.getDailyWeatherForecast(apiKey,location).doOnNext(new Action1<DarkSkyWeatherForecastResponse>() {
+        String location = weatherLocationStringBuilder(lat,lon);
+
+        String weatherApiKey = context.getString(R.string.darkskyapikey);
+        return weatherAPI.getDailyWeatherForecast(weatherApiKey,location).doOnNext(new Action1<DarkSkyWeatherForecastResponse>() {
             @Override
             public void call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse) {
                 lastUpdateTime = System.currentTimeMillis();

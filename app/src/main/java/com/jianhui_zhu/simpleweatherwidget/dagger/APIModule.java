@@ -5,7 +5,7 @@ package com.jianhui_zhu.simpleweatherwidget.dagger;
  */
 import android.util.Log;
 import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.UVAPI;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.AirQualityAPI;
 import com.jianhui_zhu.simpleweatherwidget.detailweather.ViewModelDetailActivity;
 import com.jianhui_zhu.simpleweatherwidget.widget.ViewModelSimpleWeather;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherAPI;
@@ -42,11 +42,11 @@ public class APIModule {
 
     @Provides
     @Inject
-    public UVAPI provideUVAPI(Retrofit.Builder retrofitBuilder){
+    public AirQualityAPI provideAirQualityAPI(Retrofit.Builder retrofitBuilder){
         return retrofitBuilder
-                .baseUrl(BuildConfig.OPEN_WEATHER_MAP_URL)
+                .baseUrl(BuildConfig.AIR_QUALITY_INDEX_URL)
                 .build()
-                .create(UVAPI.class);
+                .create(AirQualityAPI.class);
     }
 
     @Provides

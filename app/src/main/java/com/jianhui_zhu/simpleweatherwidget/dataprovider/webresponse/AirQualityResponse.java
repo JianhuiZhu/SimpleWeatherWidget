@@ -1,11 +1,12 @@
 
-package com.jianhui_zhu.simpleweatherwidget.dataprovider.model;
+package com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.AirQualityData;
 
 public class AirQualityResponse implements Parcelable
 {
@@ -15,7 +16,7 @@ public class AirQualityResponse implements Parcelable
     private String status;
     @SerializedName("data")
     @Expose
-    private Data data;
+    private AirQualityData airQualityData;
     public final static Parcelable.Creator<AirQualityResponse> CREATOR = new Creator<AirQualityResponse>() {
 
 
@@ -25,7 +26,7 @@ public class AirQualityResponse implements Parcelable
         public AirQualityResponse createFromParcel(Parcel in) {
             AirQualityResponse instance = new AirQualityResponse();
             instance.status = ((String) in.readValue((String.class.getClassLoader())));
-            instance.data = ((Data) in.readValue((Data.class.getClassLoader())));
+            instance.airQualityData = ((AirQualityData) in.readValue((AirQualityData.class.getClassLoader())));
             return instance;
         }
 
@@ -57,24 +58,24 @@ public class AirQualityResponse implements Parcelable
     /**
      * 
      * @return
-     *     The data
+     *     The airQualityData
      */
-    public Data getData() {
-        return data;
+    public AirQualityData getAirQualityData() {
+        return airQualityData;
     }
 
     /**
      * 
-     * @param data
-     *     The data
+     * @param airQualityData
+     *     The airQualityData
      */
-    public void setData(Data data) {
-        this.data = data;
+    public void setAirQualityData(AirQualityData airQualityData) {
+        this.airQualityData = airQualityData;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(status);
-        dest.writeValue(data);
+        dest.writeValue(airQualityData);
     }
 
     public int describeContents() {

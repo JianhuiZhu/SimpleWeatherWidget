@@ -10,7 +10,7 @@
     <string name="permission_request_title">Permission Request</string>
     <string name="permission_request_content">For acquiring weather forecasts precisely,
         we need to know your location.
-        Your location data will be used for getting weather forecast ONLY. </string>
+        Your location airQualityData will be used for getting weather forecast ONLY. </string>
     <string name="make_decision">Go and make decision</string>
 
     <string name="location_preference">location preference</string>

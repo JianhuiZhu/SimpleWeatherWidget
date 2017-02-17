@@ -3,9 +3,8 @@ package com.jianhui_zhu.simpleweatherwidget;
 import android.content.Context;
 import android.content.Intent;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Currently;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyWeatherForecastResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.CurrentDataWrapper;
 
 
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
@@ -39,12 +38,13 @@ public final class BroadcastIntentHandler {
         return intent.getAction() != null && intent.getAction().equals(ACTION_ACTIVITY_UPDATE);
     }
 
-    public static void broadcastBriefWeatherUpdateForWidget(Context context,Currently currently){
+    public static void broadcastBriefWeatherUpdateForWidget(Context context,CurrentDataWrapper currently){
         Intent intent = new Intent(BroadcastIntentHandler.ACTION_WIDGET_UPDATE);
 
-        intent.putExtra(WEATHER_ICON_SERIAL_NUMBER,currently.getIcon());
-        intent.putExtra(TEMPERATURE, currently.getTemperature());
-        intent.putExtra(WEATHER_DESCRIPTION,currently.getSummary());
+        intent.putExtra(WEATHER_ICON_SERIAL_NUMBER,currently.getCurrently().getIcon());
+        intent.putExtra(TEMPERATURE, currently.getCurrently().getTemperature());
+        intent.putExtra(WEATHER_DESCRIPTION,currently.getCurrently().getSummary());
+        intent.putExtra(AIR_QUALITY,currently.getAirQualityData());
 
         context.sendBroadcast(intent);
     }

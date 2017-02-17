@@ -12,6 +12,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'OPEN_WEATHER_MAP_URL', '\"http://api.openweathermap.org\"'
         buildConfigField 'String', 'DARK_SKY_URL', '\"https://api.darksky.net\"'
+        buildConfigField 'String', 'AIR_QUALITY_INDEX_URL', '\"https://api.waqi.info\"'
     }
     buildTypes {
         release {
@@ -32,6 +33,7 @@ allprojects {
                 apiKeys.load(new FileInputStream(apiKeyFile))
                 android.defaultConfig.resValue "string", "openweathermapapikey", apiKeys['openweathermap']
                 android.defaultConfig.resValue "string", "darkskyapikey", apiKeys['darksky']
+                android.defaultConfig.resValue "string", "aqicnapikey", apiKeys['aqicn']
                 android.defaultConfig.resValue "string", "adsunit", apiKeys['adsunit']
             }
     }

@@ -1,5 +1,6 @@
 package com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse;
 
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Alert;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Currently;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
@@ -13,10 +14,19 @@ import java.util.List;
 
 public class ResponseWrapper {
     private DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse;
-
+    private AirQualityResponse airQualityResponse;
     public ResponseWrapper withDarkSkyDailyWeatherResponse(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse) {
         this.darkSkyWeatherForecastResponse = darkSkyWeatherForecastResponse;
         return this;
+    }
+
+    public ResponseWrapper withAirQualityResponse(AirQualityResponse airQualityResponse){
+        this.airQualityResponse = airQualityResponse;
+        return this;
+    }
+
+    public AirQualityData getAirQualityData(){
+        return this.airQualityResponse.getAirQualityData();
     }
 
     public Currently getCurrentWeatherForecast(){
@@ -31,7 +41,11 @@ public class ResponseWrapper {
         return darkSkyWeatherForecastResponse.getAlerts();
     }
 
-    public boolean isWeatherForecastEmpty(){
-        return darkSkyWeatherForecastResponse == null;
+    public boolean hasWeatherForecast(){
+        return darkSkyWeatherForecastResponse != null;
+    }
+
+    public boolean hasAirQualityData(){
+        return airQualityResponse != null;
     }
 }

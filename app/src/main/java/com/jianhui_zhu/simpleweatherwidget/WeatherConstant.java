@@ -25,4 +25,5 @@ public final class WeatherConstant {
     public static final String UTC_DATE_TIME = "UTC_DATE_TIME";
     public static final String LANGUAGE_CODE = "LANGUAGE_CODE";
     public static final String WEATHER_LIST = "WEATHER_LIST";
+    public static final String AIR_QUALITY = "AIR_QUALITY";
 }

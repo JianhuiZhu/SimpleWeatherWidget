@@ -14,8 +14,9 @@ import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyCurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyDailyWeatherResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Currently;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyWeatherForecastResponse;
 
 import javax.inject.Inject;
 
@@ -88,9 +89,9 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).flatMap(new Func1<Location, Observable<DarkSkyCurrentWeatherResponse>>() {
+            }).flatMap(new Func1<Location, Observable<Currently>>() {
                 @Override
-                public Observable<DarkSkyCurrentWeatherResponse> call(Location location) {
+                public Observable<Currently> call(Location location) {
                     return manager.getCurrentWeatherByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
                 }
             }).doOnError(new Action1<Throwable>() {
@@ -98,13 +99,13 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).subscribe(new Action1<DarkSkyCurrentWeatherResponse>() {
+            }).subscribe(new Action1<Currently>() {
                 @Override
-                public void call(DarkSkyCurrentWeatherResponse darkSkyCurrentWeatherResponse) {
+                public void call(Currently currently) {
                     broadcastBriefWeatherUpdateForWidget(
 
                             getApplicationContext(),
-                            darkSkyCurrentWeatherResponse);
+                            currently);
                 }
             });
         }
@@ -119,9 +120,9 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).flatMap(new Func1<Location, Observable<DarkSkyDailyWeatherResponse>>() {
+            }).flatMap(new Func1<Location, Observable<Daily>>() {
                 @Override
-                public Observable<DarkSkyDailyWeatherResponse> call(Location location) {
+                public Observable<Daily> call(Location location) {
                     return manager.getDailyWeatherForecastByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
                 }
             }).doOnError(new Action1<Throwable>() {
@@ -129,13 +130,12 @@ public class WeatherBackgroundService extends Service {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).subscribe(new Action1<DarkSkyDailyWeatherResponse>() {
+            }).subscribe(new Action1<Daily>() {
                 @Override
-                public void call(DarkSkyDailyWeatherResponse darkSkyDailyWeatherResponse) {
+                public void call(Daily daily) {
                     broadcastDetailWeatherUpdateForActivity(
-
                             getApplicationContext(),
-                            darkSkyDailyWeatherResponse);
+                            daily);
                 }
             });
         }

@@ -8,10 +8,11 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Alert;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Currently;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
 
 
-public class DarkSkyDailyWeatherResponse implements Parcelable
+public class DarkSkyWeatherForecastResponse implements Parcelable
 {
 
     @SerializedName("latitude")
@@ -29,32 +30,35 @@ public class DarkSkyDailyWeatherResponse implements Parcelable
     @SerializedName("daily")
     @Expose
     private Daily daily;
+    @SerializedName("currently")
+    @Expose
+    private Currently currently;
     @SerializedName("alerts")
     @Expose
-    private List<Alert> alerts = new ArrayList<Alert>();
-    public final static Parcelable.Creator<DarkSkyDailyWeatherResponse> CREATOR = new Creator<DarkSkyDailyWeatherResponse>() {
+    private ArrayList<Alert> alerts = new ArrayList<Alert>();
 
 
-        @SuppressWarnings({
-            "unchecked"
-        })
-        public DarkSkyDailyWeatherResponse createFromParcel(Parcel in) {
-            DarkSkyDailyWeatherResponse instance = new DarkSkyDailyWeatherResponse();
-            instance.latitude = ((double) in.readValue((double.class.getClassLoader())));
-            instance.longitude = ((double) in.readValue((double.class.getClassLoader())));
-            instance.timezone = ((String) in.readValue((String.class.getClassLoader())));
-            instance.offset = ((int) in.readValue((int.class.getClassLoader())));
-            instance.daily = ((Daily) in.readValue((Daily.class.getClassLoader())));
-            in.readList(instance.alerts, (Alert.class.getClassLoader()));
-            return instance;
-        }
-
-        public DarkSkyDailyWeatherResponse[] newArray(int size) {
-            return (new DarkSkyDailyWeatherResponse[size]);
-        }
-
+    protected DarkSkyWeatherForecastResponse(Parcel in) {
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        timezone = in.readString();
+        offset = in.readInt();
+        daily = in.readParcelable(Daily.class.getClassLoader());
+        currently = in.readParcelable(Currently.class.getClassLoader());
+        alerts = in.createTypedArrayList(Alert.CREATOR);
     }
-    ;
+
+    public static final Creator<DarkSkyWeatherForecastResponse> CREATOR = new Creator<DarkSkyWeatherForecastResponse>() {
+        @Override
+        public DarkSkyWeatherForecastResponse createFromParcel(Parcel in) {
+            return new DarkSkyWeatherForecastResponse(in);
+        }
+
+        @Override
+        public DarkSkyWeatherForecastResponse[] newArray(int size) {
+            return new DarkSkyWeatherForecastResponse[size];
+        }
+    };
 
     /**
      * 
@@ -151,7 +155,7 @@ public class DarkSkyDailyWeatherResponse implements Parcelable
      * @return
      *     The alerts
      */
-    public List<Alert> getAlerts() {
+    public ArrayList<Alert> getAlerts() {
         return alerts;
     }
 
@@ -160,21 +164,31 @@ public class DarkSkyDailyWeatherResponse implements Parcelable
      * @param alerts
      *     The alerts
      */
-    public void setAlerts(List<Alert> alerts) {
+    public void setAlerts(ArrayList<Alert> alerts) {
         this.alerts = alerts;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(latitude);
-        dest.writeValue(longitude);
-        dest.writeValue(timezone);
-        dest.writeValue(offset);
-        dest.writeValue(daily);
-        dest.writeList(alerts);
+    public Currently getCurrently() {
+        return currently;
     }
 
+    public void setCurrently(Currently currently) {
+        this.currently = currently;
+    }
+
+    @Override
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(timezone);
+        dest.writeInt(offset);
+        dest.writeParcelable(daily, flags);
+        dest.writeParcelable(currently, flags);
+        dest.writeTypedList(alerts);
+    }
 }

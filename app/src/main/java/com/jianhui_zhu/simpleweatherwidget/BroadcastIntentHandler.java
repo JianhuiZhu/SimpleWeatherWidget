@@ -3,8 +3,9 @@ package com.jianhui_zhu.simpleweatherwidget;
 import android.content.Context;
 import android.content.Intent;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyCurrentWeatherResponse;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyDailyWeatherResponse;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Currently;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.DarkSkyWeatherForecastResponse;
 
 
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
@@ -38,19 +39,19 @@ public final class BroadcastIntentHandler {
         return intent.getAction() != null && intent.getAction().equals(ACTION_ACTIVITY_UPDATE);
     }
 
-    public static void broadcastBriefWeatherUpdateForWidget(Context context,DarkSkyCurrentWeatherResponse response){
+    public static void broadcastBriefWeatherUpdateForWidget(Context context,Currently currently){
         Intent intent = new Intent(BroadcastIntentHandler.ACTION_WIDGET_UPDATE);
 
-        intent.putExtra(WEATHER_ICON_SERIAL_NUMBER,response.getCurrently().getIcon());
-        intent.putExtra(TEMPERATURE, response.getCurrently().getTemperature());
-        intent.putExtra(WEATHER_DESCRIPTION,response.getCurrently().getSummary());
+        intent.putExtra(WEATHER_ICON_SERIAL_NUMBER,currently.getIcon());
+        intent.putExtra(TEMPERATURE, currently.getTemperature());
+        intent.putExtra(WEATHER_DESCRIPTION,currently.getSummary());
 
         context.sendBroadcast(intent);
     }
 
-    public static void broadcastDetailWeatherUpdateForActivity(Context context,DarkSkyDailyWeatherResponse response){
+    public static void broadcastDetailWeatherUpdateForActivity(Context context,Daily daily){
         Intent intent = new Intent(ACTION_ACTIVITY_UPDATE);
-        intent.putExtra(WEATHER_LIST,response.getDaily());
+        intent.putExtra(WEATHER_LIST,daily);
 
         context.sendBroadcast(intent);
     }

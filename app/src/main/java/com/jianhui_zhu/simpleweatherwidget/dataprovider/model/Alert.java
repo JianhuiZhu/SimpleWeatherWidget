@@ -19,7 +19,7 @@ public class Alert implements Parcelable
     private String title;
     @SerializedName("regions")
     @Expose
-    private List<String> regions = new ArrayList<String>();
+    private ArrayList<String> regions = new ArrayList<String>();
     @SerializedName("severity")
     @Expose
     private String severity;
@@ -83,7 +83,7 @@ public class Alert implements Parcelable
      * @return
      *     The regions
      */
-    public List<String> getRegions() {
+    public ArrayList<String> getRegions() {
         return regions;
     }
 
@@ -92,7 +92,7 @@ public class Alert implements Parcelable
      * @param regions
      *     The regions
      */
-    public void setRegions(List<String> regions) {
+    public void setRegions(ArrayList<String> regions) {
         this.regions = regions;
     }
 

@@ -2,6 +2,7 @@ package com.jianhui_zhu.simpleweatherwidget;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.webresponse.CurrentDataWrapper;
@@ -52,6 +53,8 @@ public final class BroadcastIntentHandler {
     public static void broadcastDetailWeatherUpdateForActivity(Context context,Daily daily){
         Intent intent = new Intent(ACTION_ACTIVITY_UPDATE);
         intent.putExtra(WEATHER_LIST,daily);
+
+        Log.d("Daily data",daily.toString());
 
         context.sendBroadcast(intent);
     }

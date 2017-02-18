@@ -48,6 +48,12 @@
         <item name="android:textSize">@dimen/material_english_text_headline</item>
     </style>
 
+    <style name="WidgetTextView" parent="android:Widget.TextView">
+        <item name="android:paddingTop">@dimen/material_default_spacing</item>
+        <item name="android:textColor">@color/md_grey_900</item>
+        <item name="android:textSize">@dimen/material_english_text_subheading</item>
+    </style>
+
     <style name="TextViewToolbarSubTitleTheme">
         <item name="android:textSize">@dimen/material_english_text_caption</item>
         <item name="android:textColor">@color/md_grey_600</item>

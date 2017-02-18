@@ -19,7 +19,7 @@ public class Time implements Parcelable
     private String tz;
     @SerializedName("v")
     @Expose
-    private int v;
+    private double v;
     public final static Parcelable.Creator<Time> CREATOR = new Creator<Time>() {
 
 
@@ -30,7 +30,7 @@ public class Time implements Parcelable
             Time instance = new Time();
             instance.s = ((String) in.readValue((String.class.getClassLoader())));
             instance.tz = ((String) in.readValue((String.class.getClassLoader())));
-            instance.v = ((int) in.readValue((int.class.getClassLoader())));
+            instance.v = ((double) in.readValue((double.class.getClassLoader())));
             return instance;
         }
 
@@ -82,7 +82,7 @@ public class Time implements Parcelable
      * @return
      *     The v
      */
-    public int getV() {
+    public double getV() {
         return v;
     }
 
@@ -91,7 +91,7 @@ public class Time implements Parcelable
      * @param v
      *     The v
      */
-    public void setV(int v) {
+    public void setV(double v) {
         this.v = v;
     }
 

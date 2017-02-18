@@ -11,6 +11,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class Daily implements Parcelable
 {
+    @Override
+    public String toString() {
+        return "Daily{" +
+                "summary='" + summary + '\'' +
+                ", icon='" + icon + '\'' +
+                ", data=" + data.toString() +
+                '}';
+    }
 
     @SerializedName("summary")
     @Expose

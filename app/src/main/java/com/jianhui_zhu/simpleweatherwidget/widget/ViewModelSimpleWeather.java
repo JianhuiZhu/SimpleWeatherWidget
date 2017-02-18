@@ -4,22 +4,18 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
-import com.jianhui_zhu.simpleweatherwidget.PermissionUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.Util;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.AirQualityData;
 
 
-import javax.inject.Inject;
-
+import static com.jianhui_zhu.simpleweatherwidget.AirQualityUtil.getAirQualityDescriptionByAQI;
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
 import static com.jianhui_zhu.simpleweatherwidget.Util.getTemperatureString;
-
+import static com.jianhui_zhu.simpleweatherwidget.WeatherIconImageUtil.*;
 /**
  * Created by jianhuizhu on 2017-01-20.
  */
@@ -37,7 +33,15 @@ public class ViewModelSimpleWeather {
         //update each view with given content
         double temperature = intent.getDoubleExtra(TEMPERATURE,0.0);
         String icon = intent.getStringExtra(WEATHER_ICON_SERIAL_NUMBER);
-//        remoteViews.setImageViewUri(R.id.weather_icon_image_view, Uri.parse(BuildConfig.WEATHER_ICON_BASE_URL+icon+".png"));
+        AirQualityData airQualityData = intent.getParcelableExtra(AIR_QUALITY);
+        int aqi = airQualityData.getAqi();
+
+        try {
+            remoteViews.setImageViewResource(R.id.weather_icon_image_view,getIconIdByWeatherIconCode(icon));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        remoteViews.setTextViewText(R.id.air_condition_text_view, getAirQualityDescriptionByAQI(context,aqi));
         remoteViews.setTextViewText(R.id.temperature_text_view, getTemperatureString(context,temperature));
 
         appWidgetManager.updateAppWidget(componentName,remoteViews);

@@ -20,7 +20,7 @@
                 <action android:name="action_query_detail"/>
                 <action android:name="action_query_brief"/>
             </intent-filter>
-            <meta-airQualityData android:name="android.appwidget.provider"
+            <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_provider_info" />
         </receiver>
 

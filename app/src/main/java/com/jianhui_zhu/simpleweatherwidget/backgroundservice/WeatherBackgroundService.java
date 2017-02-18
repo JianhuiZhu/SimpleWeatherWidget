@@ -9,7 +9,6 @@ import android.location.Location;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.jianhui_zhu.simpleweatherwidget.dagger.APIModule;
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
@@ -59,7 +58,6 @@ public class WeatherBackgroundService extends Service {
                 .aPIModule(new APIModule())
                 .managerModule(new ManagerModule())
                 .build().inject(this);
-        Fresco.initialize(this);
         locationManager = new WrappedLocationManager(this);
 
         IntentFilter intentFilter = new IntentFilter();

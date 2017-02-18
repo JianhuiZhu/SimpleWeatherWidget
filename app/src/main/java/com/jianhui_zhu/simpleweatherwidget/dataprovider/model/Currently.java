@@ -27,10 +27,10 @@ public class Currently implements Parcelable
     private int nearestStormBearing;
     @SerializedName("precipIntensity")
     @Expose
-    private int precipIntensity;
+    private double precipIntensity;
     @SerializedName("precipProbability")
     @Expose
-    private int precipProbability;
+    private double precipProbability;
     @SerializedName("temperature")
     @Expose
     private double temperature;
@@ -191,7 +191,7 @@ public class Currently implements Parcelable
      * @return
      *     The precipIntensity
      */
-    public int getPrecipIntensity() {
+    public double getPrecipIntensity() {
         return precipIntensity;
     }
 
@@ -200,7 +200,7 @@ public class Currently implements Parcelable
      * @param precipIntensity
      *     The precipIntensity
      */
-    public void setPrecipIntensity(int precipIntensity) {
+    public void setPrecipIntensity(double precipIntensity) {
         this.precipIntensity = precipIntensity;
     }
 
@@ -209,7 +209,7 @@ public class Currently implements Parcelable
      * @return
      *     The precipProbability
      */
-    public int getPrecipProbability() {
+    public double getPrecipProbability() {
         return precipProbability;
     }
 
@@ -218,7 +218,7 @@ public class Currently implements Parcelable
      * @param precipProbability
      *     The precipProbability
      */
-    public void setPrecipProbability(int precipProbability) {
+    public void setPrecipProbability(double precipProbability) {
         this.precipProbability = precipProbability;
     }
 

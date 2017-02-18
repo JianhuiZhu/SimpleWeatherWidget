@@ -412,4 +412,39 @@ public class DailyDataPoint implements Parcelable
         dest.writeDouble(ozone);
         dest.writeString(precipType);
     }
+
+    @Override
+    public String toString() {
+        return "DailyDataPoint{" +
+                "sunriseTime=" + sunriseTime +
+                ", sunsetTime=" + sunsetTime +
+                ", moonPhase=" + moonPhase +
+                ", precipIntensityMax=" + precipIntensityMax +
+                ", temperatureMin=" + temperatureMin +
+                ", temperatureMinTime=" + temperatureMinTime +
+                ", temperatureMax=" + temperatureMax +
+                ", temperatureMaxTime=" + temperatureMaxTime +
+                ", apparentTemperatureMin=" + apparentTemperatureMin +
+                ", apparentTemperatureMinTime=" + apparentTemperatureMinTime +
+                ", apparentTemperatureMax=" + apparentTemperatureMax +
+                ", apparentTemperatureMaxTime=" + apparentTemperatureMaxTime +
+                ", precipIntensityMaxTime=" + precipIntensityMaxTime +
+                ", time=" + time +
+                ", summary='" + summary + '\'' +
+                ", icon='" + icon + '\'' +
+                ", precipIntensity=" + precipIntensity +
+                ", precipProbability=" + precipProbability +
+                ", temperature=" + temperature +
+                ", apparentTemperature=" + apparentTemperature +
+                ", dewPoint=" + dewPoint +
+                ", humidity=" + humidity +
+                ", windSpeed=" + windSpeed +
+                ", windBearing=" + windBearing +
+                ", visibility=" + visibility +
+                ", cloudCover=" + cloudCover +
+                ", pressure=" + pressure +
+                ", ozone=" + ozone +
+                ", precipType='" + precipType + '\'' +
+                '}';
+    }
 }

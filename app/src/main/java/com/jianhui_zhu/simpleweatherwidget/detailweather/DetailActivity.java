@@ -1,4 +1,5 @@
 package com.jianhui_zhu.simpleweatherwidget.detailweather;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,9 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
     AdView adView;
     @BindView(R.id.weather_forecast_recycler_view)
     com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager weatherForecastRecyclerView;
+    @BindView(R.id.activity_detail)
+    RelativeLayout layout;
+
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -76,7 +81,7 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
         if(isAcquiringPermission(getIntent())) {
             getPermissionRequestDialog(this).show();
         }
-        viewModel.init(this,toolbar,weatherForecastRecyclerView,adView,getIntent());
+        viewModel.init(this,toolbar,weatherForecastRecyclerView,adView,layout);
     }
 
     @Override
@@ -86,6 +91,7 @@ public class DetailActivity extends AppCompatActivity implements WeatherForecast
         intentFilter.addAction(ACTION_ACTIVITY_UPDATE);
         registerReceiver(receiver,intentFilter);
         progressDialog = new ProgressDialog(this);
+        progressDialog.setIcon(R.drawable.ic_cloud_download);
         progressDialog.setMessage(getString(R.string.refreshing_data));
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();

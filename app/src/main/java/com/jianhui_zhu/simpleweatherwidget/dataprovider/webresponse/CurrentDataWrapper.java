@@ -11,6 +11,8 @@ public class CurrentDataWrapper {
     private Currently currently;
     private AirQualityData airQualityData;
 
+
+
     public Currently getCurrently() {
         return currently;
     }

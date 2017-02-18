@@ -13,7 +13,7 @@ public class D implements Parcelable
 
     @SerializedName("v")
     @Expose
-    private int v;
+    private double v;
     public final static Parcelable.Creator<D> CREATOR = new Creator<D>() {
 
 
@@ -22,7 +22,7 @@ public class D implements Parcelable
         })
         public D createFromParcel(Parcel in) {
             D instance = new D();
-            instance.v = ((int) in.readValue((int.class.getClassLoader())));
+            instance.v = ((double) in.readValue((double.class.getClassLoader())));
             return instance;
         }
 
@@ -38,7 +38,7 @@ public class D implements Parcelable
      * @return
      *     The v
      */
-    public int getV() {
+    public double getV() {
         return v;
     }
 
@@ -47,7 +47,7 @@ public class D implements Parcelable
      * @param v
      *     The v
      */
-    public void setV(int v) {
+    public void setV(double v) {
         this.v = v;
     }
 

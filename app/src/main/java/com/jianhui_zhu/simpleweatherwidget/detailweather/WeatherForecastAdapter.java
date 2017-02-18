@@ -6,10 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.DailyDataPoint;
 
@@ -22,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.jianhui_zhu.simpleweatherwidget.Util.*;
-
+import static com.jianhui_zhu.simpleweatherwidget.WeatherIconImageUtil.*;
 /**
  * Created by jianhuizhu on 2017-01-24.
  */
@@ -50,8 +50,12 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
         listener.changeToolbarTitle(new DateTime(weatherInfo.getTime() * 1000L));
         final Context context = holder.temperatureTextView.getContext();
 
-//        holder.weatherImage.setImageURI(
-//                BuildConfig.WEATHER_ICON_BASE_URL+weatherInfo.getWeather().get(0).getIcon()+".png");
+        try {
+            holder.weatherImage.setImageResource(getIconIdByWeatherIconCode(weatherInfo.getIcon()));
+        } catch (Exception e) {
+            holder.weatherImage.setImageResource(R.drawable.ic_place_holder);
+            e.printStackTrace();
+        }
 
         holder.temperatureTextView.setText(
                 getTemperatureString(
@@ -93,7 +97,7 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.detail_weather_image)
-        SimpleDraweeView weatherImage;
+        ImageView weatherImage;
         @BindView(R.id.temperature_text_view)
         TextView temperatureTextView;
         @BindView(R.id.temperature_max_text_view)

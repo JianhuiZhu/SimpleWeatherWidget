@@ -16,6 +16,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.TimeZone;
 
 import static com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler.ACTION_REQUEST_PERMISSION;
@@ -26,7 +27,7 @@ import static com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler.ACTION_
 
 public final class Util {
 
-    private static final String SETTING = "SETTING";
+    public static final String SETTING = "SETTING";
     private static final String CELSIUS_SIGN = " °C";
     private static final String FAHRENHEIT_SIGN = " F";
     //The equator radius
@@ -35,20 +36,22 @@ public final class Util {
     private static final int EAST = 90;
     private static final int SOUTH = 180;
     private static final int WEST = 270;
-    public static final int MONDAY = 1;
-    public static final int TUESDAY = 2;
-    public static final int WEDNESDAY = 3;
-    public static final int THURSDAY = 4;
-    public static final int FRIDAY = 5;
-    public static final int SATURDAY = 6;
+    private static final int MONDAY = 1;
+    private static final int TUESDAY = 2;
+    private static final int WEDNESDAY = 3;
+    private static final int THURSDAY = 4;
+    private static final int FRIDAY = 5;
+    private static final int SATURDAY = 6;
     private Util() {
     }
 
-    public static String getTemperatureString(Context context, double kelvinValue) {
+    public static String getTemperatureString(Context context, double celsiusValue) {
         if (isTemperatureDisplayCelsiusByDefault(context)) {
-            return kelvinToCelsiusString(kelvinValue);
+            BigDecimal bd = new BigDecimal(celsiusValue);
+            return String.valueOf(bd.setScale(1, RoundingMode.HALF_UP).doubleValue()) + CELSIUS_SIGN;
         } else {
-            return kelvinToFahrenheitString(kelvinValue);
+            BigDecimal bd = new BigDecimal(celsiusToFahrenheit(celsiusValue));
+            return String.valueOf(bd.setScale(1, RoundingMode.HALF_UP).doubleValue()) + FAHRENHEIT_SIGN;
         }
     }
 
@@ -68,13 +71,6 @@ public final class Util {
                 .equals(context.getString(R.string.meter_second));
     }
 
-    private static String kelvinToCelsiusString(double kelvinValue) {
-        return String.valueOf(kelvinToCelsius(kelvinValue)) + CELSIUS_SIGN;
-    }
-
-    private static String kelvinToFahrenheitString(double kelvinValue) {
-        return String.valueOf(celsiusToFahrenheit(kelvinToCelsius(kelvinValue))) + FAHRENHEIT_SIGN;
-    }
 
     private static double kelvinToCelsius(double kelvinValue) {
         return new BigDecimal(kelvinValue - 273.15)
@@ -222,4 +218,5 @@ public final class Util {
         DateTimeFormatter fmt = DateTimeFormat.forPattern(context.getString(R.string.date_format));
         return fmt.print(date.withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).toDateTime());
     }
+
 }

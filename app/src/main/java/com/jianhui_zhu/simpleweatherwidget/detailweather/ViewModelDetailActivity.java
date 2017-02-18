@@ -4,13 +4,17 @@ import android.content.Intent;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
+
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jianhui_zhu.simpleweatherwidget.R;
+import com.jianhui_zhu.simpleweatherwidget.WeatherIconImageUtil;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.DailyDataPoint;
 
@@ -27,14 +31,20 @@ public class ViewModelDetailActivity {
 
     }
 
-    public void init(final DetailActivity activity, Toolbar toolbar, com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager recyclerView, AdView adView, Intent intent){
-        List<DailyDataPoint> weatherList = ((Daily)intent.getParcelableExtra(WEATHER_LIST)).getData();
-        recyclerView.setAdapter(new WeatherForecastAdapter(activity, weatherList));
+    public void init(
+                     final DetailActivity activity,
+                     Toolbar toolbar,
+                     com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager recyclerView,
+                     AdView adView,
+                     RelativeLayout layout){
+        recyclerView.setAdapter(new WeatherForecastAdapter(activity, null));
         recyclerView.setLayoutManager(new LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHorizontalFadingEdgeEnabled(true);
         recyclerView.setFadingEdgeLength(50);
 
+        int resourceId = WeatherIconImageUtil.getSeasonBackgroundByCurrentTime();
+        layout.setBackgroundResource(resourceId);
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

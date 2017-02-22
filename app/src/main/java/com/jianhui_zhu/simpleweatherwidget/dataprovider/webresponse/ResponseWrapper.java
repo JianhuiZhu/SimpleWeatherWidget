@@ -20,6 +20,30 @@ public class ResponseWrapper {
         return this;
     }
 
+    public DarkSkyWeatherForecastResponse getDarkSkyWeatherForecastResponse() {
+        return darkSkyWeatherForecastResponse;
+    }
+
+    @Override
+    public String toString() {
+        return "ResponseWrapper{" +
+                "darkSkyWeatherForecastResponse=" + darkSkyWeatherForecastResponse.toString() +
+                ", airQualityResponse=" + airQualityResponse.toString() +
+                '}';
+    }
+
+    public void setDarkSkyWeatherForecastResponse(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse) {
+        this.darkSkyWeatherForecastResponse = darkSkyWeatherForecastResponse;
+    }
+
+    public AirQualityResponse getAirQualityResponse() {
+        return airQualityResponse;
+    }
+
+    public void setAirQualityResponse(AirQualityResponse airQualityResponse) {
+        this.airQualityResponse = airQualityResponse;
+    }
+
     public ResponseWrapper withAirQualityResponse(AirQualityResponse airQualityResponse){
         this.airQualityResponse = airQualityResponse;
         return this;

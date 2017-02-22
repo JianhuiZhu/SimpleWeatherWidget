@@ -14,6 +14,18 @@ import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
 
 public class DarkSkyWeatherForecastResponse implements Parcelable
 {
+    @Override
+    public String toString() {
+        return "DarkSkyWeatherForecastResponse{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", timezone='" + timezone + '\'' +
+                ", offset=" + offset +
+                ", daily=" + daily +
+                ", currently=" + currently +
+                ", alerts=" + alerts +
+                '}';
+    }
 
     @SerializedName("latitude")
     @Expose

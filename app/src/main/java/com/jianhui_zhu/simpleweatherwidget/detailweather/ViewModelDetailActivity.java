@@ -1,6 +1,7 @@
 package com.jianhui_zhu.simpleweatherwidget.detailweather;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +48,8 @@ public class ViewModelDetailActivity {
         layout.setBackgroundResource(resourceId);
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

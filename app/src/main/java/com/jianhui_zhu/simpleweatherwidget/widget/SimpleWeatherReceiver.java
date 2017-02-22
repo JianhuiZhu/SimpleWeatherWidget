@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.AlarmClock;
 import android.util.Log;
 
 import com.jianhui_zhu.simpleweatherwidget.backgroundservice.WeatherBackgroundService;

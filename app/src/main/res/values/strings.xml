@@ -81,9 +81,12 @@
     <string name="refreshing_data">Checking newest weather info…</string>
     
     //Air quality Description
+    <string name="air_quality_label">Air Quality</string>
+
     <string name="good">Good</string>
     <string name="moderate">Moderate</string>
     <string name="unhealthy_for_sensitive_groups">Unhealthy for Sensitive Groups</string>
     <string name="unhealthy">Unhealthy</string>
     <string name="very_unhealthy">Very Unhealthy</string>
+    <string name="hazardous">Hazardous</string>
 </resources>

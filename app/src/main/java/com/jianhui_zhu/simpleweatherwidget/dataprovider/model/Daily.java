@@ -20,6 +20,7 @@ public class Daily implements Parcelable
                 '}';
     }
 
+
     @SerializedName("summary")
     @Expose
     private String summary;

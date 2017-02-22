@@ -295,5 +295,12 @@
     <color name="md_blue_grey_900">#263238</color>
 
     <!-- -->
-    <color name="half_transparent_white">#30FFFFFF</color>
+    <color name="half_transparent_white">#4DFFFFFF</color>
+
+    <color name="aqi_good">@color/md_green_600</color>
+    <color name="aqi_moderate">@color/md_yellow_700</color>
+    <color name="aqi_sensitive_group">@color/md_orange_600</color>
+    <color name="aqi_unhealthy">@color/md_red_600</color>
+    <color name="aqi_very_unhealthy">@color/md_purple_600</color>
+    <color name="aqi_hazardous">#795548</color>
 </resources>

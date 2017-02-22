@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:layout_width="@dimen/widget_width"
+    android:layout_height="@dimen/widget_height"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:background="@drawable/shadow_background_white"
+    android:elevation="@dimen/cardview_default_elevation"
+    android:translationZ="@dimen/cardview_default_elevation"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+            <LinearLayout
+                android:id="@+id/air_quality_area"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:paddingTop="@dimen/material_default_spacing"
+                android:orientation="horizontal"
+                android:background="@color/md_blue_600"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:translationZ="@dimen/cardview_default_elevation"
+                android:paddingLeft="@dimen/material_default_spacing"
+                android:paddingRight="@dimen/material_default_spacing">
+
+                <TextView
+                    android:id="@+id/air_quality_label"
+                    style="@style/TextViewDetailTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="@dimen/material_default_spacing"
+                    android:text="@string/air_quality_label" />
+
+                <TextView
+                    android:id="@+id/air_condition_text_view"
+                    style="@style/TextViewDetailTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="@string/unhealthy_for_sensitive_groups" />
+
+            </LinearLayout>
+
+
+
+        <RelativeLayout
+            android:id="@+id/widget"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:background="@color/md_white_1000">
+
+
+            <ImageView
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:layout_margin="@dimen/material_default_spacing"
+                android:id="@+id/weather_icon_image_view"
+                android:layout_width="@dimen/weather_icon_large"
+                android:layout_height="@dimen/weather_icon_large"
+                android:src="@drawable/ic_rain"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingRight="@dimen/material_default_spacing"
+                android:layout_centerVertical="true">
+                <TextView
+                    android:id="@+id/temperature_text_view"
+                    style="@style/TextViewWidgetTemperature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    tools:text="33 C" />
+
+                <TextView
+                    android:id="@+id/temperature_max_text_view"
+                    android:layout_toRightOf="@+id/temperature_text_view"
+                    android:paddingLeft="@dimen/widget_text_spacing"
+                    style="@style/TextViewWidgetTemperatureDetail"
+                    tools:text="43 C"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/temperature_min_text_view"
+                    android:layout_toRightOf="@+id/temperature_text_view"
+                    android:layout_below="@+id/temperature_max_text_view"
+                    style="@style/TextViewWidgetTemperatureDetail"
+                    tools:text = "23 C"
+                    android:paddingLeft="@dimen/widget_text_spacing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>

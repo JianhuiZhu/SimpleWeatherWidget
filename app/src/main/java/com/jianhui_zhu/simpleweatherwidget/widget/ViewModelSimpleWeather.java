@@ -12,6 +12,7 @@ import com.jianhui_zhu.simpleweatherwidget.Util;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.AirQualityData;
 
 
+import static com.jianhui_zhu.simpleweatherwidget.AirQualityUtil.getAirQualityBackgroundColorByAQI;
 import static com.jianhui_zhu.simpleweatherwidget.AirQualityUtil.getAirQualityDescriptionByAQI;
 import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
 import static com.jianhui_zhu.simpleweatherwidget.Util.getTemperatureString;
@@ -32,6 +33,8 @@ public class ViewModelSimpleWeather {
 
         //update each view with given content
         double temperature = intent.getDoubleExtra(TEMPERATURE,0.0);
+        double maxTemperature = intent.getDoubleExtra(MAX_TEMPERATURE,0.0);
+        double minTemperature = intent.getDoubleExtra(MIN_TEMPERATURE,0.0);
         String icon = intent.getStringExtra(WEATHER_ICON_SERIAL_NUMBER);
         AirQualityData airQualityData = intent.getParcelableExtra(AIR_QUALITY);
         int aqi = airQualityData.getAqi();
@@ -43,6 +46,10 @@ public class ViewModelSimpleWeather {
         }
         remoteViews.setTextViewText(R.id.air_condition_text_view, getAirQualityDescriptionByAQI(context,aqi));
         remoteViews.setTextViewText(R.id.temperature_text_view, getTemperatureString(context,temperature));
+        remoteViews.setTextViewText(R.id.temperature_max_text_view,getTemperatureString(context,maxTemperature));
+        remoteViews.setTextViewText(R.id.temperature_min_text_view,getTemperatureString(context,minTemperature));
+
+        remoteViews.setInt(R.id.air_quality_area,"setBackgroundColor",getAirQualityBackgroundColorByAQI(context,aqi));
 
         appWidgetManager.updateAppWidget(componentName,remoteViews);
 

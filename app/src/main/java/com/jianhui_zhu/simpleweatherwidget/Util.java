@@ -45,12 +45,12 @@ public final class Util {
     private Util() {
     }
 
-    public static String getTemperatureString(Context context, double celsiusValue) {
+    public static String getTemperatureString(Context context, double fahrenheitValue) {
         if (isTemperatureDisplayCelsiusByDefault(context)) {
-            BigDecimal bd = new BigDecimal(celsiusValue);
+            BigDecimal bd = new BigDecimal(fahrenheitToCelsius(fahrenheitValue));
             return String.valueOf(bd.setScale(1, RoundingMode.HALF_UP).doubleValue()) + CELSIUS_SIGN;
         } else {
-            BigDecimal bd = new BigDecimal(celsiusToFahrenheit(celsiusValue));
+            BigDecimal bd = new BigDecimal(fahrenheitValue);
             return String.valueOf(bd.setScale(1, RoundingMode.HALF_UP).doubleValue()) + FAHRENHEIT_SIGN;
         }
     }
@@ -71,15 +71,14 @@ public final class Util {
                 .equals(context.getString(R.string.meter_second));
     }
 
-
-    private static double kelvinToCelsius(double kelvinValue) {
-        return new BigDecimal(kelvinValue - 273.15)
+    private static double celsiusToFahrenheit(double celsiusValue) {
+        return new BigDecimal(celsiusValue * 1.8 + 32)
                 .setScale(1,BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
     }
 
-    private static double celsiusToFahrenheit(double celsiusValue) {
-        return new BigDecimal(celsiusValue * 1.8 + 32)
+    private static double fahrenheitToCelsius(double fahrenheitValue){
+        return new BigDecimal((fahrenheitValue - 32)/1.8)
                 .setScale(1,BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
     }
@@ -171,7 +170,7 @@ public final class Util {
         return today.equals(date.withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).withTimeAtStartOfDay());
     }
 
-    private static boolean isTomorrow(DateTime date){
+    public static boolean isTomorrow(DateTime date){
         DateTime tomorrow = DateTime.now().withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).plusDays(1).withTimeAtStartOfDay();
         return tomorrow.equals(date.withZone(DateTimeZone.forTimeZone(TimeZone.getDefault())).withTimeAtStartOfDay());
     }

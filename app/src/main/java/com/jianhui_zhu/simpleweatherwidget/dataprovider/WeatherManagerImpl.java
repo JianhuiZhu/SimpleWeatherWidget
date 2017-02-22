@@ -1,7 +1,9 @@
 package com.jianhui_zhu.simpleweatherwidget.dataprovider;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.jianhui_zhu.simpleweatherwidget.CacheUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.Util;
 import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.Daily;
@@ -60,18 +62,22 @@ public class WeatherManagerImpl implements WeatherManager {
     }
 
     @Override
-    public Observable<CurrentDataWrapper> getCurrentWeatherByGeo(double lat, double lon, Context context) {
+    public Observable<CurrentDataWrapper> getCurrentWeatherByGeo(double lat, double lon, final Context context) {
         if(isForecastCacheValid(lat,lon)){
             CurrentDataWrapper currentDataWrapper = new CurrentDataWrapper()
                     .withCurrently(wrapper.getCurrentWeatherForecast())
                     .withAirQualityData(wrapper.getAirQualityData());
-
             return Observable.just(currentDataWrapper);
         }else{
             return Observable.zip(getWeatherForecastUpdate(context, lat, lon), getAirQualityUpdate(context, lat, lon), new Func2<DarkSkyWeatherForecastResponse, AirQualityResponse, CurrentDataWrapper>() {
                 @Override
                 public CurrentDataWrapper call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
                     wrapper.withAirQualityResponse(airQualityResponse).withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
+                    CacheUtil.cacheWeatherForecast(context,wrapper);
+                    ResponseWrapper temp = CacheUtil.getWeatherForecastFromCache(context);
+                    if(temp != null) {
+                        Log.d("sharePref", temp.toString());
+                    }
                     return new CurrentDataWrapper()
                             .withCurrently(wrapper.getCurrentWeatherForecast())
                             .withAirQualityData(wrapper.getAirQualityData());
@@ -81,7 +87,7 @@ public class WeatherManagerImpl implements WeatherManager {
     }
 
     @Override
-    public Observable<Daily> getDailyWeatherForecastByGeo(double lat, double lon, Context context) {
+    public Observable<Daily> getDailyWeatherForecastByGeo(double lat, double lon, final Context context) {
         if(isForecastCacheValid(lat,lon)){
             return Observable.just(wrapper.getDailyWeatherForecast());
         }else{
@@ -89,6 +95,11 @@ public class WeatherManagerImpl implements WeatherManager {
                 @Override
                 public Daily call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
                     wrapper.withAirQualityResponse(airQualityResponse).withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
+                    CacheUtil.cacheWeatherForecast(context,wrapper);
+                    ResponseWrapper temp = CacheUtil.getWeatherForecastFromCache(context);
+                    if(temp != null) {
+                        Log.d("sharePref", temp.toString());
+                    }
                     return wrapper.getDailyWeatherForecast();
                 }
             });

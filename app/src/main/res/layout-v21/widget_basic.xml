@@ -71,24 +71,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     tools:text="33 C" />
-
-                <TextView
-                    android:id="@+id/temperature_max_text_view"
-                    android:layout_toRightOf="@+id/temperature_text_view"
-                    android:paddingLeft="@dimen/widget_text_spacing"
-                    style="@style/TextViewWidgetTemperatureDetail"
-                    tools:text="43 C"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/temperature_min_text_view"
-                    android:layout_toRightOf="@+id/temperature_text_view"
-                    android:layout_below="@+id/temperature_max_text_view"
-                    style="@style/TextViewWidgetTemperatureDetail"
-                    tools:text = "23 C"
-                    android:paddingLeft="@dimen/widget_text_spacing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>

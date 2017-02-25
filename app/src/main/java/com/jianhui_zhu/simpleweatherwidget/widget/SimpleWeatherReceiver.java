@@ -4,19 +4,17 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.AlarmClock;
 import android.util.Log;
 
-import com.jianhui_zhu.simpleweatherwidget.backgroundservice.WeatherBackgroundService;
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerViewModelComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ViewModelModule;
 
 import javax.inject.Inject;
 
 
-import static com.jianhui_zhu.simpleweatherwidget.PermissionUtil.*;
-import static com.jianhui_zhu.simpleweatherwidget.Util.startActivityWithPendingIntent;
-import static com.jianhui_zhu.simpleweatherwidget.BroadcastIntentHandler.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.PermissionUtil.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.Util.startActivityWithPendingIntent;
+import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.*;
 
 /**
  * Created by jianhuizhu on 2017-01-17.
@@ -32,9 +30,6 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
         if(!isLocationPermissionGranted(context)){
             startActivityWithPendingIntent(context);
         }
-        Intent intent = new Intent(context,WeatherBackgroundService.class);
-        context.startService(intent);
-
     }
 
     @Override
@@ -43,7 +38,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
         DaggerViewModelComponent.builder().viewModelModule(new ViewModelModule()).build().inject(this);
 
         viewModel.initSetting(context,appWidgetManager,appWidgetIds);
-        broadcastBriefWeatherUpdateRequest(context);
+        startServiceForBriefWeatherUpdateRequest(context);
 
     }
 
@@ -67,7 +62,5 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
         Log.d(getClass().getSimpleName(),"On deleted");
-        Intent intent = new Intent(context,WeatherBackgroundService.class);
-        context.stopService(intent);
     }
 }

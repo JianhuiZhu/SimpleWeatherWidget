@@ -32,4 +32,11 @@
 
     <dimen name="small_english_text">9dp</dimen>
     <dimen name="tiny_english_text">8dp</dimen>
+
+    //snap card
+    <dimen name="snap_card_height">96dp</dimen>
+    <dimen name="title_temperature_text_top_padding">24dp</dimen>
+
+    //today card
+    <dimen name="today_card_height">128dp</dimen>
 </resources>

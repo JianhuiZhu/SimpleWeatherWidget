@@ -2,21 +2,82 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
-    tools:context="com.jianhui_zhu.simpleweatherwidget.detailweather.DetailActivity">
-
-    <com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
+    tools:context="com.jianhui_zhu.simpleweatherwidget.daily_weather.DetailActivity">
+    <android.support.v7.widget.CardView
         android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/ads_adview"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:id="@+id/today_weather_card_view"
+        android:layout_width="match_parent"
+        card_view:cardElevation="@dimen/cardview_default_elevation"
+        android:layout_height="@dimen/today_card_height">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/today_temperature_text_view"
+                style="@style/TextViewHeadlineTheme"
+                tools:text = "29 C"
+                android:textColor="@color/md_grey_900"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:id="@+id/temperature_max_label"
+                android:layout_below="@+id/today_temperature_text_view"
+                style="@style/TextViewSubTitleTheme"
+                android:text="@string/max"
+                android:layout_marginRight="@dimen/material_default_spacing"
+                android:textColor="@color/md_grey_700"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_toRightOf="@+id/temperature_max_label"
+                android:layout_below="@+id/today_temperature_text_view"
+                android:id="@+id/temperature_max_text_view"
+                style="@style/TextViewSubTitleTheme"
+                tools:text = "30 C"
+                android:textColor="@color/md_grey_700"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_below="@+id/temperature_max_label"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/material_default_spacing"
+                android:id="@+id/temperature_min_label"
+                style="@style/TextViewSubTitleTheme"
+                android:text="@string/min"
+                android:textColor="@color/md_grey_700"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/temperature_min_text_view"
+                android:layout_below="@+id/temperature_max_text_view"
+                android:layout_toRightOf="@+id/temperature_min_label"
+                style="@style/TextViewSubTitleTheme"
+                tools:text = "12 C"
+                android:textColor="@color/md_grey_700"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/today_weather_icon_image_view"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_snow"
+            android:layout_width="@dimen/weather_icon_xlarge"
+            android:layout_height="@dimen/weather_icon_xlarge" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/today_weather_card_view"
         android:id="@+id/weather_forecast_recycler_view"
-        android:orientation="horizontal"
-        android:overScrollMode="always"
-        android:requiresFadingEdge="horizontal"
+        android:layout_above="@+id/ads_adview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <com.google.android.gms.ads.AdView
@@ -34,5 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:translationZ="@dimen/cardview_default_elevation"
+        android:elevation="@dimen/cardview_default_elevation"/>
 </RelativeLayout>

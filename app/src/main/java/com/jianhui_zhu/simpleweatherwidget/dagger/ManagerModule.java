@@ -1,9 +1,9 @@
 package com.jianhui_zhu.simpleweatherwidget.dagger;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.AirQualityAPI;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherAPI;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManagerImpl;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.AirQualityAPI;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherManagerImpl;
 
 import javax.inject.Inject;
 

@@ -1,10 +1,7 @@
 package com.jianhui_zhu.simpleweatherwidget.dagger;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
-import com.jianhui_zhu.simpleweatherwidget.detailweather.ViewModelDetailActivity;
+import com.jianhui_zhu.simpleweatherwidget.daily_weather.ViewModelDetailActivity;
 import com.jianhui_zhu.simpleweatherwidget.widget.ViewModelSimpleWeather;
-
-import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.Provides;

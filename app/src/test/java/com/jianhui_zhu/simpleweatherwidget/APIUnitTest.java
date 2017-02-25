@@ -1,6 +1,6 @@
 package com.jianhui_zhu.simpleweatherwidget;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherAPI;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
 
 import org.junit.Test;
 

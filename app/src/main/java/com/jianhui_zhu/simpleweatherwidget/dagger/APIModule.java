@@ -5,12 +5,8 @@ package com.jianhui_zhu.simpleweatherwidget.dagger;
  */
 import android.util.Log;
 import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.AirQualityAPI;
-import com.jianhui_zhu.simpleweatherwidget.detailweather.ViewModelDetailActivity;
-import com.jianhui_zhu.simpleweatherwidget.widget.ViewModelSimpleWeather;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherAPI;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManagerImpl;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.AirQualityAPI;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
 
 import java.util.concurrent.TimeUnit;
 

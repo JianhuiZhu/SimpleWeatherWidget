@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherManager;
 
 import org.junit.Before;
 import org.junit.Test;

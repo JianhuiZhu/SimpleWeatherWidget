@@ -1,6 +1,6 @@
 package com.jianhui_zhu.simpleweatherwidget.dagger;
 
-import com.jianhui_zhu.simpleweatherwidget.detailweather.DetailActivity;
+import com.jianhui_zhu.simpleweatherwidget.daily_weather.DetailActivity;
 import com.jianhui_zhu.simpleweatherwidget.widget.SimpleWeatherReceiver;
 
 import dagger.Component;

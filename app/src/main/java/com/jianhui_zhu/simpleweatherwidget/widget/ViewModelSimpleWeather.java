@@ -8,15 +8,15 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.Util;
-import com.jianhui_zhu.simpleweatherwidget.dataprovider.model.AirQualityData;
+import com.jianhui_zhu.simpleweatherwidget.utils.Util;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 
 
-import static com.jianhui_zhu.simpleweatherwidget.AirQualityUtil.getAirQualityBackgroundColorByAQI;
-import static com.jianhui_zhu.simpleweatherwidget.AirQualityUtil.getAirQualityDescriptionByAQI;
-import static com.jianhui_zhu.simpleweatherwidget.WeatherConstant.*;
-import static com.jianhui_zhu.simpleweatherwidget.Util.getTemperatureString;
-import static com.jianhui_zhu.simpleweatherwidget.WeatherIconImageUtil.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.AirQualityUtil.getAirQualityBackgroundColorByAQI;
+import static com.jianhui_zhu.simpleweatherwidget.utils.AirQualityUtil.getAirQualityDescriptionByAQI;
+import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.Util.getTemperatureString;
+import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil.*;
 /**
  * Created by jianhuizhu on 2017-01-20.
  */
@@ -46,8 +46,6 @@ public class ViewModelSimpleWeather {
         }
         remoteViews.setTextViewText(R.id.air_condition_text_view, getAirQualityDescriptionByAQI(context,aqi));
         remoteViews.setTextViewText(R.id.temperature_text_view, getTemperatureString(context,temperature));
-        remoteViews.setTextViewText(R.id.temperature_max_text_view,getTemperatureString(context,maxTemperature));
-        remoteViews.setTextViewText(R.id.temperature_min_text_view,getTemperatureString(context,minTemperature));
 
         remoteViews.setInt(R.id.air_quality_area,"setBackgroundColor",getAirQualityBackgroundColorByAQI(context,aqi));
 

@@ -20,8 +20,8 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.A
 public final class WeatherUtil {
 
     public static final String SETTING = "SETTING";
-    private static final String CELSIUS_SIGN = " °C";
-    private static final String FAHRENHEIT_SIGN = " F";
+    public static final String CELSIUS_SIGN = " °C";
+    public static final String FAHRENHEIT_SIGN = " F";
     private static final int NORTH = 0;
     private static final int EAST = 90;
     private static final int SOUTH = 180;
@@ -30,17 +30,7 @@ public final class WeatherUtil {
     private WeatherUtil() {
     }
 
-    public static String getTemperatureString(Context context, double fahrenheitValue) {
-        if (isTemperatureDisplayCelsiusByDefault(context)) {
-            BigDecimal bd = new BigDecimal(fahrenheitToCelsius(fahrenheitValue));
-            return String.valueOf(bd.intValue()) + CELSIUS_SIGN;
-        } else {
-            BigDecimal bd = new BigDecimal(fahrenheitValue);
-            return String.valueOf(bd.intValue()) + FAHRENHEIT_SIGN;
-        }
-    }
-
-    private static boolean isTemperatureDisplayCelsiusByDefault(Context context) {
+    public static boolean isTemperatureDisplayCelsiusByDefault(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
         return sharedPreferences.getString(
                 context.getString(R.string.temperature_unit_setting),
@@ -48,7 +38,7 @@ public final class WeatherUtil {
                 .equals(context.getString(R.string.celsius));
     }
 
-    private static boolean isWindSpeedDisplayMperSByDefault(Context context){
+    public static boolean isWindSpeedDisplayMperSByDefault(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences(SETTING,Context.MODE_PRIVATE);
         return sharedPreferences.getString(
                 context.getString(R.string.wind_speed_unit_setting),
@@ -58,7 +48,7 @@ public final class WeatherUtil {
 
 
 
-    private static double fahrenheitToCelsius(double fahrenheitValue){
+    public static double fahrenheitToCelsius(double fahrenheitValue){
         return new BigDecimal((fahrenheitValue - 32)/1.8)
                 .setScale(1,BigDecimal.ROUND_HALF_UP)
                 .doubleValue();
@@ -130,17 +120,5 @@ public final class WeatherUtil {
                 .append("°").toString();
     }
 
-
-    public static String getFormattedMaxMinTemperature(Context context, double maxTemperature, double minTemperature){
-        BigDecimal max = new BigDecimal(maxTemperature);
-        BigDecimal min = new BigDecimal(minTemperature);
-
-        StringBuilder sb = new StringBuilder(20);
-        sb.append(max.intValue()).append(" / ").append(min.intValue()).append(" ");
-        if(isTemperatureDisplayCelsiusByDefault(context)){
-            return sb.append(CELSIUS_SIGN).toString();
-        }
-        return sb.append(FAHRENHEIT_SIGN).toString();
-    }
 
 }

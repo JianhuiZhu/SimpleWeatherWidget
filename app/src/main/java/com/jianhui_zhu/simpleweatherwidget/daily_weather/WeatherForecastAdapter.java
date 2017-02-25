@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.utils.DateTimeUtil;
-import com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 
 
@@ -23,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.StringFormatUtil.getFormattedMaxMinTemperature;
 import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil.*;
 /**
  * Created by jianhuizhu on 2017-01-24.

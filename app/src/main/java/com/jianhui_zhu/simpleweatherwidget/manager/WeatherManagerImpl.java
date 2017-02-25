@@ -1,7 +1,10 @@
-package com.jianhui_zhu.simpleweatherwidget.data_provider;
+package com.jianhui_zhu.simpleweatherwidget.manager;
 
 import android.content.Context;
 
+import com.jianhui_zhu.simpleweatherwidget.data_provider.AirQualityAPI;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
+import com.jianhui_zhu.simpleweatherwidget.manager.WeatherManager;
 import com.jianhui_zhu.simpleweatherwidget.utils.CacheUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
@@ -15,16 +18,14 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.functions.Func2;
 import static com.jianhui_zhu.simpleweatherwidget.utils.CacheUtil.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.StringFormatUtil.*;
 
 /**
  * Created by jianhuizhu on 2017-01-26.
  */
 
 public class WeatherManagerImpl implements WeatherManager {
-    private String weatherLocationStringBuilder(double lat, double lon){
-        return lat+","+lon;
-    }
-    private String airQualityLocationStringBuilder(double lat, double lon){return lat+";"+lon;}
+
     WeatherAPI weatherAPI;
     AirQualityAPI airQualityAPI;
 

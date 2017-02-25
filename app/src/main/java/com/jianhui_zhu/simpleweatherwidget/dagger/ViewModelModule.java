@@ -15,9 +15,4 @@ public class ViewModelModule {
     public ViewModelSimpleWeather providesViewModelSimpleWeather( ) {
         return new ViewModelSimpleWeather();
     }
-
-    @Provides
-    public ViewModelDetailActivity providesViewModelDetailActivity(){
-        return new ViewModelDetailActivity();
-    }
 }

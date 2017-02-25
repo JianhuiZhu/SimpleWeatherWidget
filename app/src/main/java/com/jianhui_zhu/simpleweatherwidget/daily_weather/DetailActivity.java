@@ -19,14 +19,11 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerViewModelComponent;
-import com.jianhui_zhu.simpleweatherwidget.dagger.ViewModelModule;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.*;
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +32,6 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.PermissionUtil.*;
 import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
 
 public class DetailActivity extends AppCompatActivity{
-    @Inject
     ViewModelDetailActivity viewModel;
     private long lastUpdate = 0;
     @BindView(R.id.toolbar)
@@ -80,15 +76,11 @@ public class DetailActivity extends AppCompatActivity{
         ButterKnife.bind(this);
         JodaTimeAndroid.init(this);
         MobileAds.initialize(getApplicationContext(),getString(R.string.ads_unit));
-        DaggerViewModelComponent.builder().viewModelModule(
-                new ViewModelModule())
-                .build()
-                .inject(this);
 
         if(isAcquiringPermission(getIntent())) {
             getPermissionRequestDialog(this).show();
         }
-
+        viewModel = new ViewModelDetailActivity(this);
         viewModel.initToolbar(this,toolbar);
         viewModel.initRecyclerView(this,weatherForecastRecyclerView);
         viewModel.initAdView(adView);

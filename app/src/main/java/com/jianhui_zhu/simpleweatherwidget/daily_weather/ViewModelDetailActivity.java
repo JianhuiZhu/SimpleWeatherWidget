@@ -18,32 +18,49 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil;
+import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
+import com.jianhui_zhu.simpleweatherwidget.manager.LocationManager;
+import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
+import com.jianhui_zhu.simpleweatherwidget.utils.StringFormatUtil;
 import com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import rx.functions.Action1;
+
 /**
  * Created by jianhuizhu on 2017-02-07.
  */
 
 public class ViewModelDetailActivity {
+    private LocationManager locationManager;
 
-
-    public ViewModelDetailActivity(){
-
+    public ViewModelDetailActivity(Context context){
+        locationManager = new LocationManagerImpl(context);
     }
 
     public void initToolbar(
-                     final DetailActivity activity,
-                     Toolbar toolbar){
+            final DetailActivity activity,
+            final Toolbar toolbar){
 
         toolbar.setTitle(activity.getString(R.string.today));
         toolbar.setTitleTextColor(Color.WHITE);
 
         toolbar.setSubtitleTextColor(Color.WHITE);
+        locationManager.getAddressResult(activity)
+                .subscribe(new Action1<AddressResult>() {
+                    @Override
+                    public void call(AddressResult addressResult) {
+                        String location = addressResult.getFormattedAddress();
+                        toolbar.setSubtitle(location);
+                    }
+                });
+
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -85,9 +102,9 @@ public class ViewModelDetailActivity {
     public void initTodayCardView(Context context, CardView todayCardView, TextView temperature,
                                   TextView maxTemperature, TextView minTemperature, ImageView weatherIcon,DailyDataPoint dataPoint){
 
-            temperature.setText(WeatherUtil.getTemperatureString(context, dataPoint.getTemperature()));
-            maxTemperature.setText(WeatherUtil.getTemperatureString(context,dataPoint.getTemperatureMax()));
-            minTemperature.setText(WeatherUtil.getTemperatureString(context, dataPoint.getTemperatureMin()));
+            temperature.setText(StringFormatUtil.getTemperatureString(context, dataPoint.getTemperature()));
+            maxTemperature.setText(StringFormatUtil.getTemperatureString(context,dataPoint.getTemperatureMax()));
+            minTemperature.setText(StringFormatUtil.getTemperatureString(context, dataPoint.getTemperatureMin()));
 
             String weatherCode = dataPoint.getIcon();
         try {

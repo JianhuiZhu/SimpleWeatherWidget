@@ -6,6 +6,7 @@ package com.jianhui_zhu.simpleweatherwidget.dagger;
 import android.util.Log;
 import com.jianhui_zhu.simpleweatherwidget.BuildConfig;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.AirQualityAPI;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.GeoCodingAPI;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
 
 import java.util.concurrent.TimeUnit;
@@ -43,6 +44,15 @@ public class APIModule {
                 .baseUrl(BuildConfig.AIR_QUALITY_INDEX_URL)
                 .build()
                 .create(AirQualityAPI.class);
+    }
+
+    @Provides
+    @Inject
+    public GeoCodingAPI provideGeoCodingAPI(Retrofit.Builder retrofitBuilder){
+        return retrofitBuilder
+                .baseUrl(BuildConfig.GOOGLE_MAP_URL)
+                .build()
+                .create(GeoCodingAPI.class);
     }
 
     @Provides

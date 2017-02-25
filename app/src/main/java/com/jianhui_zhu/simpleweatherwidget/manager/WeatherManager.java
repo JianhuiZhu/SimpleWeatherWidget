@@ -1,4 +1,4 @@
-package com.jianhui_zhu.simpleweatherwidget.data_provider;
+package com.jianhui_zhu.simpleweatherwidget.manager;
 
 
 import android.content.Context;

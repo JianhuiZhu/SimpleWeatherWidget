@@ -6,7 +6,9 @@ import android.location.Location;
 
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
-import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.manager.LocationManager;
+import com.jianhui_zhu.simpleweatherwidget.manager.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.CurrentDataWrapper;
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.*;
@@ -25,7 +27,7 @@ import rx.functions.Func1;
 public class WidgetService extends IntentService {
     @Inject
     WeatherManager manager;
-    WrappedLocationManager locationManager;
+    LocationManager locationManager;
     private void getBriefWeatherForecastForWidget() {
         if (!isLocationPermissionGranted(this)) {
 
@@ -68,7 +70,7 @@ public class WidgetService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        locationManager =new WrappedLocationManager(this);
+        locationManager =new LocationManagerImpl(this);
         getBriefWeatherForecastForWidget();
     }
 }

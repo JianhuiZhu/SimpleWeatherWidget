@@ -13,6 +13,7 @@ android {
         buildConfigField 'String', 'OPEN_WEATHER_MAP_URL', '\"http://api.openweathermap.org\"'
         buildConfigField 'String', 'DARK_SKY_URL', '\"https://api.darksky.net\"'
         buildConfigField 'String', 'AIR_QUALITY_INDEX_URL', '\"https://api.waqi.info\"'
+        buildConfigField 'String', 'GOOGLE_MAP_URL', '\"https://maps.googleapis.com\"'
     }
     buildTypes {
         release {
@@ -33,6 +34,7 @@ allprojects {
                 apiKeys.load(new FileInputStream(apiKeyFile))
                 android.defaultConfig.resValue "string", "openweathermapapikey", apiKeys['openweathermap']
                 android.defaultConfig.resValue "string", "darkskyapikey", apiKeys['darksky']
+                android.defaultConfig.resValue "string", "googlemapapikey", apiKeys['googlemap']
                 android.defaultConfig.resValue "string", "aqicnapikey", apiKeys['aqicn']
                 android.defaultConfig.resValue "string", "adsunit", apiKeys['adsunit']
             }

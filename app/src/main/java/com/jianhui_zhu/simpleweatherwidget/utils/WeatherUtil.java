@@ -5,17 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.daily_weather.DetailActivity;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.ACTION_REQUEST_PERMISSION;
 
@@ -23,7 +17,7 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.A
  * Created by jianhuizhu on 2017-01-19.
  */
 
-public final class Util {
+public final class WeatherUtil {
 
     public static final String SETTING = "SETTING";
     private static final String CELSIUS_SIGN = " °C";
@@ -32,22 +26,17 @@ public final class Util {
     private static final int EAST = 90;
     private static final int SOUTH = 180;
     private static final int WEST = 270;
-    private static final int MONDAY = 1;
-    private static final int TUESDAY = 2;
-    private static final int WEDNESDAY = 3;
-    private static final int THURSDAY = 4;
-    private static final int FRIDAY = 5;
-    private static final int SATURDAY = 6;
-    private Util() {
+
+    private WeatherUtil() {
     }
 
     public static String getTemperatureString(Context context, double fahrenheitValue) {
         if (isTemperatureDisplayCelsiusByDefault(context)) {
             BigDecimal bd = new BigDecimal(fahrenheitToCelsius(fahrenheitValue));
-            return String.valueOf(bd.setScale(0, RoundingMode.HALF_UP).doubleValue()) + CELSIUS_SIGN;
+            return String.valueOf(bd.intValue()) + CELSIUS_SIGN;
         } else {
             BigDecimal bd = new BigDecimal(fahrenheitValue);
-            return String.valueOf(bd.setScale(0, RoundingMode.HALF_UP).doubleValue()) + FAHRENHEIT_SIGN;
+            return String.valueOf(bd.intValue()) + FAHRENHEIT_SIGN;
         }
     }
 
@@ -78,7 +67,7 @@ public final class Util {
 
     public static String getHumidityString(Context context, double humidity){
         BigDecimal bd = new BigDecimal(humidity * 100);
-        double humidityValue = bd.setScale(0,BigDecimal.ROUND_HALF_UP).doubleValue();
+        int humidityValue = bd.intValue();
         return String.valueOf(humidityValue) + context.getString(R.string.percentage_sign);
     }
 
@@ -141,60 +130,8 @@ public final class Util {
                 .append("°").toString();
     }
 
-    public static boolean isToday(long date){
-        LocalDate today = new LocalDate(System.currentTimeMillis());
-        LocalDate dateToCompare = new LocalDate( date* 1000L);
-        Log.d("isToday",today.toString()+" "+dateToCompare.toString());
-        return today.isEqual(dateToCompare);
-    }
 
-    public static boolean isTomorrow(long date){
-        LocalDate today = new LocalDate(System.currentTimeMillis());
-        LocalDate dateToCompare = new LocalDate(date * 1000L);
-        return today.plusDays(1).isEqual(dateToCompare);
-    }
-
-    public static String getWeekDay(Context context, long date){
-        StringBuilder sb = new StringBuilder(20);
-        boolean isTodayOrTomorrow = false;
-        if(isToday(date)){
-            return sb.append(context.getString(R.string.today)).toString();
-
-
-        }else if(isTomorrow(date)){
-            return sb.append(context.getString(R.string.tomorrow)).toString();
-
-        }
-            int weekday = new LocalDate(date * 1000L).getDayOfWeek();
-            switch (weekday){
-                case MONDAY:
-                    return formatWeekday(context.getString(R.string.monday),sb);
-                case TUESDAY:
-                    return formatWeekday(context.getString(R.string.tuesday),sb);
-                case WEDNESDAY:
-                    return formatWeekday(context.getString(R.string.wednesday),sb);
-                case THURSDAY:
-                    return formatWeekday(context.getString(R.string.thursday),sb);
-                case FRIDAY:
-                    return formatWeekday(context.getString(R.string.friday),sb);
-                case SATURDAY:
-                    return formatWeekday(context.getString(R.string.saturday),sb);
-                default:
-                    return formatWeekday(context.getString(R.string.sunday),sb);
-        }
-    }
-
-    private static String formatWeekday(String weekday, StringBuilder sb){
-
-        return sb.append(weekday).toString();
-    }
-
-    public static String getDateWithProperFormat(Context context, long date){
-        DateTimeFormatter fmt = DateTimeFormat.forPattern(context.getString(R.string.date_format));
-        return fmt.print(new LocalDate(date));
-    }
-
-    public static String getFormatedMaxMinTemperature(Context context, double maxTemperature, double minTemperature){
+    public static String getFormattedMaxMinTemperature(Context context, double maxTemperature, double minTemperature){
         BigDecimal max = new BigDecimal(maxTemperature);
         BigDecimal min = new BigDecimal(minTemperature);
 

@@ -10,9 +10,12 @@ import android.widget.TextView;
 
 
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.utils.Util;
+import com.jianhui_zhu.simpleweatherwidget.utils.DateTimeUtil;
+import com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.jianhui_zhu.simpleweatherwidget.utils.Util.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil.*;
 import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil.*;
 /**
  * Created by jianhuizhu on 2017-01-24.
@@ -57,7 +60,7 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
         holder.date.setText(date);
         holder.weekday.setText(weekDay);
 
-        String maxMinTemperature = getFormatedMaxMinTemperature(context,weatherInfo.getTemperatureMax(),weatherInfo.getTemperatureMin());
+        String maxMinTemperature = getFormattedMaxMinTemperature(context,weatherInfo.getTemperatureMax(),weatherInfo.getTemperatureMin());
         holder.maxMinTemperature.setText(maxMinTemperature);
     }
 
@@ -86,8 +89,8 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
         if(weatherForecastList != null && !weatherForecastList.isEmpty()){
             dailyWeatherInfo.clear();
             for(DailyDataPoint dataPoint : weatherForecastList){
-                String weekDay = Util.getWeekDay(context,dataPoint.getTime());
-                String date = Util.getDateWithProperFormat(context,dataPoint.getTime());
+                String weekDay = DateTimeUtil.getWeekDay(context,dataPoint.getTime());
+                String date = DateTimeUtil.getDateWithProperFormat(context,dataPoint.getTime());
                 dailyWeatherInfo.add(new DailyDataPointWrapper(dataPoint,weekDay,date));
             }
             notifyDataSetChanged();

@@ -8,14 +8,14 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.utils.Util;
+import com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.AirQualityUtil.getAirQualityBackgroundColorByAQI;
 import static com.jianhui_zhu.simpleweatherwidget.utils.AirQualityUtil.getAirQualityDescriptionByAQI;
 import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
-import static com.jianhui_zhu.simpleweatherwidget.utils.Util.getTemperatureString;
+import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil.getTemperatureString;
 import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil.*;
 /**
  * Created by jianhuizhu on 2017-01-20.
@@ -33,8 +33,6 @@ public class ViewModelSimpleWeather {
 
         //update each view with given content
         double temperature = intent.getDoubleExtra(TEMPERATURE,0.0);
-        double maxTemperature = intent.getDoubleExtra(MAX_TEMPERATURE,0.0);
-        double minTemperature = intent.getDoubleExtra(MIN_TEMPERATURE,0.0);
         String icon = intent.getStringExtra(WEATHER_ICON_SERIAL_NUMBER);
         AirQualityData airQualityData = intent.getParcelableExtra(AIR_QUALITY);
         int aqi = airQualityData.getAqi();
@@ -56,7 +54,7 @@ public class ViewModelSimpleWeather {
         Log.d(getClass().getSimpleName(),"start initSetting");
         final RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.widget_basic);
 
-        remoteViews.setOnClickPendingIntent(R.id.widget, Util.startActivityWithPendingIntent(context));
+        remoteViews.setOnClickPendingIntent(R.id.widget, WeatherUtil.startActivityWithPendingIntent(context));
         appWidgetManager.updateAppWidget(appWidgetIds,remoteViews);
 
     }

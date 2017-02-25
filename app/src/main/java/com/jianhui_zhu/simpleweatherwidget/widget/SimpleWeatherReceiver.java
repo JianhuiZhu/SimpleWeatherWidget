@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.PermissionUtil.*;
-import static com.jianhui_zhu.simpleweatherwidget.utils.Util.startActivityWithPendingIntent;
+import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil.startActivityWithPendingIntent;
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.*;
 
 /**

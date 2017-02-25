@@ -59,7 +59,7 @@ public final class BroadcastIntentHandler {
 
         for(int index = 0; index<daily.getData().size(); index++){
             DailyDataPoint dataPoint = daily.getData().get(index);
-            if(Util.isToday(dataPoint.getTime())){
+            if(WeatherUtil.isToday(dataPoint.getTime())){
                 intent.putExtra(TODAY_WEATHER,dataPoint);
                 Log.d(BroadcastIntentHandler.class.getSimpleName(),"has today's data");
                 daily.getData().remove(index);

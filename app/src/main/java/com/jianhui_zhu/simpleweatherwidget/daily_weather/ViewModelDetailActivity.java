@@ -18,7 +18,7 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.utils.Util;
+import com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil;
 import com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
@@ -85,9 +85,9 @@ public class ViewModelDetailActivity {
     public void initTodayCardView(Context context, CardView todayCardView, TextView temperature,
                                   TextView maxTemperature, TextView minTemperature, ImageView weatherIcon,DailyDataPoint dataPoint){
 
-            temperature.setText(Util.getTemperatureString(context, dataPoint.getTemperature()));
-            maxTemperature.setText(Util.getTemperatureString(context,dataPoint.getTemperatureMax()));
-            minTemperature.setText(Util.getTemperatureString(context, dataPoint.getTemperatureMin()));
+            temperature.setText(WeatherUtil.getTemperatureString(context, dataPoint.getTemperature()));
+            maxTemperature.setText(WeatherUtil.getTemperatureString(context,dataPoint.getTemperatureMax()));
+            minTemperature.setText(WeatherUtil.getTemperatureString(context, dataPoint.getTemperatureMin()));
 
             String weatherCode = dataPoint.getIcon();
         try {

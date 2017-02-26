@@ -1,10 +1,16 @@
 package com.jianhui_zhu.simpleweatherwidget.manager;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 
 import com.jianhui_zhu.simpleweatherwidget.data_provider.AirQualityAPI;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
-import com.jianhui_zhu.simpleweatherwidget.manager.WeatherManager;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Alert;
 import com.jianhui_zhu.simpleweatherwidget.utils.CacheUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
@@ -13,9 +19,12 @@ import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.CurrentData
 import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.DarkSkyWeatherForecastResponse;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.ResponseWrapper;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Observable;
+import rx.functions.Func1;
 import rx.functions.Func2;
 import static com.jianhui_zhu.simpleweatherwidget.utils.CacheUtil.*;
 import static com.jianhui_zhu.simpleweatherwidget.utils.StringFormatUtil.*;
@@ -45,18 +54,15 @@ public class WeatherManagerImpl implements WeatherManager {
                     .withAirQualityData(responseWrapper.getAirQualityData());
             return Observable.just(currentDataWrapper);
         }else{
-            return Observable.zip(getWeatherForecastUpdate(context, lat, lon), getAirQualityUpdate(context, lat, lon), new Func2<DarkSkyWeatherForecastResponse, AirQualityResponse, CurrentDataWrapper>() {
-                @Override
-                public CurrentDataWrapper call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
-
-                    ResponseWrapper wrapper = new ResponseWrapper();
-                    wrapper.withAirQualityResponse(airQualityResponse).withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
-                    cacheWeatherForecast(context,wrapper);
-                    return new CurrentDataWrapper()
-                            .withCurrently(wrapper.getCurrentWeatherForecast())
-                            .withAirQualityData(wrapper.getAirQualityData());
-                }
-            });
+            return getWeatherAndAirQualityWithGeo(lat,lon,context)
+                    .flatMap(new Func1<ResponseWrapper, Observable<CurrentDataWrapper>>() {
+                        @Override
+                        public Observable<CurrentDataWrapper> call(ResponseWrapper wrapper) {
+                            return Observable.just(new CurrentDataWrapper()
+                                    .withCurrently(wrapper.getCurrentWeatherForecast())
+                                    .withAirQualityData(wrapper.getAirQualityData()));
+                        }
+                    });
         }
     }
 
@@ -66,18 +72,13 @@ public class WeatherManagerImpl implements WeatherManager {
             ResponseWrapper wrapper = getWeatherForecastFromCache(context);
             return Observable.just(wrapper.getDailyWeatherForecast());
         }else{
-            return Observable
-                    .zip(getWeatherForecastUpdate(context, lat, lon),
-                            getAirQualityUpdate(context, lat, lon),
-                            new Func2<DarkSkyWeatherForecastResponse, AirQualityResponse, Daily>() {
-                @Override
-                public Daily call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
-                    ResponseWrapper wrapper = new ResponseWrapper();
-                    wrapper.withAirQualityResponse(airQualityResponse).withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
-                    CacheUtil.cacheWeatherForecast(context,wrapper);
-                    return wrapper.getDailyWeatherForecast();
-                }
-            });
+            return getWeatherAndAirQualityWithGeo(lat,lon,context)
+                    .flatMap(new Func1<ResponseWrapper, Observable<Daily>>() {
+                        @Override
+                        public Observable<Daily> call(ResponseWrapper responseWrapper) {
+                            return Observable.just(responseWrapper.getDailyWeatherForecast());
+                        }
+                    });
         }
     }
 
@@ -91,5 +92,58 @@ public class WeatherManagerImpl implements WeatherManager {
 
         String weatherApiKey = context.getString(R.string.darkskyapikey);
         return weatherAPI.getDailyWeatherForecast(weatherApiKey,location);
+    }
+
+    private Observable<ResponseWrapper> getWeatherAndAirQualityWithGeo(double lat, double lon, final Context context){
+        return Observable.zip(getWeatherForecastUpdate(context, lat, lon), getAirQualityUpdate(context, lat, lon),
+                new Func2<DarkSkyWeatherForecastResponse, AirQualityResponse, ResponseWrapper>() {
+            @Override
+            public ResponseWrapper call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
+
+                ResponseWrapper wrapper = new ResponseWrapper();
+                wrapper.withAirQualityResponse(airQualityResponse)
+                        .withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
+                CacheUtil.cacheWeatherForecast(context,wrapper);
+
+                notifyUserForAlertIfNecessary(wrapper,context);
+
+                return wrapper;
+            }
+        });
+    }
+
+    private boolean hasAlert(ResponseWrapper wrapper){
+        return wrapper.getAlert() != null && !wrapper.getAlert().isEmpty();
+    }
+
+    private void notifyUserForAlertIfNecessary(ResponseWrapper wrapper,final Context context){
+        if(hasAlert(wrapper)){
+            List<Alert> alerts = wrapper.getAlert();
+            for(int index = 0; index < alerts.size(); index++){
+                buildAndSendNotification(context,alerts.get(index),index);
+            }
+        }
+    }
+
+    private void buildAndSendNotification(Context context, Alert alert,int alertId){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+        Intent openBrowserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(alert.getUri()));
+        openBrowserIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingItent = PendingIntent
+                .getActivities(
+                        context, 0, new Intent[] {openBrowserIntent },
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = builder.setSmallIcon(R.drawable.ic_warning)
+                .setContentTitle(alert.getTitle())
+                .setContentText(alert.getDescription())
+                .addAction(R.drawable.ic_launch,context.getString(R.string.detail),pendingItent)
+                .setAutoCancel(true)
+                .setPriority(Notification.DEFAULT_ALL)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(alertId,notification);
     }
 }

@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.daily_weather.DetailActivity;
+import com.jianhui_zhu.simpleweatherwidget.daily_weather.DailyWeatherActivity;
 
 import java.math.BigDecimal;
 
@@ -63,7 +63,7 @@ public final class WeatherUtil {
 
 
     public static PendingIntent startActivityWithPendingIntent(@NonNull Context context) {
-        Intent intent = new Intent(context, DetailActivity.class);
+        Intent intent = new Intent(context, DailyWeatherActivity.class);
 
         if(!PermissionUtil.isLocationPermissionGranted(context)){
             intent.setAction(ACTION_REQUEST_PERMISSION);

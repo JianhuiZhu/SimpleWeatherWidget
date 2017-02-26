@@ -7,11 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
-    tools:context="com.jianhui_zhu.simpleweatherwidget.daily_weather.DetailActivity">
+    tools:context="com.jianhui_zhu.simpleweatherwidget.daily_weather.DailyWeatherActivity">
     <android.support.v7.widget.CardView
         android:layout_below="@+id/toolbar"
         android:id="@+id/today_weather_card_view"
         android:layout_width="match_parent"
+        card_view:cardBackgroundColor="@color/md_blue_500"
         card_view:cardElevation="@dimen/cardview_default_elevation"
         android:layout_height="@dimen/today_card_height">
         <RelativeLayout
@@ -21,7 +22,6 @@
                 android:id="@+id/today_temperature_text_view"
                 style="@style/TextViewHeadlineTheme"
                 tools:text = "29 C"
-                android:textColor="@color/md_grey_900"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_vertical_margin"
                 android:layout_width="wrap_content"
@@ -33,7 +33,6 @@
                 style="@style/TextViewSubTitleTheme"
                 android:text="@string/max"
                 android:layout_marginRight="@dimen/material_default_spacing"
-                android:textColor="@color/md_grey_700"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -42,7 +41,6 @@
                 android:id="@+id/temperature_max_text_view"
                 style="@style/TextViewSubTitleTheme"
                 tools:text = "30 C"
-                android:textColor="@color/md_grey_700"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -52,7 +50,6 @@
                 android:id="@+id/temperature_min_label"
                 style="@style/TextViewSubTitleTheme"
                 android:text="@string/min"
-                android:textColor="@color/md_grey_700"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -61,7 +58,6 @@
                 android:layout_toRightOf="@+id/temperature_min_label"
                 style="@style/TextViewSubTitleTheme"
                 tools:text = "12 C"
-                android:textColor="@color/md_grey_700"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         <ImageView
@@ -90,7 +86,7 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:background="@color/md_blue_500"
+        android:background="@color/md_blue_700"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

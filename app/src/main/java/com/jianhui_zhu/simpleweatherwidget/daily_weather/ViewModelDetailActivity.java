@@ -18,7 +18,6 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManager;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
@@ -28,8 +27,6 @@ import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 
 import java.util.List;
-
-import javax.inject.Inject;
 
 import rx.functions.Action1;
 
@@ -45,7 +42,7 @@ public class ViewModelDetailActivity {
     }
 
     public void initToolbar(
-            final DetailActivity activity,
+            final DailyWeatherActivity activity,
             final Toolbar toolbar){
 
         toolbar.setTitle(activity.getString(R.string.today));

@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".daily_weather.DetailActivity">
+        <activity android:name=".daily_weather.DailyWeatherActivity">
         </activity>
         <receiver android:name=".widget.SimpleWeatherReceiver" >
             <intent-filter>

@@ -2,6 +2,8 @@
     <string name="app_name">SimpleWeatherWidget</string>
     <string name="ads_unit">ca-app-pub-4661993230678675/2719216945</string>
 
+    <string name="detail">Detail</string>
+
     //Common button
     <string name="confirm">OK, sure</string>
     <string name="decline">No</string>
@@ -89,4 +91,5 @@
     <string name="unhealthy">Unhealthy</string>
     <string name="very_unhealthy">Very Unhealthy</string>
     <string name="hazardous">Hazardous</string>
+
 </resources>

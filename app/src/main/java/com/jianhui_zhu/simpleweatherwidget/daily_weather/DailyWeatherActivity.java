@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 import static com.jianhui_zhu.simpleweatherwidget.utils.PermissionUtil.*;
 import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
 
-public class DetailActivity extends AppCompatActivity{
+public class DailyWeatherActivity extends AppCompatActivity{
     ViewModelDetailActivity viewModel;
     private long lastUpdate = 0;
     @BindView(R.id.toolbar)

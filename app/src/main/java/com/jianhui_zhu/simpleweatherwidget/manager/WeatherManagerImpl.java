@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.jianhui_zhu.simpleweatherwidget.data_provider.AirQualityAPI;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Alert;
 import com.jianhui_zhu.simpleweatherwidget.utils.CacheUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
@@ -25,7 +26,8 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.functions.Func1;
-import rx.functions.Func2;
+import rx.functions.Func3;
+
 import static com.jianhui_zhu.simpleweatherwidget.utils.CacheUtil.*;
 import static com.jianhui_zhu.simpleweatherwidget.utils.StringFormatUtil.*;
 
@@ -37,6 +39,7 @@ public class WeatherManagerImpl implements WeatherManager {
 
     WeatherAPI weatherAPI;
     AirQualityAPI airQualityAPI;
+
 
     @Inject
     public WeatherManagerImpl(WeatherAPI weatherAPI, AirQualityAPI airQualityAPI){
@@ -95,22 +98,30 @@ public class WeatherManagerImpl implements WeatherManager {
     }
 
     private Observable<ResponseWrapper> getWeatherAndAirQualityWithGeo(double lat, double lon, final Context context){
-        return Observable.zip(getWeatherForecastUpdate(context, lat, lon), getAirQualityUpdate(context, lat, lon),
-                new Func2<DarkSkyWeatherForecastResponse, AirQualityResponse, ResponseWrapper>() {
+        LocationManager locationManager = new LocationManagerImpl(context);
+        return Observable
+                .zip(getWeatherForecastUpdate(context, lat, lon),
+                        getAirQualityUpdate(context, lat, lon),
+                        locationManager.getAddressResult(context),
+                        new Func3<DarkSkyWeatherForecastResponse, AirQualityResponse, AddressResult, ResponseWrapper>() {
             @Override
-            public ResponseWrapper call(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse, AirQualityResponse airQualityResponse) {
-
+            public ResponseWrapper call(
+                    DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse,
+                    AirQualityResponse airQualityResponse, AddressResult addressResult) {
                 ResponseWrapper wrapper = new ResponseWrapper();
                 wrapper.withAirQualityResponse(airQualityResponse)
-                        .withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse);
+                        .withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse)
+                        .withAddressResult(addressResult);
                 CacheUtil.cacheWeatherForecast(context,wrapper);
-
                 notifyUserForAlertIfNecessary(wrapper,context);
 
                 return wrapper;
             }
         });
     }
+
+
+
 
     private boolean hasAlert(ResponseWrapper wrapper){
         return wrapper.getAlert() != null && !wrapper.getAlert().isEmpty();

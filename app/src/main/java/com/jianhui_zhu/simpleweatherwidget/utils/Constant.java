@@ -4,7 +4,7 @@ package com.jianhui_zhu.simpleweatherwidget.utils;
  * Created by jianhuizhu on 2017-02-10.
  */
 
-public final class WeatherConstant {
+public final class Constant {
     public static final long VALID_PERIOD = 7200000;
     public static final String MAX_TEMPERATURE = "MAX_TEMPERATURE";
     public static final String MIN_TEMPERATURE = "MIN_TEMPERATURE";
@@ -26,5 +26,6 @@ public final class WeatherConstant {
     public static final String LANGUAGE_CODE = "LANGUAGE_CODE";
     public static final String WEATHER_LIST = "WEATHER_LIST";
     public static final String AIR_QUALITY = "AIR_QUALITY";
+    public static final String ADDRESS = "ADDRESS";
     public static final String TODAY_WEATHER = "TODAY_WEATHER";
 }

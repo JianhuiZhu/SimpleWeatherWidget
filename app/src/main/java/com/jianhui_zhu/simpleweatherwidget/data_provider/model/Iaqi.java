@@ -58,35 +58,34 @@ public class Iaqi implements Parcelable
     @Expose
     
     private Wd wd;
-    public final static Parcelable.Creator<Iaqi> CREATOR = new Creator<Iaqi>() {
 
 
-        @SuppressWarnings({
-            "unchecked"
-        })
-        public Iaqi createFromParcel(Parcel in) {
-            Iaqi instance = new Iaqi();
-            instance.co = ((Co) in.readValue((Co.class.getClassLoader())));
-            instance.d = ((D) in.readValue((D.class.getClassLoader())));
-            instance.h = ((H) in.readValue((H.class.getClassLoader())));
-            instance.no2 = ((No2) in.readValue((No2.class.getClassLoader())));
-            instance.o3 = ((O3) in.readValue((O3.class.getClassLoader())));
-            instance.p = ((P) in.readValue((P.class.getClassLoader())));
-            instance.pm10 = ((Pm10) in.readValue((Pm10.class.getClassLoader())));
-            instance.pm25 = ((Pm25) in.readValue((Pm25.class.getClassLoader())));
-            instance.so2 = ((So2) in.readValue((So2.class.getClassLoader())));
-            instance.t = ((T) in.readValue((T.class.getClassLoader())));
-            instance.w = ((W) in.readValue((W.class.getClassLoader())));
-            instance.wd = ((Wd) in.readValue((Wd.class.getClassLoader())));
-            return instance;
-        }
-
-        public Iaqi[] newArray(int size) {
-            return (new Iaqi[size]);
-        }
-
+    protected Iaqi(Parcel in) {
+        co = in.readParcelable(Co.class.getClassLoader());
+        d = in.readParcelable(D.class.getClassLoader());
+        h = in.readParcelable(H.class.getClassLoader());
+        no2 = in.readParcelable(No2.class.getClassLoader());
+        o3 = in.readParcelable(O3.class.getClassLoader());
+        p = in.readParcelable(P.class.getClassLoader());
+        pm10 = in.readParcelable(Pm10.class.getClassLoader());
+        pm25 = in.readParcelable(Pm25.class.getClassLoader());
+        so2 = in.readParcelable(So2.class.getClassLoader());
+        t = in.readParcelable(T.class.getClassLoader());
+        w = in.readParcelable(W.class.getClassLoader());
+        wd = in.readParcelable(Wd.class.getClassLoader());
     }
-    ;
+
+    public static final Creator<Iaqi> CREATOR = new Creator<Iaqi>() {
+        @Override
+        public Iaqi createFromParcel(Parcel in) {
+            return new Iaqi(in);
+        }
+
+        @Override
+        public Iaqi[] newArray(int size) {
+            return new Iaqi[size];
+        }
+    };
 
     /**
      * 
@@ -304,23 +303,24 @@ public class Iaqi implements Parcelable
         this.wd = wd;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(co);
-        dest.writeValue(d);
-        dest.writeValue(h);
-        dest.writeValue(no2);
-        dest.writeValue(o3);
-        dest.writeValue(p);
-        dest.writeValue(pm10);
-        dest.writeValue(pm25);
-        dest.writeValue(so2);
-        dest.writeValue(t);
-        dest.writeValue(w);
-        dest.writeValue(wd);
-    }
-
+    @Override
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(co, flags);
+        dest.writeParcelable(d, flags);
+        dest.writeParcelable(h, flags);
+        dest.writeParcelable(no2, flags);
+        dest.writeParcelable(o3, flags);
+        dest.writeParcelable(p, flags);
+        dest.writeParcelable(pm10, flags);
+        dest.writeParcelable(pm25, flags);
+        dest.writeParcelable(so2, flags);
+        dest.writeParcelable(t, flags);
+        dest.writeParcelable(w, flags);
+        dest.writeParcelable(wd, flags);
+    }
 }

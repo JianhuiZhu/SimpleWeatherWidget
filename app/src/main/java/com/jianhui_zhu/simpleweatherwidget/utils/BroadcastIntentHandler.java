@@ -11,7 +11,7 @@ import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.CurrentDataWrapper;
 
 
-import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.*;
 
 /**
  * Created by jianhuizhu on 2017-02-07.

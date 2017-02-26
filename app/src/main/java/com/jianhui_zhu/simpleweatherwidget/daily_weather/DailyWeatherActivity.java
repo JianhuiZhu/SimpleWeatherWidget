@@ -29,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.PermissionUtil.*;
-import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.*;
 
 public class DailyWeatherActivity extends AppCompatActivity{
     ViewModelDetailActivity viewModel;

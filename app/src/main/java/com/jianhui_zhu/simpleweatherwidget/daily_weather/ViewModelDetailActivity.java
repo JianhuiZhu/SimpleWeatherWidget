@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.*;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;

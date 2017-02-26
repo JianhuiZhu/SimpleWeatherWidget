@@ -18,6 +18,11 @@
         <item name="android:textColor">@color/md_white_1000</item>
     </style>
 
+    <style name="TextViewItemTheme" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textSize">@dimen/material_english_text_body</item>
+    </style>
+
     <style name="TextViewWidgetTemperatureDetail" parent="android:Widget.TextView">
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/material_english_text_caption</item>
@@ -26,6 +31,9 @@
     <style name="TextViewHeadlineTheme" parent="android:Widget.TextView">
         <item name="android:textColor">@color/md_white_1000</item>
         <item name="android:textSize">@dimen/material_english_text_headline</item>
+    </style>
+    <style name="TextViewSubHeading" parent="TextViewHeadlineTheme">
+        <item name="android:textSize">@dimen/material_english_text_subheading</item>
     </style>
     <style name="TextViewTitleTheme" parent="android:Widget.TextView">
         <item name="android:textColor">@color/md_white_1000</item>

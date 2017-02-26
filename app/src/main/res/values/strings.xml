@@ -92,4 +92,16 @@
     <string name="very_unhealthy">Very Unhealthy</string>
     <string name="hazardous">Hazardous</string>
 
+    //Pollutant
+
+    <string name="co">Carbon monoxide</string>
+    <string name="co2">Carbon dioxide</string>
+    <string name="so2">Sulfur dioxide</string>
+    <string name="o3">Ozone</string>
+    <string name="no2">Nitrogen dioxide</string>
+    <string name="pm2.5">Particulate Matter 2.5</string>
+    <string name="pm10">Particulate Matter 10</string>
+
+
+
 </resources>

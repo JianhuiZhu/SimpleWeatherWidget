@@ -7,55 +7,9 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Pm10 implements Parcelable
+public class Pm10 extends Pollutant implements Parcelable
 {
-
-    @SerializedName("v")
-    @Expose
-    private double v;
-    public final static Parcelable.Creator<Pm10> CREATOR = new Creator<Pm10>() {
-
-
-        @SuppressWarnings({
-            "unchecked"
-        })
-        public Pm10 createFromParcel(Parcel in) {
-            Pm10 instance = new Pm10();
-            instance.v = ((double) in.readValue((double.class.getClassLoader())));
-            return instance;
-        }
-
-        public Pm10 [] newArray(int size) {
-            return (new Pm10[size]);
-        }
-
+    protected Pm10(Parcel in) {
+        super(in);
     }
-    ;
-
-    /**
-     * 
-     * @return
-     *     The v
-     */
-    public double getV() {
-        return v;
-    }
-
-    /**
-     * 
-     * @param v
-     *     The v
-     */
-    public void setV(double v) {
-        this.v = v;
-    }
-
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(v);
-    }
-
-    public int describeContents() {
-        return  0;
-    }
-
 }

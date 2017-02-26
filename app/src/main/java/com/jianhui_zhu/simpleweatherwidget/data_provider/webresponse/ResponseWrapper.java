@@ -1,5 +1,6 @@
 package com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse;
 
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Alert;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Currently;
@@ -14,6 +15,19 @@ import java.util.ArrayList;
 public class ResponseWrapper {
     private DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse;
     private AirQualityResponse airQualityResponse;
+    private AddressResult addressResult;
+
+
+
+    public ResponseWrapper withAddressResult(AddressResult addressResult) {
+        this.addressResult = addressResult;
+        return this;
+    }
+
+    public AddressResult getAddressResult() {
+        return addressResult;
+    }
+
     public ResponseWrapper withDarkSkyDailyWeatherResponse(DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse) {
         this.darkSkyWeatherForecastResponse = darkSkyWeatherForecastResponse;
         return this;

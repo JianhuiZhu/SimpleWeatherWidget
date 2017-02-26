@@ -14,7 +14,7 @@ import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.AirQualityUtil.getAirQualityBackgroundColorByAQI;
 import static com.jianhui_zhu.simpleweatherwidget.utils.AirQualityUtil.getAirQualityDescriptionByAQI;
-import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherConstant.*;
+import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.*;
 import static com.jianhui_zhu.simpleweatherwidget.utils.StringFormatUtil.getTemperatureString;
 import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil.*;
 /**

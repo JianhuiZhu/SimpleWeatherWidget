@@ -11,6 +11,6 @@ import rx.Observable;
  */
 
 public interface GeoCodingAPI {
-    @GET("/maps/api/geocode/json?latlng=40.714224,-73.961452&key=@")
+    @GET("/maps/api/geocode/json")
     Observable<GeoCodingResponse>getLocationInformationByLatLon(@Query("latlng") String latlng, @Query("key") String googleAPIKey);
 }

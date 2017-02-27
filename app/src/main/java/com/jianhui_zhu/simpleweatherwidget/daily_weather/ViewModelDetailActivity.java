@@ -21,6 +21,7 @@ import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManager;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
+import com.jianhui_zhu.simpleweatherwidget.utils.DateTimeUtil;
 import com.jianhui_zhu.simpleweatherwidget.utils.StringFormatUtil;
 import com.jianhui_zhu.simpleweatherwidget.utils.WeatherIconImageUtil;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
@@ -45,18 +46,9 @@ public class ViewModelDetailActivity {
             final DailyWeatherActivity activity,
             final Toolbar toolbar){
 
-        toolbar.setTitle(activity.getString(R.string.today));
         toolbar.setTitleTextColor(Color.WHITE);
 
         toolbar.setSubtitleTextColor(Color.WHITE);
-        locationManager.getAddressResult(activity)
-                .subscribe(new Action1<AddressResult>() {
-                    @Override
-                    public void call(AddressResult addressResult) {
-                        String location = addressResult.getFormattedAddress();
-                        toolbar.setSubtitle(location);
-                    }
-                });
 
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -96,8 +88,8 @@ public class ViewModelDetailActivity {
         adView.loadAd(adRequest);
     }
 
-    public void initTodayCardView(Context context, CardView todayCardView, TextView temperature,
-                                  TextView maxTemperature, TextView minTemperature, ImageView weatherIcon,DailyDataPoint dataPoint){
+    public void updateTodayCardViewWithData(Context context, CardView todayCardView, TextView temperature,
+                                            TextView maxTemperature, TextView minTemperature, ImageView weatherIcon, DailyDataPoint dataPoint){
 
             temperature.setText(StringFormatUtil.getTemperatureString(context, dataPoint.getTemperature()));
             maxTemperature.setText(StringFormatUtil.getTemperatureString(context,dataPoint.getTemperatureMax()));
@@ -123,6 +115,11 @@ public class ViewModelDetailActivity {
     public void refreshWeatherForecast(RecyclerView recyclerView, Intent intent, Context context){
         List<DailyDataPoint> weatherList = ((Daily)intent.getParcelableExtra(WEATHER_LIST)).getData();
         ((WeatherForecastAdapter)recyclerView.getAdapter()).updateWeatherData(weatherList,context);
+    }
+
+    public void updateToolbarWithData(Toolbar toolbar, AddressResult addressResult){
+        toolbar.setTitle(addressResult.getAddressComponents().get(0).getShortName());
+        toolbar.setSubtitle(DateTimeUtil.getDateWithProperFormat(toolbar.getContext(),System.currentTimeMillis()));
     }
 
 }

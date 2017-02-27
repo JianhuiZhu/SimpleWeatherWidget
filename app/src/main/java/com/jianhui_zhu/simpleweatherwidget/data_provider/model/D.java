@@ -9,7 +9,25 @@ import com.google.gson.annotations.SerializedName;
 
 public class D extends Pollutant implements Parcelable
 {
-    protected D(Parcel in) {
+    public static final Parcelable.Creator<D> CREATOR = new Parcelable.Creator<D>() {
+        public D createFromParcel(Parcel in) {
+            return new D(in);
+        }
+
+        public D[] newArray(int size) {
+            return new D[size];
+        }
+    };
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        super.writeToParcel(out, flags);
+    }
+
+    private D(Parcel in) {
         super(in);
     }
 }

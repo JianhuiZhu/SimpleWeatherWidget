@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.jianhui_zhu.simpleweatherwidget.R;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -62,7 +63,11 @@ public class DailyWeatherActivity extends AppCompatActivity{
                 viewModel.refreshWeatherForecast(weatherForecastRecyclerView,intent,getApplicationContext());
 
                 DailyDataPoint todayWeatherData = intent.getParcelableExtra(TODAY_WEATHER);
-                viewModel.initTodayCardView(getApplicationContext(),todayWeatherCard,todayTemperature,maxTemperature,minTemperature,todayWeatherIcon,todayWeatherData);
+                viewModel.updateTodayCardViewWithData(getApplicationContext(),todayWeatherCard,todayTemperature,maxTemperature,minTemperature,todayWeatherIcon,todayWeatherData);
+
+                AddressResult addressResult = intent.getParcelableExtra(ADDRESS);
+                viewModel.updateToolbarWithData(toolbar,addressResult);
+
                 progressDialog.dismiss();
             }
         }

@@ -1,6 +1,7 @@
 package com.jianhui_zhu.simpleweatherwidget.air_quality_detail;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Iaqi;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.PollutantWrapper;
+import com.jianhui_zhu.simpleweatherwidget.utils.ActivityFragmentUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +32,15 @@ public class AirPollutantAdapter extends RecyclerView.Adapter<AirPollutantAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        PollutantWrapper wrapper = pollutants.get(position);
-        holder.nameLabel.setText(wrapper.getName());
+        final PollutantWrapper wrapper = pollutants.get(position);
+        holder.nameLabel.setText(wrapper.getHtmlFormattedName());
         holder.value.setText(wrapper.getVelocity());
+        holder.itemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityFragmentUtil.openBrowserToShowSearchResult(v.getContext(),wrapper.getName());
+            }
+        });
     }
 
     @Override
@@ -41,6 +49,8 @@ public class AirPollutantAdapter extends RecyclerView.Adapter<AirPollutantAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.aqi_card_view)
+        CardView itemCard;
         @BindView(R.id.name_label_text_view)
         TextView nameLabel;
         @BindView(R.id.value_text_view)

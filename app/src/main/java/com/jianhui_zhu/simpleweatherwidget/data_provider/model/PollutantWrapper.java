@@ -6,33 +6,36 @@ import android.text.Spanned;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
 
-import java.math.BigDecimal;
-import java.util.Objects;
-
 /**
  * Created by jianhuizhu on 2017-02-25.
  */
 
 public class PollutantWrapper {
-    private Spanned name;
-    private Spanned velocity;
+    private final String name;
+    private final Spanned htmlFormattedName;
+    private final Spanned velocity;
     public PollutantWrapper(Context context,Pollutant pollutant){
-        setNameByPollutantType(context,pollutant);
-    }
-
-    private void setNameByPollutantType(Context context,Pollutant pollutant){
         if(pollutant instanceof Co){
-            name = Html.fromHtml(context.getString(R.string.co)+"(CO)");
+            htmlFormattedName = Html.fromHtml(context.getString(R.string.co)+"(CO)");
+            name = context.getString(R.string.co);
         }else if(pollutant instanceof No2){
-            name = Html.fromHtml(context.getString(R.string.no2)+"(NO<sub>2</sub>)");
+            htmlFormattedName = Html.fromHtml(context.getString(R.string.no2)+"(NO<sub>2</sub>)");
+            name = context.getString(R.string.no2);
         }else if(pollutant instanceof O3){
-            name = Html.fromHtml(context.getString(R.string.o3)+"(O<sub>3</sub>)");
+            htmlFormattedName = Html.fromHtml(context.getString(R.string.o3)+"(O<sub>3</sub>)");
+            name = context.getString(R.string.o3);
         }else if(pollutant instanceof So2){
-            name = Html.fromHtml(context.getString(R.string.so2)+"(SO<sub>2</sub>)");
+            htmlFormattedName = Html.fromHtml(context.getString(R.string.so2)+"(SO<sub>2</sub>)");
+            name = context.getString(R.string.so2);
         }else if(pollutant instanceof Pm10){
-            name = Html.fromHtml(context.getString(R.string.pm10)+"(PM<sub>10</sub>)");
+            htmlFormattedName = Html.fromHtml(context.getString(R.string.pm10)+"(PM<sub>10</sub>)");
+            name = context.getString(R.string.pm10);
         }else if(pollutant instanceof Pm25){
-            name = Html.fromHtml(context.getString(R.string.pm2_5)+"(PM<sub>2.5</sub>)");
+            htmlFormattedName = Html.fromHtml(context.getString(R.string.pm2_5)+"(PM<sub>2.5</sub>)");
+            name = context.getString(R.string.pm2_5);
+        }else{
+            htmlFormattedName = Html.fromHtml(pollutant.getClass().getSimpleName());
+            name = pollutant.getClass().getSimpleName();
         }
         velocity = Html.fromHtml(String.valueOf(pollutant.getV()+"μg/m<sup>3</sup>"));
     }
@@ -41,7 +44,9 @@ public class PollutantWrapper {
         return velocity;
     }
 
-    public Spanned getName() {
-        return name;
+    public Spanned getHtmlFormattedName() {
+        return htmlFormattedName;
     }
+
+    public String getName(){return name;}
 }

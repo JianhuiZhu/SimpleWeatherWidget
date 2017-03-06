@@ -6,6 +6,7 @@ import android.location.Location;
 
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManager;
 import com.jianhui_zhu.simpleweatherwidget.manager.WeatherManager;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.broadcastDetailWeatherUpdateForActivity;
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.broadcastLocationPermissionNeededForCaller;
@@ -30,7 +32,6 @@ public class WeatherDetailService extends IntentService {
     WeatherManager manager;
     LocationManager locationManager;
 
-
     private void getDetailWeatherInfoForActivity() {
         if (!isLocationPermissionGranted(this)) {
             broadcastLocationPermissionNeededForCaller(this);
@@ -40,22 +41,19 @@ public class WeatherDetailService extends IntentService {
                 public void call(Throwable throwable) {
                     throwable.printStackTrace();
                 }
-            }).flatMap(new Func1<Location, Observable<Daily>>() {
+            }).subscribe(new Action1<Location>() {
                 @Override
-                public Observable<Daily> call(Location location) {
-                    return manager.getDailyWeatherForecastByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
-                }
-            }).doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }).subscribe(new Action1<Daily>() {
-                @Override
-                public void call(Daily daily) {
-                    broadcastDetailWeatherUpdateForActivity(
-                            getApplicationContext(),
-                            daily);
+                public void call(Location location) {
+                    double lat = location.getLatitude();
+                    double lon = location.getLongitude();
+                    Observable.zip(manager.getDailyWeatherForecastByGeo(lat, lon, getApplicationContext())
+                            , manager.getAirQualityByGeo(lat, lon, getApplicationContext()), new Func2<Daily, AirQualityData, Object>() {
+                                @Override
+                                public Object call(Daily daily, AirQualityData airQualityData) {
+                                    broadcastDetailWeatherUpdateForActivity(getApplicationContext(),daily,airQualityData);
+                                    return null;
+                                }
+                            });
                 }
             });
         }

@@ -8,7 +8,9 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil;
+import com.jianhui_zhu.simpleweatherwidget.air_quality_detail.AirQualityActivity;
+import com.jianhui_zhu.simpleweatherwidget.daily_weather.DailyWeatherActivity;
+import com.jianhui_zhu.simpleweatherwidget.utils.ActivityFragmentUtil;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 
 
@@ -54,7 +56,8 @@ public class ViewModelSimpleWeather {
         Log.d(getClass().getSimpleName(),"start initSetting");
         final RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.widget_basic);
 
-        remoteViews.setOnClickPendingIntent(R.id.widget, WeatherUtil.startActivityWithPendingIntent(context));
+        remoteViews.setOnClickPendingIntent(R.id.widget, ActivityFragmentUtil.startPendingActivity(context, DailyWeatherActivity.class));
+        remoteViews.setOnClickPendingIntent(R.id.air_quality_area, ActivityFragmentUtil.startPendingActivity(context, AirQualityActivity.class));
         appWidgetManager.updateAppWidget(appWidgetIds,remoteViews);
 
     }

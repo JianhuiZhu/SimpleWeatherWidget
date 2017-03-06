@@ -8,12 +8,13 @@ import android.util.Log;
 
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerViewModelComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ViewModelModule;
+import com.jianhui_zhu.simpleweatherwidget.daily_weather.DailyWeatherActivity;
 
 import javax.inject.Inject;
 
 
+import static com.jianhui_zhu.simpleweatherwidget.utils.ActivityFragmentUtil.startPendingActivity;
 import static com.jianhui_zhu.simpleweatherwidget.utils.PermissionUtil.*;
-import static com.jianhui_zhu.simpleweatherwidget.utils.WeatherUtil.startActivityWithPendingIntent;
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.*;
 
 /**
@@ -28,7 +29,7 @@ public class SimpleWeatherReceiver extends AppWidgetProvider {
     public void onEnabled(Context context) {
         super.onEnabled(context);
         if(!isLocationPermissionGranted(context)){
-            startActivityWithPendingIntent(context);
+            startPendingActivity(context, DailyWeatherActivity.class);
         }
     }
 

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.jianhui_zhu.simpleweatherwidget"
         minSdkVersion 16
@@ -14,6 +14,7 @@ android {
         buildConfigField 'String', 'DARK_SKY_URL', '\"https://api.darksky.net\"'
         buildConfigField 'String', 'AIR_QUALITY_INDEX_URL', '\"https://api.waqi.info\"'
         buildConfigField 'String', 'GOOGLE_MAP_URL', '\"https://maps.googleapis.com\"'
+        buildConfigField 'String', 'GOOGLE_SEARCH_URL', '\"https://www.google.com/search?q=\"'
     }
     buildTypes {
         release {
@@ -48,21 +49,21 @@ dependencies {
     })
     compile 'com.google.dagger:dagger:2.5'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.5'
-    compile 'com.android.support:design:23.2.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile "com.squareup.retrofit2:adapter-rxjava:2.1.0"
     compile "com.squareup.retrofit2:converter-gson:2.1.0"
     compile 'com.google.firebase:firebase-ads:10.0.1'
-    compile "com.android.support:recyclerview-v7:23.2.0"
+    compile "com.android.support:recyclerview-v7:23.1.1"
     compile "com.squareup.okhttp3:logging-interceptor:3.5.0"
     compile 'com.jakewharton:butterknife:8.5.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.0'
     testCompile 'junit:junit:4.12'
     compile 'javax.annotation:javax.annotation-api:1.2'
     compile 'com.github.zellius:rxlocationmanager:0.1.1'
-    compile 'com.android.support:cardview-v7:23.0.+'
+    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'net.danlew:android.joda:2.9.5.1'
 
 

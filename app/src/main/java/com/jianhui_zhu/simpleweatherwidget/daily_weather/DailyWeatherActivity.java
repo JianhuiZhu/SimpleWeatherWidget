@@ -97,6 +97,7 @@ public class DailyWeatherActivity extends AppCompatActivity{
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_ACTIVITY_UPDATE);
         registerReceiver(receiver,intentFilter);
+
         progressDialog = new ProgressDialog(this);
         progressDialog.setIcon(R.drawable.ic_cloud_download);
         progressDialog.setMessage(getString(R.string.refreshing_data));

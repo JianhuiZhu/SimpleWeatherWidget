@@ -3,6 +3,7 @@ package com.jianhui_zhu.simpleweatherwidget.manager;
 
 import android.content.Context;
 
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.CurrentDataWrapper;
 
@@ -18,5 +19,5 @@ public interface WeatherManager {
 
     Observable<Daily> getDailyWeatherForecastByGeo(double lat, double lon, Context context);
 
-
+    Observable<AirQualityData> getAirQualityByGeo(double lat,double lon,Context context);
 }

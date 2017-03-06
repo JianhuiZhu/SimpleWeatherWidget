@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.AirQualityAPI;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.WeatherAPI;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Alert;
 import com.jianhui_zhu.simpleweatherwidget.utils.CacheUtil;
 import com.jianhui_zhu.simpleweatherwidget.R;
@@ -82,6 +83,23 @@ public class WeatherManagerImpl implements WeatherManager {
                             return Observable.just(responseWrapper.getDailyWeatherForecast());
                         }
                     });
+        }
+    }
+
+    @Override
+    public Observable<AirQualityData> getAirQualityByGeo(double lat, double lon, final Context context) {
+        if(!isCacheExpired(context)){
+            ResponseWrapper wrapper = getWeatherForecastFromCache(context);
+            return Observable.just(wrapper.getAirQualityData());
+        }else{
+            return getAirQualityUpdate(context,lat,lon).flatMap(new Func1<AirQualityResponse, Observable<AirQualityData>>() {
+                @Override
+                public Observable<AirQualityData> call(AirQualityResponse airQualityResponse) {
+                    ResponseWrapper wrapper = getWeatherForecastFromCache(context);
+                    wrapper.withAirQualityResponse(airQualityResponse);
+                    return Observable.just(airQualityResponse.getAirQualityData());
+                }
+            });
         }
     }
 

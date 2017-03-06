@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.jianhui_zhu.simpleweatherwidget.background_service.WeatherDetailService;
 import com.jianhui_zhu.simpleweatherwidget.background_service.WidgetService;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.CurrentDataWrapper;
@@ -53,7 +54,7 @@ public final class BroadcastIntentHandler {
         context.sendBroadcast(intent);
     }
 
-    public static void broadcastDetailWeatherUpdateForActivity(Context context,Daily daily){
+    public static void broadcastDetailWeatherUpdateForActivity(Context context, Daily daily, AirQualityData airQualityData){
         Intent intent = new Intent(ACTION_ACTIVITY_UPDATE);
         Log.d(BroadcastIntentHandler.class.getSimpleName(),"start check daily data");
 
@@ -67,6 +68,8 @@ public final class BroadcastIntentHandler {
             }
         }
         intent.putExtra(WEATHER_LIST,daily);
+        intent.putExtra(AIR_QUALITY,airQualityData);
+
 
         Log.d("Daily data",daily.toString());
 

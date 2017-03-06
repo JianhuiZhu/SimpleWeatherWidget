@@ -1,8 +1,14 @@
 package com.jianhui_zhu.simpleweatherwidget.utils;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
+import com.jianhui_zhu.simpleweatherwidget.air_quality_detail.AirQualityActivity;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
+
+import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.AIR_QUALITY;
 
 /**
  * Created by jianhuizhu on 2017-02-17.
@@ -45,4 +51,5 @@ public class AirQualityUtil {
             return context.getResources().getColor(R.color.aqi_good);
         }
     }
+
 }

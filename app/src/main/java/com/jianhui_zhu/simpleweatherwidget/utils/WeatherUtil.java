@@ -62,16 +62,6 @@ public final class WeatherUtil {
     }
 
 
-    public static PendingIntent startActivityWithPendingIntent(@NonNull Context context) {
-        Intent intent = new Intent(context, DailyWeatherActivity.class);
-
-        if(!PermissionUtil.isLocationPermissionGranted(context)){
-            intent.setAction(ACTION_REQUEST_PERMISSION);
-        }
-
-        return PendingIntent.getActivity(context, 0, intent, 0);
-    }
-
     public static String getWindSpeedString(Context context, double windSpeed){
         if(isWindSpeedDisplayMperSByDefault(context)){
             BigDecimal windSpeedValue = new BigDecimal(windSpeed);

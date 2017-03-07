@@ -1,6 +1,5 @@
 package com.jianhui_zhu.simpleweatherwidget.dagger;
 
-import com.jianhui_zhu.simpleweatherwidget.daily_weather.ViewModelDetailActivity;
 import com.jianhui_zhu.simpleweatherwidget.widget.ViewModelSimpleWeather;
 
 import dagger.Module;

@@ -3,10 +3,13 @@ package com.jianhui_zhu.simpleweatherwidget.background_service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Parcelable;
 
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.DetailWeatherWrapper;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManager;
 import com.jianhui_zhu.simpleweatherwidget.manager.WeatherManager;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
@@ -46,14 +49,20 @@ public class WeatherDetailService extends IntentService {
                 public void call(Location location) {
                     double lat = location.getLatitude();
                     double lon = location.getLongitude();
-                    Observable.zip(manager.getDailyWeatherForecastByGeo(lat, lon, getApplicationContext())
-                            , manager.getAirQualityByGeo(lat, lon, getApplicationContext()), new Func2<Daily, AirQualityData, Object>() {
+                    Observable.zip(
+                            manager.getDailyWeatherForecastByGeo(lat, lon, getApplicationContext())
+                            , locationManager.getAddressResult(getApplicationContext(), lat, lon)
+                            , new Func2<Daily, AddressResult, DetailWeatherWrapper>() {
                                 @Override
-                                public Object call(Daily daily, AirQualityData airQualityData) {
-                                    broadcastDetailWeatherUpdateForActivity(getApplicationContext(),daily,airQualityData);
-                                    return null;
+                                public DetailWeatherWrapper call(Daily daily, AddressResult addressResult) {
+                                    return new DetailWeatherWrapper(daily,addressResult);
                                 }
-                            });
+                            }).subscribe(new Action1<DetailWeatherWrapper>() {
+                        @Override
+                        public void call(DetailWeatherWrapper wrapper) {
+                            broadcastDetailWeatherUpdateForActivity(getApplicationContext(),wrapper);
+                        }
+                    });
                 }
             });
         }

@@ -75,22 +75,25 @@ public class LocationManagerImpl implements com.jianhui_zhu.simpleweatherwidget.
     public Observable<AddressResult> getAddressResult(final Context context) {
         Location location = getAnyLastKnownLocation();
         if(location != null){
-            return queryAddressResult(location,context);
+            return queryAddressResult(location.getLatitude(),location.getLongitude(),context);
         }else{
             return requestLocationUpdate().flatMap(new Func1<Location, Observable<AddressResult>>() {
                 @Override
                 public Observable<AddressResult> call(Location location) {
-                    if(location != null){
-                        return queryAddressResult(location,context);
-                    }
-                    return null;
+                        return queryAddressResult(location.getLatitude(),location.getLongitude(),context);
                 }
             });
         }
     }
 
-    private Observable<AddressResult> queryAddressResult(Location location,Context context){
-        String latlng = weatherLocationStringBuilder(location.getLatitude(),location.getLongitude());
+    @Override
+    public Observable<AddressResult> getAddressResult(Context context, double lat, double lon) {
+        return queryAddressResult(lat,lon,context);
+    }
+
+
+    private Observable<AddressResult> queryAddressResult(double lat, double lon,Context context){
+        String latlng = weatherLocationStringBuilder(lat,lon);
         return geoCodingAPI.getLocationInformationByLatLon(latlng, context.getString(R.string.googlemapapikey))
                 .flatMap(new Func1<GeoCodingResponse, Observable<AddressResult>>() {
                     @Override

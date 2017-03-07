@@ -12,11 +12,12 @@
         android:theme="@style/AppTheme">
         <activity android:name=".daily_weather.DailyWeatherActivity">
         </activity>
+        <activity android:name=".air_quality_detail.AirQualityActivity"/>
         <receiver android:name=".widget.SimpleWeatherReceiver" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="action_widget_update"/>
-                <action android:name="action_activity_update"/>
+                <action android:name="action_weather_activity_update"/>
                 <action android:name="action_query_detail"/>
                 <action android:name="action_query_brief"/>
             </intent-filter>
@@ -26,6 +27,7 @@
 
         <service android:name=".background_service.WidgetService"/>
         <service android:name=".background_service.WeatherDetailService"/>
+        <service android:name=".background_service.AirQualityService"/>
     </application>
 
 </manifest>

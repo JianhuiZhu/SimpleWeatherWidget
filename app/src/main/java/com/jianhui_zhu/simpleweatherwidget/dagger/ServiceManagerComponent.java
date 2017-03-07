@@ -1,8 +1,9 @@
 package com.jianhui_zhu.simpleweatherwidget.dagger;
 
+import com.jianhui_zhu.simpleweatherwidget.background_service.AirQualityService;
 import com.jianhui_zhu.simpleweatherwidget.background_service.WeatherDetailService;
 import com.jianhui_zhu.simpleweatherwidget.background_service.WidgetService;
-import com.jianhui_zhu.simpleweatherwidget.daily_weather.ViewModelDetailActivity;
+import com.jianhui_zhu.simpleweatherwidget.daily_weather.ViewModelDailyWeatherActivity;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
 
 import dagger.Component;
@@ -14,6 +15,7 @@ import dagger.Component;
 public interface ServiceManagerComponent {
     void inject(WidgetService service);
     void inject(WeatherDetailService service);
+    void inject(AirQualityService service);
     void inject(LocationManagerImpl manager);
-    void inject(ViewModelDetailActivity viewModelDetailActivity);
+    void inject(ViewModelDailyWeatherActivity viewModelDailyWeatherActivity);
 }

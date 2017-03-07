@@ -1,7 +1,10 @@
 package com.jianhui_zhu.simpleweatherwidget.air_quality_detail;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +12,16 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.jianhui_zhu.simpleweatherwidget.R;
-import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
+import com.jianhui_zhu.simpleweatherwidget.utils.ProgressDialogWrapper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.ADDRESS;
+import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.ACTION_AIR_QUALITY_ACTIVITY_UPDATE;
+import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.ACTION_WEATHER_ACTIVITY_UPDATE;
+import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.isAirQualityUpdateForActivity;
+import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.startServiceForAirQualityUpdateRequest;
 import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.AIR_QUALITY;
 
 /**
@@ -38,16 +44,43 @@ public class AirQualityActivity extends AppCompatActivity {
     @BindView(R.id.pollutants_recycler_view)
     RecyclerView pollutantsList;
     ViewModelAirQuality viewModel = new ViewModelAirQuality();
+    ProgressDialogWrapper progressDialog;
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(isAirQualityUpdateForActivity(intent)){
+                AirQualityData data = getIntent().getParcelableExtra(AIR_QUALITY);
+
+                viewModel.initPollutantsList(getApplicationContext(),data.getIaqi(),pollutantsList);
+                viewModel.initLocationInfo(getApplicationContext(),locationName,locationTime,data.getCity());
+                viewModel.initAQIInfo(getApplicationContext(),aqiNumber,aqiDescription,data.getAqi());
+                progressDialog.dismiss();
+            }
+        }
+    };
+
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_air_quality_detail);
         ButterKnife.bind(this);
+    }
 
-        AirQualityData data = getIntent().getParcelableExtra(AIR_QUALITY);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_AIR_QUALITY_ACTIVITY_UPDATE);
+        registerReceiver(receiver,intentFilter);
 
-        viewModel.initPollutantsList(this,data.getIaqi(),pollutantsList);
-        viewModel.initLocationInfo(this,locationName,locationTime,data.getCity());
-        viewModel.initAQIInfo(this,aqiNumber,aqiDescription,data.getAqi());
+
+        startServiceForAirQualityUpdateRequest(this);
+        progressDialog = new ProgressDialogWrapper(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 }

@@ -4,13 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.jianhui_zhu.simpleweatherwidget.background_service.AirQualityService;
 import com.jianhui_zhu.simpleweatherwidget.background_service.WeatherDetailService;
 import com.jianhui_zhu.simpleweatherwidget.background_service.WidgetService;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.Daily;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.CurrentDataWrapper;
+import com.jianhui_zhu.simpleweatherwidget.data_provider.webresponse.DetailWeatherWrapper;
 
+
+import javax.inject.Inject;
 
 import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.*;
 
@@ -20,7 +25,8 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.*;
 
 public final class BroadcastIntentHandler {
     public static final String ACTION_WIDGET_UPDATE = "action_widget_update";
-    public static final String ACTION_ACTIVITY_UPDATE = "action_activity_update";
+    public static final String ACTION_WEATHER_ACTIVITY_UPDATE = "action_weather_activity_update";
+    public static final String ACTION_AIR_QUALITY_ACTIVITY_UPDATE = "action_air_quality_activity_update";
     public static final String ACTION_QUERY_BRIEF = "action_query_brief";
     public static final String ACTION_QUERY_DETAIL = "action_query_detail";
     public static final String ACTION_REQUEST_PERMISSION = "action_request_permission";
@@ -40,7 +46,11 @@ public final class BroadcastIntentHandler {
         return intent.getAction() != null && intent.getAction().equals(ACTION_WIDGET_UPDATE);
     }
     public static boolean isWeatherUpdateForActivity(Intent intent){
-        return intent.getAction() != null && intent.getAction().equals(ACTION_ACTIVITY_UPDATE);
+        return intent.getAction() != null && intent.getAction().equals(ACTION_WEATHER_ACTIVITY_UPDATE);
+    }
+
+    public static boolean isAirQualityUpdateForActivity(Intent intent){
+        return intent.getAction() != null && intent.getAction().equals(ACTION_AIR_QUALITY_ACTIVITY_UPDATE);
     }
 
     public static void broadcastBriefWeatherUpdateForWidget(Context context,CurrentDataWrapper currently){
@@ -54,10 +64,11 @@ public final class BroadcastIntentHandler {
         context.sendBroadcast(intent);
     }
 
-    public static void broadcastDetailWeatherUpdateForActivity(Context context, Daily daily, AirQualityData airQualityData){
-        Intent intent = new Intent(ACTION_ACTIVITY_UPDATE);
+    public static void broadcastDetailWeatherUpdateForActivity(Context context, DetailWeatherWrapper wrapper){
+        Intent intent = new Intent(ACTION_WEATHER_ACTIVITY_UPDATE);
         Log.d(BroadcastIntentHandler.class.getSimpleName(),"start check daily data");
-
+        Daily daily = wrapper.getDaily();
+        AddressResult addressResult = wrapper.getAddressResult();
         for(int index = 0; index<daily.getData().size(); index++){
             DailyDataPoint dataPoint = daily.getData().get(index);
             if(DateTimeUtil.isToday(dataPoint.getTime())){
@@ -68,13 +79,19 @@ public final class BroadcastIntentHandler {
             }
         }
         intent.putExtra(WEATHER_LIST,daily);
-        intent.putExtra(AIR_QUALITY,airQualityData);
-
+        intent.putExtra(ADDRESS,addressResult);
 
         Log.d("Daily data",daily.toString());
 
         context.sendBroadcast(intent);
     }
+
+    public static void broadcastAirQualityUpdate(Context context, AirQualityData data){
+        Intent intent = new Intent(ACTION_AIR_QUALITY_ACTIVITY_UPDATE);
+        intent.putExtra(AIR_QUALITY,data);
+        context.sendBroadcast(intent);
+    }
+
     public static void broadcastLocationPermissionNeededForCaller(Context context){
         Intent intent = new Intent(LOCATION_PERMISSION_NEEDED);
         context.sendBroadcast(intent);
@@ -87,4 +104,10 @@ public final class BroadcastIntentHandler {
         Intent intent = new Intent(context,WeatherDetailService.class);
         context.startService(intent);
     }
+
+    public static void startServiceForAirQualityUpdateRequest(Context context){
+        Intent intent = new Intent(context, AirQualityService.class);
+        context.startService(intent);
+    }
+
 }

@@ -16,4 +16,6 @@ public interface LocationManager {
     Observable<Location> getLocation();
 
     Observable<AddressResult> getAddressResult(Context context);
+
+    Observable<AddressResult> getAddressResult(Context context,double lat, double lon);
 }

@@ -3,6 +3,8 @@ package com.jianhui_zhu.simpleweatherwidget.daily_weather;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,10 +37,10 @@ import rx.functions.Action1;
  * Created by jianhuizhu on 2017-02-07.
  */
 
-public class ViewModelDetailActivity {
+public class ViewModelDailyWeatherActivity {
     private LocationManager locationManager;
 
-    public ViewModelDetailActivity(Context context){
+    public ViewModelDailyWeatherActivity(Context context){
         locationManager = new LocationManagerImpl(context);
     }
 
@@ -98,6 +100,8 @@ public class ViewModelDetailActivity {
             String weatherCode = dataPoint.getIcon();
         try {
             int weatherId = WeatherIconImageUtil.getIconIdByWeatherIconCode(weatherCode);
+            Drawable weatherDrawable = context.getResources().getDrawable(weatherId);
+            weatherDrawable.setColorFilter(context.getResources().getColor(R.color.md_white_1000),PorterDuff.Mode.DST_IN);
             weatherIcon.setImageResource(weatherId);
 
         } catch (Exception e) {
@@ -118,7 +122,7 @@ public class ViewModelDetailActivity {
     }
 
     public void updateToolbarWithData(Toolbar toolbar, AddressResult addressResult){
-        toolbar.setTitle(addressResult.getAddressComponents().get(0).getShortName());
+        toolbar.setTitle(addressResult.getFormattedAddress());
         toolbar.setSubtitle(DateTimeUtil.getDateWithProperFormat(toolbar.getContext(),System.currentTimeMillis()));
     }
 

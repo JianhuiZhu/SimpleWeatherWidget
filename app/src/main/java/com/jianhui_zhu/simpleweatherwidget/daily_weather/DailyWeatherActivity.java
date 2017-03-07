@@ -21,6 +21,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AddressResult;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.DailyDataPoint;
+import com.jianhui_zhu.simpleweatherwidget.utils.ProgressDialogWrapper;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -33,7 +34,7 @@ import static com.jianhui_zhu.simpleweatherwidget.utils.PermissionUtil.*;
 import static com.jianhui_zhu.simpleweatherwidget.utils.Constant.*;
 
 public class DailyWeatherActivity extends AppCompatActivity{
-    ViewModelDetailActivity viewModel;
+    ViewModelDailyWeatherActivity viewModel;
     private long lastUpdate = 0;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -72,7 +73,7 @@ public class DailyWeatherActivity extends AppCompatActivity{
             }
         }
     };
-    ProgressDialog progressDialog;
+    ProgressDialogWrapper progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class DailyWeatherActivity extends AppCompatActivity{
         if(isAcquiringPermission(getIntent())) {
             getPermissionRequestDialog(this).show();
         }
-        viewModel = new ViewModelDetailActivity(this);
+        viewModel = new ViewModelDailyWeatherActivity(this);
         viewModel.initToolbar(this,toolbar);
         viewModel.initRecyclerView(this,weatherForecastRecyclerView);
         viewModel.initAdView(adView);
@@ -95,25 +96,14 @@ public class DailyWeatherActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ACTION_ACTIVITY_UPDATE);
+        intentFilter.addAction(ACTION_WEATHER_ACTIVITY_UPDATE);
         registerReceiver(receiver,intentFilter);
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIcon(R.drawable.ic_cloud_download);
-        progressDialog.setMessage(getString(R.string.refreshing_data));
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
 
-        requestUpdateWhenExpired();
+        progressDialog = new ProgressDialogWrapper(this);
+        startServiceForDetailWeatherUpdateRequest(this);
     }
 
-    private void requestUpdateWhenExpired(){
-        if((System.currentTimeMillis() - lastUpdate) > VALID_PERIOD){
-            startServiceForDetailWeatherUpdateRequest(this);
-        }else{
-            progressDialog.dismiss();
-        }
-    }
 
 
     @Override

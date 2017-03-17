@@ -39,31 +39,16 @@ public class WeatherDetailService extends IntentService {
         if (!isLocationPermissionGranted(this)) {
             broadcastLocationPermissionNeededForCaller(this);
         } else {
-            locationManager.getLocation().doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }).subscribe(new Action1<Location>() {
-                @Override
-                public void call(Location location) {
-                    double lat = location.getLatitude();
-                    double lon = location.getLongitude();
-                    Observable.zip(
-                            manager.getDailyWeatherForecastByGeo(lat, lon, getApplicationContext())
-                            , locationManager.getAddressResult(getApplicationContext(), lat, lon)
-                            , new Func2<Daily, AddressResult, DetailWeatherWrapper>() {
-                                @Override
-                                public DetailWeatherWrapper call(Daily daily, AddressResult addressResult) {
-                                    return new DetailWeatherWrapper(daily,addressResult);
-                                }
-                            }).subscribe(new Action1<DetailWeatherWrapper>() {
-                        @Override
-                        public void call(DetailWeatherWrapper wrapper) {
-                            broadcastDetailWeatherUpdateForActivity(getApplicationContext(),wrapper);
-                        }
-                    });
-                }
+            locationManager.getLocation()
+                    .doOnError(Throwable::printStackTrace).subscribe(location -> {
+                double lat = location.getLatitude();
+                double lon = location.getLongitude();
+                Observable.zip(
+                        manager.getDailyWeatherForecastByGeo(lat, lon, getApplicationContext())
+                        , locationManager.getAddressResult(getApplicationContext(), lat, lon)
+                        , DetailWeatherWrapper::new)
+                        .subscribe(
+                                wrapper -> broadcastDetailWeatherUpdateForActivity(getApplicationContext(),wrapper));
             });
         }
     }

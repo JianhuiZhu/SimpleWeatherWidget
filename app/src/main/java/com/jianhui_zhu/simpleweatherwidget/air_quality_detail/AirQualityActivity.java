@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.jianhui_zhu.simpleweatherwidget.R;
 import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.utils.ProgressDialogWrapper;
@@ -51,6 +53,8 @@ public class AirQualityActivity extends AppCompatActivity {
             if(isAirQualityUpdateForActivity(intent)){
                 AirQualityData data = getIntent().getParcelableExtra(AIR_QUALITY);
 
+                Gson gson = new Gson();
+                Log.d("Test result",gson.toJson(data));
                 viewModel.initPollutantsList(getApplicationContext(),data.getIaqi(),pollutantsList);
                 viewModel.initLocationInfo(getApplicationContext(),locationName,locationTime,data.getCity());
                 viewModel.initAQIInfo(getApplicationContext(),aqiNumber,aqiDescription,data.getAqi());

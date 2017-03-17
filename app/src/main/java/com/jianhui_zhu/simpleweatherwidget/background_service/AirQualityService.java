@@ -7,16 +7,11 @@ import android.support.annotation.Nullable;
 
 import com.jianhui_zhu.simpleweatherwidget.dagger.DaggerServiceManagerComponent;
 import com.jianhui_zhu.simpleweatherwidget.dagger.ManagerModule;
-import com.jianhui_zhu.simpleweatherwidget.data_provider.model.AirQualityData;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManager;
 import com.jianhui_zhu.simpleweatherwidget.manager.LocationManagerImpl;
 import com.jianhui_zhu.simpleweatherwidget.manager.WeatherManager;
 import static com.jianhui_zhu.simpleweatherwidget.utils.BroadcastIntentHandler.broadcastAirQualityUpdate;
 import javax.inject.Inject;
-
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 /**
  * Created by jianhuizhu on 2017-03-07.
@@ -30,18 +25,8 @@ public class AirQualityService extends IntentService {
     private void getAirQualityUpdateForActivity(){
         locationManager
                 .getLocation()
-                .flatMap(new Func1<Location, Observable<AirQualityData>>() {
-                    @Override
-                    public Observable<AirQualityData> call(Location location) {
-                        return manager.getAirQualityByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
-                    }
-                })
-                .subscribe(new Action1<AirQualityData>() {
-                    @Override
-                    public void call(AirQualityData airQualityData) {
-                        broadcastAirQualityUpdate(getApplicationContext(),airQualityData);
-                    }
-                });
+                .flatMap(location ->manager.getAirQualityByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext()))
+                .subscribe(airQualityData -> broadcastAirQualityUpdate(getApplicationContext(),airQualityData));
     }
 
     /**

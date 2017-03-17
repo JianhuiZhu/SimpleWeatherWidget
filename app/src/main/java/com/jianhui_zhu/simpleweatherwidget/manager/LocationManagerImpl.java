@@ -53,12 +53,9 @@ public class LocationManagerImpl implements com.jianhui_zhu.simpleweatherwidget.
 
     private Observable<Location> requestLocationUpdate() {
         return rxLocationManager.requestLocation(LocationManager.GPS_PROVIDER)
-                .onErrorResumeNext(new Func1<Throwable, Observable<? extends Location>>() {
-                    @Override
-                    public Observable<? extends Location> call(Throwable throwable) {
-                        throwable.printStackTrace();
-                        return rxLocationManager.requestLocation(LocationManager.NETWORK_PROVIDER);
-                    }
+                .onErrorResumeNext(throwable -> {
+                    throwable.printStackTrace();
+                    return rxLocationManager.requestLocation(LocationManager.NETWORK_PROVIDER);
                 });
     }
     @Override
@@ -77,12 +74,8 @@ public class LocationManagerImpl implements com.jianhui_zhu.simpleweatherwidget.
         if(location != null){
             return queryAddressResult(location.getLatitude(),location.getLongitude(),context);
         }else{
-            return requestLocationUpdate().flatMap(new Func1<Location, Observable<AddressResult>>() {
-                @Override
-                public Observable<AddressResult> call(Location location) {
-                        return queryAddressResult(location.getLatitude(),location.getLongitude(),context);
-                }
-            });
+            return requestLocationUpdate()
+                    .flatMap(updatedLocation -> queryAddressResult(updatedLocation.getLatitude(),updatedLocation.getLongitude(),context) );
         }
     }
 
@@ -95,19 +88,7 @@ public class LocationManagerImpl implements com.jianhui_zhu.simpleweatherwidget.
     private Observable<AddressResult> queryAddressResult(double lat, double lon,Context context){
         String latlng = weatherLocationStringBuilder(lat,lon);
         return geoCodingAPI.getLocationInformationByLatLon(latlng, context.getString(R.string.googlemapapikey))
-                .flatMap(new Func1<GeoCodingResponse, Observable<AddressResult>>() {
-                    @Override
-                    public Observable<AddressResult> call(GeoCodingResponse geoCodingResponse) {
-                        if(geoCodingResponse.getStatus().equals(OK)){
-                            return Observable.just(geoCodingResponse.getResults().get(0));
-                        }
-                        return null;
-                    }
-                }).doOnError(new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-                });
+                .flatMap(geoCodingResponse -> Observable.just(geoCodingResponse.getResults().get(0)))
+                .doOnError(Throwable::printStackTrace);
     }
 }

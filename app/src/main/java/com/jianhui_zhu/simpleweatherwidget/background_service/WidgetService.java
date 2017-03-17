@@ -34,29 +34,13 @@ public class WidgetService extends IntentService {
             broadcastLocationPermissionNeededForCaller(this);
 
         } else {
-            locationManager.getLocation().doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }).flatMap(new Func1<Location, Observable<CurrentDataWrapper>>() {
-                @Override
-                public Observable<CurrentDataWrapper> call(Location location) {
-                    return manager.getCurrentWeatherByGeo(location.getLatitude(),location.getLongitude(),getApplicationContext());
-                }
-            }).doOnError(new Action1<Throwable>() {
-                @Override
-                public void call(Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }).subscribe(new Action1<CurrentDataWrapper>() {
-                @Override
-                public void call(CurrentDataWrapper currently) {
-                    broadcastBriefWeatherUpdateForWidget(
-                            getApplicationContext(),
-                            currently);
-                }
-            });
+            locationManager.getLocation().doOnError(Throwable::printStackTrace)
+                    .flatMap(location -> manager.getCurrentWeatherByGeo(
+                            location.getLatitude(),location.getLongitude(),getApplicationContext()))
+                    .doOnError(Throwable::printStackTrace)
+                    .subscribe(currently -> broadcastBriefWeatherUpdateForWidget(
+                    getApplicationContext(),
+                    currently));
         }
     }
     /**

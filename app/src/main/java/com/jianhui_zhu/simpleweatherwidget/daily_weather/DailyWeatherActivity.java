@@ -86,7 +86,7 @@ public class DailyWeatherActivity extends AppCompatActivity{
         if(isAcquiringPermission(getIntent())) {
             getPermissionRequestDialog(this).show();
         }
-        viewModel = new ViewModelDailyWeatherActivity(this);
+        viewModel = new ViewModelDailyWeatherActivity();
         viewModel.initToolbar(this,toolbar);
         viewModel.initRecyclerView(this,weatherForecastRecyclerView);
         viewModel.initAdView(adView);

@@ -38,11 +38,8 @@ import rx.functions.Action1;
  */
 
 public class ViewModelDailyWeatherActivity {
-    private LocationManager locationManager;
 
-    public ViewModelDailyWeatherActivity(Context context){
-        locationManager = new LocationManagerImpl(context);
-    }
+
 
     public void initToolbar(
             final DailyWeatherActivity activity,
@@ -54,26 +51,18 @@ public class ViewModelDailyWeatherActivity {
 
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> activity.finish());
         toolbar.inflateMenu(R.menu.detail_menu);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if(item.getItemId() == R.id.setting_option){
-                    activity.getFragmentManager()
-                            .beginTransaction()
-                            .addToBackStack(WeatherPreferenceFragment.class.getSimpleName())
-                            .replace(R.id.activity_detail,new WeatherPreferenceFragment())
-                            .commit();
-                    return true;
-                }
-                return false;
+        toolbar.setOnMenuItemClickListener(item -> {
+            if(item.getItemId() == R.id.setting_option){
+                activity.getFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack(WeatherPreferenceFragment.class.getSimpleName())
+                        .replace(R.id.activity_detail,new WeatherPreferenceFragment())
+                        .commit();
+                return true;
             }
+            return false;
         });
 
 

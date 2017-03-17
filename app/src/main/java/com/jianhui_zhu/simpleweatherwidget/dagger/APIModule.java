@@ -58,12 +58,7 @@ public class APIModule {
     @Provides
     public Retrofit.Builder providesRetrofit() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(
-                new HttpLoggingInterceptor.Logger() {
-                    @Override
-                    public void log(String message) {
-                        Log.d("OKHttp", message);
-                    }
-                })
+                message -> Log.d("OKHttp", message))
                 .setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient httpClient = new OkHttpClient
                 .Builder()

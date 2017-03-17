@@ -35,12 +35,7 @@ public class AirPollutantAdapter extends RecyclerView.Adapter<AirPollutantAdapte
         final PollutantWrapper wrapper = pollutants.get(position);
         holder.nameLabel.setText(wrapper.getHtmlFormattedName());
         holder.value.setText(wrapper.getVelocity());
-        holder.itemCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityFragmentUtil.openBrowserToShowSearchResult(v.getContext(),wrapper.getName());
-            }
-        });
+        holder.itemCard.setOnClickListener(v -> ActivityFragmentUtil.openBrowserToShowSearchResult(v.getContext(),wrapper.getName()));
     }
 
     @Override

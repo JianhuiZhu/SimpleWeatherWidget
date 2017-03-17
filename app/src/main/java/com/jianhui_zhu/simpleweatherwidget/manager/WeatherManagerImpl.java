@@ -59,14 +59,9 @@ public class WeatherManagerImpl implements WeatherManager {
             return Observable.just(currentDataWrapper);
         }else{
             return getWeatherAndAirQualityWithGeo(lat,lon,context)
-                    .flatMap(new Func1<ResponseWrapper, Observable<CurrentDataWrapper>>() {
-                        @Override
-                        public Observable<CurrentDataWrapper> call(ResponseWrapper wrapper) {
-                            return Observable.just(new CurrentDataWrapper()
-                                    .withCurrently(wrapper.getCurrentWeatherForecast())
-                                    .withAirQualityData(wrapper.getAirQualityData()));
-                        }
-                    });
+                    .flatMap(responseWrapper -> Observable.just(new CurrentDataWrapper()
+                            .withAirQualityData(responseWrapper.getAirQualityData())
+                    .withCurrently(responseWrapper.getCurrentWeatherForecast())));
         }
     }
 
@@ -77,12 +72,8 @@ public class WeatherManagerImpl implements WeatherManager {
             return Observable.just(wrapper.getDailyWeatherForecast());
         }else{
             return getWeatherAndAirQualityWithGeo(lat,lon,context)
-                    .flatMap(new Func1<ResponseWrapper, Observable<Daily>>() {
-                        @Override
-                        public Observable<Daily> call(ResponseWrapper responseWrapper) {
-                            return Observable.just(responseWrapper.getDailyWeatherForecast());
-                        }
-                    });
+                    .flatMap(wrapper -> Observable.just(wrapper.getDailyWeatherForecast()));
+
         }
     }
 
@@ -121,21 +112,16 @@ public class WeatherManagerImpl implements WeatherManager {
                 .zip(getWeatherForecastUpdate(context, lat, lon),
                         getAirQualityUpdate(context, lat, lon),
                         locationManager.getAddressResult(context),
-                        new Func3<DarkSkyWeatherForecastResponse, AirQualityResponse, AddressResult, ResponseWrapper>() {
-            @Override
-            public ResponseWrapper call(
-                    DarkSkyWeatherForecastResponse darkSkyWeatherForecastResponse,
-                    AirQualityResponse airQualityResponse, AddressResult addressResult) {
-                ResponseWrapper wrapper = new ResponseWrapper();
-                wrapper.withAirQualityResponse(airQualityResponse)
-                        .withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse)
-                        .withAddressResult(addressResult);
-                CacheUtil.cacheWeatherForecast(context,wrapper);
-                notifyUserForAlertIfNecessary(wrapper,context);
+                        (darkSkyWeatherForecastResponse, airQualityResponse, addressResult) -> {
+                            ResponseWrapper wrapper = new ResponseWrapper();
+                            wrapper.withAirQualityResponse(airQualityResponse)
+                                    .withDarkSkyDailyWeatherResponse(darkSkyWeatherForecastResponse)
+                                    .withAddressResult(addressResult);
+                            CacheUtil.cacheWeatherForecast(context,wrapper);
+                            notifyUserForAlertIfNecessary(wrapper,context);
 
-                return wrapper;
-            }
-        });
+                            return wrapper;
+                        });
     }
 
 

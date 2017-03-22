@@ -39,4 +39,7 @@
 
     //today card
     <dimen name="today_card_height">128dp</dimen>
+
+    //item card
+    <dimen name="item_height">56dp</dimen>
 </resources>

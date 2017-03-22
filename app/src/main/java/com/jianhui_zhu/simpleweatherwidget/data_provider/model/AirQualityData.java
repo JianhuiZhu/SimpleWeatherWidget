@@ -32,30 +32,29 @@ public class AirQualityData implements Parcelable
     @SerializedName("time")
     @Expose
     private Time time;
-    public final static Parcelable.Creator<AirQualityData> CREATOR = new Creator<AirQualityData>() {
 
 
-        @SuppressWarnings({
-            "unchecked"
-        })
-        public AirQualityData createFromParcel(Parcel in) {
-            AirQualityData instance = new AirQualityData();
-            instance.aqi = ((int) in.readValue((int.class.getClassLoader())));
-            instance.idx = ((int) in.readValue((int.class.getClassLoader())));
-            in.readList(instance.attributions, (com.jianhui_zhu.simpleweatherwidget.data_provider.model.Attribution.class.getClassLoader()));
-            instance.city = ((City) in.readValue((City.class.getClassLoader())));
-            instance.dominentpol = ((String) in.readValue((String.class.getClassLoader())));
-            instance.iaqi = ((Iaqi) in.readValue((Iaqi.class.getClassLoader())));
-            instance.time = ((Time) in.readValue((Time.class.getClassLoader())));
-            return instance;
-        }
-
-        public AirQualityData[] newArray(int size) {
-            return (new AirQualityData[size]);
-        }
-
+    protected AirQualityData(Parcel in) {
+        aqi = in.readInt();
+        idx = in.readInt();
+        attributions = in.createTypedArrayList(Attribution.CREATOR);
+        city = in.readParcelable(City.class.getClassLoader());
+        dominentpol = in.readString();
+        iaqi = in.readParcelable(Iaqi.class.getClassLoader());
+        time = in.readParcelable(Time.class.getClassLoader());
     }
-    ;
+
+    public static final Creator<AirQualityData> CREATOR = new Creator<AirQualityData>() {
+        @Override
+        public AirQualityData createFromParcel(Parcel in) {
+            return new AirQualityData(in);
+        }
+
+        @Override
+        public AirQualityData[] newArray(int size) {
+            return new AirQualityData[size];
+        }
+    };
 
     /**
      * 
@@ -183,18 +182,20 @@ public class AirQualityData implements Parcelable
         this.time = time;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(aqi);
-        dest.writeValue(idx);
-        dest.writeList(attributions);
-        dest.writeValue(city);
-        dest.writeValue(dominentpol);
-        dest.writeValue(iaqi);
-        dest.writeValue(time);
-    }
 
+    @Override
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(aqi);
+        dest.writeInt(idx);
+        dest.writeTypedList(attributions);
+        dest.writeParcelable(city, flags);
+        dest.writeString(dominentpol);
+        dest.writeParcelable(iaqi, flags);
+        dest.writeParcelable(time, flags);
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.jianhui_zhu.simpleweatherwidget.background_service.AirQualityService;
 import com.jianhui_zhu.simpleweatherwidget.background_service.WeatherDetailService;
 import com.jianhui_zhu.simpleweatherwidget.background_service.WidgetService;

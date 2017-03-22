@@ -51,7 +51,7 @@ public class AirQualityActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(isAirQualityUpdateForActivity(intent)){
-                AirQualityData data = getIntent().getParcelableExtra(AIR_QUALITY);
+                AirQualityData data = intent.getParcelableExtra(AIR_QUALITY);
 
                 Gson gson = new Gson();
                 Log.d("Test result",gson.toJson(data));

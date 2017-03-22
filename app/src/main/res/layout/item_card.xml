@@ -10,7 +10,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="@dimen/material_default_spacing"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 <TextView
     android:id="@+id/name_label_text_view"
     style="@style/TextViewItemTheme"
